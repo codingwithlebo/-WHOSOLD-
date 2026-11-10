@@ -10,3 +10,18 @@ A group of friends gets their wishlist funded by a billionaire, but before the m
 | Malebo Nkuna | Designer + Frontend/Backend | [@codingwithlebo](https://github.com/codingwithlebo) |
 | Owethu Jezile | Designer (shared) | [@Owethudev](https://github.com/Owethudev) |
 | Ntokozo Maselela | DevOps/Release + Frontend/Backend | [@shaunmaselela25](https://github.com/shaunmaselela25) |
+
+
+## Documents
+
+- [Product Requirements Document](docs/PRD.md)
+
+## Getting Started
+
+_Setup instructions will be added once the stack is finalised._
+
+## Contributing
+
+- `main` is protected: all changes go through a pull request.
+- Each PR needs 1 approval and a passing CI run before merging.
+- Branch naming: `feature/<short-name>`, `fix/<short-name>
