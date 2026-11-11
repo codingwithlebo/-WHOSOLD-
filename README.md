@@ -7,8 +7,7 @@ A group of friends gets their wishlist funded by a billionaire, but before the m
 |------|------|--------|
 | Owethu Jezile | Product Owner + Frontend/Backend | [@Owethudev](https://github.com/Owethudev) |
 | Mandla Sikhosana | Tech Lead + Frontend/Backend | [@mandlenkosii](https://github.com/mandlenkosii) |
-| Malebo Nkuna | Designer + Frontend/Backend | [@codingwithlebo](https://github.com/codingwithlebo) |
-| Owethu Jezile | Designer (shared) | [@Owethudev](https://github.com/Owethudev) |
+| Malebo Nkuna | QA/Test Lead+ Frontend/Backend | [@codingwithlebo](https://github.com/codingwithlebo) |
 | Ntokozo Maselela | DevOps/Release + Frontend/Backend | [@shaunmaselela25](https://github.com/shaunmaselela25) |
 
 
