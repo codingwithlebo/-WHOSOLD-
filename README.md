@@ -14,7 +14,7 @@ A group of friends gets their wishlist funded by a billionaire, but before the m
 ## Documents
 
 - [Product Requirements Document](docs/PRD.md)
-- [Stitch Design](https://stitch.google.com/projects/114650487648064260)
+- [Stitch Design](https://stitch.google.com/projects/10560530829481209593)
 
 ## Getting Started
 
