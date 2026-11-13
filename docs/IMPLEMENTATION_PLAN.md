@@ -60,7 +60,7 @@ The PRD left these open. They are the Tech Lead's proposals; the Product Owner c
 | Lint and format | ESLint (typescript-eslint, react-hooks) + Prettier | |
 | CI | GitHub Actions: lint → typecheck → unit tests → DB tests → build on every PR | Required by the brief |
 | Hosting | **Vercel** (frontend, auto-deploy from `main`) + **hosted Supabase** (one project owned by the Tech Lead) | Required by the brief |
-| Package manager | **npm**, Node **20 LTS** | Same on every laptop and in CI |
+| Package manager | **npm**, Node **24 LTS** | Same on every laptop and in CI |
 
 ### 3.2 Game-rule defaults (answers to PRD Open Questions)
 
@@ -398,7 +398,7 @@ Live link with **log-in (M1)**, the **database** and **groups + wishlist (M2, M3
 
 Runs on every pull request to `main` and on push to `main`:
 
-1. **app** job (Node 20): `npm ci` → `npm run lint` → `npm run typecheck` → `npm test -- --run` → `npm run build`
+1. **app** job (Node 24): `npm ci` → `npm run lint` → `npm run format:check` → `npm run typecheck` → `npm test -- --run` → `npm run build`
 2. **db** job: `supabase/setup-cli` → `supabase start` → `supabase db reset` (applies all migrations + seed) → `supabase test db`
 
 Both jobs must pass before merging (set as required checks in branch protection).
