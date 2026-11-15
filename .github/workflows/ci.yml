@@ -21,3 +21,18 @@ jobs:
       - run: npm run typecheck
       - run: npm test -- --run
       - run: npm run build
+
+  db:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 3.1.0
+      # Applies every migration in supabase/migrations and then seed.sql.
+      # Services the database tests don't need are skipped to save time.
+      - run: supabase start -x realtime,storage-api,imgproxy,studio,edge-runtime,logflare,vector
+      # pgTAP tests in supabase/tests (RLS, triggers, constraints).
+      - run: supabase test db
+      - if: always()
+        run: supabase stop --no-backup
