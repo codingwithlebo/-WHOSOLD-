@@ -3,6 +3,7 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { useMemo } from 'react'
 import * as THREE from 'three'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
+import { Banknote, Coin3D } from './Money3D'
 import StudioLights from './StudioLights'
 
 /** Small seeded random generator so the coin layout is the same on every render. */
@@ -56,23 +57,10 @@ function CameraParallax({ reduced }: { reduced: boolean }) {
   return null
 }
 
-/** A calm field of floating gold coins, used behind the auth and dashboard pages. */
+/** A calm field of floating coins and banknotes, used behind the auth and dashboard pages. */
 export default function AmbientScene({ count = 22 }: { count?: number }) {
   const reduced = usePrefersReducedMotion()
-  const coins = useMemo(() => makeCoins(count), [count])
-  const geometry = useMemo(
-    () => new THREE.CylinderGeometry(0.5, 0.5, 0.1, 40),
-    [],
-  )
-  const material = useMemo(
-    () =>
-      new THREE.MeshStandardMaterial({
-        color: '#f5b942',
-        metalness: 1,
-        roughness: 0.28,
-      }),
-    [],
-  )
+  const pieces = useMemo(() => makeCoins(count), [count])
 
   return (
     <Canvas
@@ -83,21 +71,28 @@ export default function AmbientScene({ count = 22 }: { count?: number }) {
     >
       <StudioLights />
       <CameraParallax reduced={reduced} />
-      {coins.map((coin, index) => (
+      {pieces.map((piece, index) => (
         <Float
           enabled={!reduced}
           floatIntensity={1.6}
           key={index}
           rotationIntensity={2}
-          speed={coin.speed}
+          speed={piece.speed}
         >
-          <mesh
-            geometry={geometry}
-            material={material}
-            position={coin.position}
-            rotation={coin.rotation}
-            scale={coin.scale}
-          />
+          {/* Every third piece is a banknote, the rest are coins. */}
+          {index % 3 === 0 ? (
+            <Banknote
+              position={piece.position}
+              rotation={piece.rotation}
+              scale={piece.scale * 1.6}
+            />
+          ) : (
+            <Coin3D
+              position={piece.position}
+              rotation={piece.rotation}
+              scale={piece.scale * 0.9}
+            />
+          )}
         </Float>
       ))}
       <Sparkles
