@@ -13,8 +13,17 @@ npm test -- --run
 npm run build
 ```
 
-The current unit tests cover the app shell and unknown-route handling. Add
-feature-specific component and business-rule tests with the feature PRs.
+The current unit tests cover:
+
+- App routes: landing page, the Double or Pass preview, and unknown routes.
+- Money helpers: `formatRand` and `parseRandToCents`.
+- Auth: form validation, log-in and sign-up pages, and `ProtectedRoute`.
+- The landing-page demo reducer (win doubles, loss wipes, pass keeps).
+
+3D scenes are decorative and are not unit-tested: jsdom has no WebGL, so tests
+render the static fallback instead. Check them manually (see below).
+
+Add feature-specific component and business-rule tests with the feature PRs.
 
 ## Manual smoke test
 
@@ -24,6 +33,10 @@ feature-specific component and business-rule tests with the feature PRs.
 3. Visit an unknown path and use **Back to home**; confirm both routes render.
 4. Run `npm run build` and `npm run preview`; confirm the production build loads.
 5. Check browser console and keyboard focus for errors or inaccessible controls.
+6. 3D: the landing vault and the coin backgrounds on log-in and sign-up
+   render, follow the pointer, and the Double / Pass / Play again buttons
+   animate the coins. With the OS "reduce motion" setting on, scenes stay still.
+7. Visit `/dashboard` while signed out and confirm it redirects to `/login`.
 
 ## Planned coverage
 
