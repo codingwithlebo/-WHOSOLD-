@@ -43,7 +43,10 @@ function drawArcText(
   cy: number,
   radius: number,
 ) {
-  const chars = [...text]
+  const chars = Array.from(
+    new Intl.Segmenter().segment(text),
+    ({ segment }) => segment,
+  )
   const step = (Math.PI * 2) / chars.length
   chars.forEach((char, index) => {
     const angle = -Math.PI / 2 + index * step
@@ -473,7 +476,7 @@ export function getMoneyAssets(): MoneyAssets {
 
   // Notes are slightly curved, like real paper.
   const noteGeometry = new THREE.PlaneGeometry(0.95, 0.445, 12, 1)
-  const positions = noteGeometry.attributes.position
+  const positions = noteGeometry.getAttribute('position')
   for (let i = 0; i < positions.count; i++) {
     const x = positions.getX(i)
     positions.setZ(i, Math.sin((x / 0.95) * Math.PI) * 0.035)

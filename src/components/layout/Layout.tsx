@@ -10,8 +10,11 @@ export default function Layout() {
   const outlet = useOutlet()
 
   async function handleSignOut() {
-    await signOut()
-    navigate('/')
+    try {
+      await signOut()
+    } finally {
+      await navigate('/')
+    }
   }
 
   return (
@@ -32,7 +35,7 @@ export default function Layout() {
               <ButtonLink to="/dashboard" variant="ghost">
                 Dashboard
               </ButtonLink>
-              <Button onClick={handleSignOut} variant="secondary">
+              <Button onClick={() => void handleSignOut()} variant="secondary">
                 Log out
               </Button>
             </>

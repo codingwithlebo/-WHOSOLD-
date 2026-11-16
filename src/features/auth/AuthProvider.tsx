@@ -13,10 +13,17 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!supabase) return
 
-    supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session)
-      setLoading(false)
-    })
+    supabase.auth
+      .getSession()
+      .then(({ data }) => {
+        setSession(data.session)
+      })
+      .catch((error: unknown) => {
+        console.error('Failed to restore the auth session', error)
+      })
+      .finally(() => {
+        setLoading(false)
+      })
 
     const { data } = supabase.auth.onAuthStateChange((_event, next) => {
       setSession(next)
@@ -26,7 +33,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo<AuthContextValue>(() => {
     const user = session?.user ?? null
-    const metaName = user?.user_metadata?.display_name
+    const metaName: unknown = user?.user_metadata.display_name
 
     return {
       session,

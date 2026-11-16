@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useState, type SubmitEvent } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Button } from '../../components/ui/Button'
 import TextField from '../../components/ui/TextField'
@@ -16,7 +16,7 @@ export default function LoginPage() {
   const [serverError, setServerError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault()
     setServerError(null)
     const values = { email: email.trim(), password }
@@ -25,14 +25,21 @@ export default function LoginPage() {
     if (Object.keys(found).length > 0) return
 
     setSubmitting(true)
-    const { error } = await signIn(values.email, values.password)
-    setSubmitting(false)
+    let error: string | undefined
+    try {
+      const result = await signIn(values.email, values.password)
+      error = result.error
+    } catch {
+      error = 'Something went wrong. Check your connection and try again.'
+    } finally {
+      setSubmitting(false)
+    }
     if (error) {
       setServerError(error)
       return
     }
     const from = (location.state as { from?: string } | null)?.from
-    navigate(from ?? '/dashboard', { replace: true })
+    await navigate(from ?? '/dashboard', { replace: true })
   }
 
   return (
@@ -45,7 +52,11 @@ export default function LoginPage() {
       subtitle="Your crew is waiting. Log in to see your group."
       title="Welcome back"
     >
-      <form className="auth-form" noValidate onSubmit={handleSubmit}>
+      <form
+        className="auth-form"
+        noValidate
+        onSubmit={(event) => void handleSubmit(event)}
+      >
         <TextField
           autoComplete="email"
           error={errors.email}

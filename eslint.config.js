@@ -54,6 +54,12 @@ export default defineConfig(
         'error',
         { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
       ],
+      // Allow the React idiom `onClick={() => setOpen(true)}`; still flags void
+      // values used in conditions, variables and block-bodied returns.
+      '@typescript-eslint/no-confusing-void-expression': [
+        'error',
+        { ignoreArrowShorthand: true },
+      ],
       '@typescript-eslint/restrict-template-expressions': [
         'error',
         { allowNumber: true },
