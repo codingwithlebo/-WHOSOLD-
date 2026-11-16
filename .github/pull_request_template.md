@@ -4,11 +4,8 @@
 
 ## Verification
 
-- [ ] `npm run lint`
-- [ ] `npm run format:check`
-- [ ] `npm run typecheck`
-- [ ] `npm test -- --run`
-- [ ] `npm run build`
+- [ ] `npm run verify` passes locally (format, lint, typecheck, tests, build)
+- [ ] New or changed behaviour is covered by tests
 
 ## Review
 

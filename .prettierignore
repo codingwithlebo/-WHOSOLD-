@@ -1,0 +1,9 @@
+# Generated / vendored
+dist/
+coverage/
+node_modules/
+package-lock.json
+src/lib/database.types.ts
+
+# Team-authored planning docs: formatted by their owners, not enforced by CI
+docs/

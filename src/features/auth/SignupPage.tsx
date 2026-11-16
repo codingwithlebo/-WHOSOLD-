@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useState, type SubmitEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button } from '../../components/ui/Button'
 import TextField from '../../components/ui/TextField'
@@ -18,7 +18,7 @@ export default function SignupPage() {
   const [serverError, setServerError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault()
     setServerError(null)
     const values = {
@@ -31,17 +31,24 @@ export default function SignupPage() {
     if (Object.keys(found).length > 0) return
 
     setSubmitting(true)
-    const { error } = await signUp(
-      values.email,
-      values.password,
-      values.displayName,
-    )
-    setSubmitting(false)
+    let error: string | undefined
+    try {
+      const result = await signUp(
+        values.email,
+        values.password,
+        values.displayName,
+      )
+      error = result.error
+    } catch {
+      error = 'Something went wrong. Check your connection and try again.'
+    } finally {
+      setSubmitting(false)
+    }
     if (error) {
       setServerError(error)
       return
     }
-    navigate('/dashboard', { replace: true })
+    await navigate('/dashboard', { replace: true })
   }
 
   return (
@@ -54,7 +61,11 @@ export default function SignupPage() {
       subtitle="Create your account, then start or join a group."
       title="Join the game"
     >
-      <form className="auth-form" noValidate onSubmit={handleSubmit}>
+      <form
+        className="auth-form"
+        noValidate
+        onSubmit={(event) => void handleSubmit(event)}
+      >
         <TextField
           autoComplete="nickname"
           error={errors.displayName}

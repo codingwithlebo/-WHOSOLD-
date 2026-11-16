@@ -4,15 +4,19 @@ import { afterEach, vi } from 'vitest'
 
 // jsdom has no WebGL: returning null makes Scene3D render its static fallback,
 // so three.js is never loaded in unit tests.
-HTMLCanvasElement.prototype.getContext = vi.fn(
-  () => null,
-) as unknown as HTMLCanvasElement['getContext']
+HTMLCanvasElement.prototype.getContext = vi.fn(() => null)
 
 // jsdom has no IntersectionObserver, which Motion's whileInView uses.
 class MockIntersectionObserver {
-  observe() {}
-  unobserve() {}
-  disconnect() {}
+  observe() {
+    // no-op: nothing is ever "in view" in unit tests
+  }
+  unobserve() {
+    // no-op
+  }
+  disconnect() {
+    // no-op
+  }
   takeRecords() {
     return []
   }

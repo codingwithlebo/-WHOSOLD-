@@ -59,4 +59,19 @@ describe('LoginPage', () => {
       screen.getByText(/supabase is not connected yet/i),
     ).toBeInTheDocument()
   })
+
+  it('recovers when signIn throws (e.g. network failure)', async () => {
+    const auth = makeAuth({
+      signIn: vi.fn().mockRejectedValue(new TypeError('Failed to fetch')),
+    })
+    renderLogin(auth)
+    await userEvent.type(screen.getByLabelText(/email/i), 'alice@test.dev')
+    await userEvent.type(screen.getByLabelText(/password/i), 'Password123!')
+    await userEvent.click(screen.getByRole('button', { name: /log in/i }))
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      /check your connection/i,
+    )
+    expect(screen.getByRole('button', { name: /log in/i })).toBeEnabled()
+  })
 })
