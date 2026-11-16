@@ -18,6 +18,11 @@ A group of friends gets their wishlist funded by a billionaire, but before the m
 - [Product Requirements Document](docs/PRD.md)
 - [Implementation Plan](docs/IMPLEMENTATION_PLAN.md)
 - [Test Plan](docs/TEST_PLAN.md)
+- [Team delivery map](docs/TEAM.md)
+- [Mandla Sikhosana — delivery checklist](docs/team/mandla-sikhosana.md)
+- [Owethu Jezile — delivery checklist](docs/team/owethu-jezile.md)
+- [Malebo Nkuna — delivery checklist](docs/team/malebo-nkuna.md)
+- [Ntokozo Maselela — delivery checklist](docs/team/ntokozo-maselela.md)
 - [Design references](docs/designs/README.md)
 
 ## Getting Started
