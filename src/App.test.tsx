@@ -1,33 +1,45 @@
-import { render, screen } from '@testing-library/react'
-import { MemoryRouter } from 'react-router-dom'
+import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { describe, expect, it } from 'vitest'
 import App from './App'
+import { renderWithProviders } from './test/renderWithProviders'
 
 describe('App', () => {
-  it('renders the WHOSOLD? landing page', () => {
-    render(
-      <MemoryRouter>
-        <App />
-      </MemoryRouter>,
-    )
+  it('renders the landing page with log-in and sign-up links', async () => {
+    renderWithProviders(<App />)
 
     expect(
-      screen.getByRole('heading', { name: /would you risk it for everyone/i }),
+      await screen.findByRole('heading', {
+        name: /would you risk it for everyone/i,
+      }),
     ).toBeInTheDocument()
     expect(
-      screen.getByText(/sign-in and group creation are coming soon/i),
-    ).toBeInTheDocument()
+      screen.getAllByRole('link', { name: /log in/i }).length,
+    ).toBeGreaterThan(0)
+    expect(
+      screen.getAllByRole('link', { name: /start a group/i }).length,
+    ).toBeGreaterThan(0)
   })
 
-  it('shows a not-found page for unknown routes', () => {
-    render(
-      <MemoryRouter initialEntries={['/unknown']}>
-        <App />
-      </MemoryRouter>,
-    )
+  it('lets visitors try the Double or Pass preview', async () => {
+    renderWithProviders(<App />)
+
+    expect(await screen.findByText('R50 000')).toBeInTheDocument()
+    await userEvent.click(screen.getByRole('button', { name: /^pass$/i }))
+    expect(screen.getByText(/fund intact/i)).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /^double$/i })).toBeDisabled()
+
+    await userEvent.click(screen.getByRole('button', { name: /play again/i }))
+    expect(screen.getByRole('button', { name: /^double$/i })).toBeEnabled()
+  })
+
+  it('shows a not-found page for unknown routes', async () => {
+    renderWithProviders(<App />, { route: '/unknown' })
 
     expect(
-      screen.getByRole('heading', { name: /this page isn’t in the game/i }),
+      await screen.findByRole('heading', {
+        name: /this page is not in the game/i,
+      }),
     ).toBeInTheDocument()
   })
 })
