@@ -1,6 +1,6 @@
 # WHOSOLD? — Implementation Plan
 
-**Team:** ChatGPT
+**Team:** WHOSOLD project team
 **Owner:** Tech Lead (Mandla Sikhosana)
 **Version:** 1.0 (Checkpoint 2)
 **Last updated:** 12 November 2026
@@ -222,7 +222,7 @@ Every task follows the team workflow: **Issue → branch → failing tests → c
 
 ### Phase 1 — Accounts & log-in (M1) (Fri 13 – Sat 14 Nov)
 
-**Owner:** Mandla · **Folder:** `src/features/auth/`, `supabase/migrations/*_profiles.sql`
+**Frontend owner:** Mandla · **Database owner:** Mandla · **Folders:** `src/features/auth/`, `supabase/migrations/`
 
 | Task |
 |------|
@@ -243,11 +243,11 @@ Every task follows the team workflow: **Issue → branch → failing tests → c
 
 ### Phase 2 — Groups (M2) (Fri 13 – Sun 15 Nov)
 
-**Owner:** Owethu · **Folder:** `src/features/groups/`, `supabase/migrations/*_groups.sql`
+**UI owner:** Owethu · **Database owner:** Mandla · **UI folder:** `src/features/groups/`; migrations are under `supabase/migrations/`
 
 | Task |
 |------|
-| 2.1 Migration: `groups`, `group_members`, RLS, `create_group`, `join_group`, `lock_group` |
+| 2.1 Database (Mandla): migration for `groups`, `group_members`, RLS, `create_group`, `join_group`, `lock_group` |
 | 2.2 Dashboard: list my groups, "Create group" and "Join with code" |
 | 2.3 Group page: name, join code (copy button), member list, Lock button for the leader |
 
@@ -262,11 +262,11 @@ Every task follows the team workflow: **Issue → branch → failing tests → c
 
 ### Phase 3 — Wishlist & fund (M3) (Sat 14 – Mon 16 Nov)
 
-**Owner:** Owethu · **Folder:** `src/features/wishlist/`, `supabase/migrations/*_wishlist.sql`
+**UI owner:** Owethu · **Database owner:** Mandla · **UI folder:** `src/features/wishlist/`; migrations are under `supabase/migrations/`
 
 | Task |
 |------|
-| 3.1 Migration: `wishlist_items` + RLS (edits blocked while a round is open) |
+| 3.1 Database (Mandla): migration for `wishlist_items` + RLS (edits blocked while a round is open) |
 | 3.2 Wishlist on the group page: add, edit and delete items; prices entered in Rand, stored in cents |
 | 3.3 Fund total card ("Sponsored by a mystery billionaire · virtual funds") |
 | 3.4 `formatRand(cents)` utility |
@@ -286,11 +286,11 @@ Live link with **log-in (M1)**, the **database** and **groups + wishlist (M2, M3
 
 ### Phase 4 — Rounds & Double or Pass (M4, part 1) (Sun 15 – Tue 17 Nov)
 
-**Owner:** Malebo · **Folder:** `src/features/round/`, `supabase/migrations/*_rounds.sql`
+**UI owner:** Malebo · **Database owner:** Mandla · **UI folder:** `src/features/round/`; migrations are under `supabase/migrations/`
 
 | Task |
 |------|
-| 4.1 Migration: `rounds`, `choices`, RLS, `start_round`, `submit_choice`, `get_round_status` |
+| 4.1 Database (Mandla): migration for `rounds`, `choices`, RLS, `start_round`, `submit_choice`, `get_round_status` |
 | 4.2 "Start round" form for the leader (opens at, closes at, release at, with quick presets: 5 min / 1 hour / 24 hours) |
 | 4.3 Round page: countdown to close, "3 of 5 have answered", Double / Pass buttons with a confirm dialog, then a locked "You chose …" state |
 
@@ -305,12 +305,12 @@ Live link with **log-in (M1)**, the **database** and **groups + wishlist (M2, M3
 
 ### Phase 5 — Quiz (M4, part 2) (Mon 16 – Wed 18 Nov)
 
-**Owner:** Mandla · **Folder:** `src/features/quiz/`, `supabase/migrations/*_quiz.sql`, `supabase/seed.sql` (questions)
+**UI and database owner:** Mandla · **UI folder:** `src/features/quiz/`; migrations and question data are under `supabase/`
 
 | Task |
 |------|
-| 5.1 Migration: `questions`, `question_answers`, `quiz_attempts`, `quiz_responses`, RLS, `start_quiz`, `answer_question` |
-| 5.2 Seed at least 30 questions |
+| 5.1 Database (Mandla): migration for `questions`, `question_answers`, `quiz_attempts`, `quiz_responses`, RLS, `start_quiz`, `answer_question` |
+| 5.2 Product content (Owethu): review and approve at least 30 questions; Mandla owns their database migration and loading |
 | 5.3 Quiz screen: rules first (5 questions, 20 s each, pass mark 4), then one question at a time with a countdown; when time runs out the empty answer is submitted |
 | 5.4 Resume: reloading during the quiz continues at the current question, and the timer keeps running |
 
@@ -326,11 +326,11 @@ Live link with **log-in (M1)**, the **database** and **groups + wishlist (M2, M3
 
 ### Phase 6 — Resolution & reveal (M5) (Tue 17 – Wed 18 Nov)
 
-**Owner:** Ntokozo · **Folder:** `src/features/reveal/`, `supabase/migrations/*_resolution.sql`
+**UI/operations owner:** Ntokozo · **Database owner:** Mandla · **UI folder:** `src/features/reveal/`; migrations are under `supabase/migrations/`
 
 | Task |
 |------|
-| 6.1 Migration: `resolve_round`, `resolve_due_rounds`, `get_reveal`; enable `pg_cron` and schedule every minute |
+| 6.1 Database (Mandla): migration for `resolve_round`, `resolve_due_rounds`, `get_reveal`; Ntokozo owns the operational schedule/release configuration |
 | 6.2 Reveal screen: before `release_at` show a countdown; after it, show the outcome (Intact / Grown / Lost), the fund before and after, and the named breakdown |
 | 6.3 Unlock the wishlist for the next round after resolution |
 
@@ -356,22 +356,65 @@ Live link with **log-in (M1)**, the **database** and **groups + wishlist (M2, M3
 
 **Code freeze:** Thu 19 Nov, 18:00. After that, only bug-fix PRs. **Submission:** Fri 20 Nov, 10:00.
 
+### Phase 8 — Stabilization
+
+**Goal:** fix release-blocking defects without adding scope. Each owner tests their own area in parallel; Malebo maintains the shared triage list.
+
+| Task | Owner |
+|------|-------|
+| Verify database policies, migration state, and round invariants; fix database defects | Mandla |
+| Fix usability defects and confirm the shipped flows still match approved requirements | Owethu |
+| Run full regression, classify defects by severity, and verify fixes | Malebo |
+| Verify production/preview deployment, environment configuration, and rollback steps | Ntokozo |
+
+**Exit criteria:** no open critical/high defects; regression and CI pass; production smoke test is recorded.
+
+### Phase 9 — Operations & feedback
+
+**Goal:** keep the MVP supportable after release; do not introduce new product behavior without an approved issue.
+
+| Task | Owner |
+|------|-------|
+| Review database errors and query health; make any schema change in a reviewed migration | Mandla |
+| Collect team/user feedback and prioritize the next backlog without changing MVP acceptance criteria | Owethu |
+| Maintain regression, accessibility, and bug-reproduction checklists | Malebo |
+| Maintain deployment notes, environment ownership, and an incident/rollback checklist | Ntokozo |
+
+**Exit criteria:** every reported problem is an issue with an owner, reproduction/acceptance criteria, and a priority.
+
+### Phase 10 — Next-increment discovery
+
+**Goal:** agree the next product increment before implementation. Draw mode remains deferred until the Product Owner approves its rules and scope.
+
+| Task | Owner |
+|------|-------|
+| Assess database/API impact and provide a migration/data-contract estimate; do not implement unapproved schema | Mandla |
+| Write the approved problem statement, scope, and product acceptance criteria | Owethu |
+| Draft test risks and acceptance scenarios for the proposed increment | Malebo |
+| Estimate release, hosting, and operational impact | Ntokozo |
+
+All four discovery tasks can proceed in parallel. Implementation begins only after the scope is accepted and split into independent issues.
+
 ---
 
 ## 7. Ownership & Work Split
 
 | Member | Role(s) | Owns (features and folders) |
 |--------|---------|-----------------------------|
-| Mandla Sikhosana | Tech Lead | Phase 0.1–0.2 scaffold + Supabase, **M1 Auth** (`features/auth`), **Quiz** (`features/quiz`), migration reviews |
-| Owethu Jezile | Product Owner | Phase 0.6 shared components, **M2 Groups** (`features/groups`), **M3 Wishlist** (`features/wishlist`), history, accepts finished features |
-| Malebo Nkuna | QA / Test Lead | Phase 0.5 test setup + `TEST_PLAN.md`, **Double/Pass** (`features/round`), banners, Playwright e2e, manual QA |
-| Ntokozo Maselela | DevOps / Release | Phase 0.3–0.4 CI + Vercel, **M5 Resolution & reveal** (`features/reveal`, `pg_cron`), README and release |
+| Mandla Sikhosana | Tech Lead + Database Owner | All Supabase schema, migrations, RLS, RPCs, seed/migration-loaded game data, generated database types, and database PR reviews; **M1 Auth** (`features/auth`), **Quiz** (`features/quiz`) |
+| Owethu Jezile | Product Owner | Phase 0.6 shared components, **M2 Groups** (`features/groups`), **M3 Wishlist** (`features/wishlist`), history, question-content review, product decisions and acceptance |
+| Malebo Nkuna | QA / Test Lead | Phase 0.5 test setup + `TEST_PLAN.md`, **Double/Pass UI** (`features/round`), banners, Playwright E2E, manual QA, regression and triage |
+| Ntokozo Maselela | DevOps / Release | Phase 0.3–0.4 CI + Vercel, **M5 Resolution & reveal UI/operations** (`features/reveal`, scheduling configuration), README and release |
 | **Designer — to be assigned** | Designer | Stitch designs, design check of every screen PR |
 
 **Avoiding clashes**
-- One person per `features/<name>/` folder. Shared files (`router.tsx`, `components/`, `seed.sql`) get small, separate PRs.
-- Migrations are named `YYYYMMDDHHMMSS_<feature>.sql`. Always pull `main` before creating one, so timestamps stay in order.
-- After any migration merges, run `npm run db:types` and commit the regenerated `database.types.ts` in the same PR.
+- Mandla is the sole database implementer: no other member creates or edits migrations, RLS, RPCs, database seeds, or generated database types. Feature owners send schema/API needs to him through the issue before implementation.
+- One person owns each `src/features/<name>/` folder. Shared files (`router.tsx`, `components/`, shared types) have one named owner per issue; do not edit the same shared file in parallel.
+- UI and test work starts against the agreed RPC/type contract and mock fixtures while Mandla implements the database in a separate branch. Integration happens after both sides are independently testable; no one waits idle for the other to start.
+- Migrations are named `YYYYMMDDHHMMSS_<feature>.sql`, are authored by Mandla, and are reviewed before applying to the hosted project. Mandla regenerates database types after migration changes.
+- Keep each issue small, independently testable, and explicit about its owned files, contract, and acceptance criteria. Record genuine sequencing requirements as dependencies; don't make unrelated work depend on a feature PR.
+
+The [team delivery map](TEAM.md) and [member checklists](team/) expand the ownership plan across phases 1–10.
 
 ---
 
