@@ -401,7 +401,7 @@ Runs on every pull request to `main`, on push to `main`, in the merge queue and 
 1. **workflow-lint**: actionlint (with shellcheck) on the workflow files
 2. **format** / **lint** / **typecheck** / **test** / **build** (Node from `.nvmrc`): each runs `npm ci` then its npm script; ESLint is type-aware with zero warnings allowed; the build uploads `dist/` as an artifact
 3. **security**: `npm audit signatures` and `npm audit --omit=dev --audit-level=high`
-4. **dependency-review** (PRs only): blocks new high-severity vulnerabilities and GPL/AGPL licences
+4. **dependency-review** (PRs only): blocks new high-severity vulnerabilities and GPL/AGPL licences; skipped with a warning while the repo's Dependency graph setting is disabled
 5. **db**: `supabase/setup-cli` → `supabase start` (CLI 3.1.0; applies all migrations + seed) → `supabase test db`
 6. **ci-passed**: fails if any job above failed or was cancelled
 

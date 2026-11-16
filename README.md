@@ -99,7 +99,8 @@ parallel:
 - **Format**, **Lint**, **Typecheck**, **Unit tests**, **Build** (uploads `dist/`)
 - **Dependency audit**: registry signature check and `npm audit` (high+) on
   production dependencies
-- **Dependency review** (PRs only): blocks newly added vulnerable or
+- **Dependency review** (PRs only, needs the repo's Dependency graph enabled;
+  skipped with a warning otherwise): blocks newly added vulnerable or
   copyleft-licensed packages
 - **Database tests**: `supabase start` (applies migrations + seed) then
   `supabase test db` (pgTAP)

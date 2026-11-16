@@ -155,7 +155,38 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
-      - uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
+      # Dependency review needs the repo's Dependency graph (Settings > Code
+      # security). GitHub answers 404 on this endpoint only when the graph is
+      # disabled: skip with a warning then, so the check re-activates by itself
+      # once an admin enables it. Any other error fails the job.
+      - name: Check Dependency graph is enabled
+        id: graph
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          status=$(curl -sS -o /dev/null -w '%{http_code}' \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/$REPO/dependency-graph/sbom")
+          case "$status" in
+            200)
+              echo "enabled=true" >> "$GITHUB_OUTPUT"
+              ;;
+            404)
+              echo "enabled=false" >> "$GITHUB_OUTPUT"
+              msg="Dependency graph is disabled, so dependency review was skipped. A repo admin can enable it at https://github.com/$REPO/settings/security_analysis"
+              echo "::warning title=Dependency review skipped::$msg"
+              echo "### ⚠️ Dependency review skipped" >> "$GITHUB_STEP_SUMMARY"
+              echo "$msg" >> "$GITHUB_STEP_SUMMARY"
+              ;;
+            *)
+              echo "::error::Unexpected HTTP $status checking the Dependency graph."
+              exit 1
+              ;;
+          esac
+      - if: steps.graph.outputs.enabled == 'true'
+        uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
         with:
           fail-on-severity: high
           deny-licenses: GPL-2.0, GPL-3.0, AGPL-3.0
