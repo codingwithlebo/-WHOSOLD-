@@ -1,0 +1,8 @@
+# Generated / vendored
+dist/
+coverage/
+node_modules/
+package-lock.json
+
+# Team-authored planning docs: formatted by their owners, not enforced by CI
+docs/
