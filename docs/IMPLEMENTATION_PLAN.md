@@ -402,7 +402,7 @@ Runs on every pull request to `main`, on push to `main`, in the merge queue and 
 2. **format** / **lint** / **typecheck** / **test** / **build** (Node from `.nvmrc`): each runs `npm ci` then its npm script; ESLint is type-aware with zero warnings allowed; the build uploads `dist/` as an artifact
 3. **security**: `npm audit signatures` and `npm audit --omit=dev --audit-level=high`
 4. **dependency-review** (PRs only): blocks new high-severity vulnerabilities and GPL/AGPL licences
-5. **db**: `supabase/setup-cli` → `supabase start` → `supabase db reset` (applies all migrations + seed) → `supabase test db`; skips until `supabase/config.toml` exists
+5. **db**: `supabase/setup-cli` → `supabase start` (CLI 3.1.0; applies all migrations + seed) → `supabase test db`
 6. **ci-passed**: fails if any job above failed or was cancelled
 
 Branch protection requires the single **CI passed** check. Locally, `npm run verify` runs the same app checks.

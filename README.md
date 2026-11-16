@@ -65,11 +65,11 @@ npx supabase@3.1.0 db push --include-seed
 
 Test accounts only. Never use real passwords.
 
-| Email | Password | Display name |
-|-------|----------|--------------|
-| `alice@test.dev` | `Password123!` | Alice |
-| `bob@test.dev` | `Password123!` | Bob |
-| `cara@test.dev` | `Password123!` | Cara |
+| Email            | Password       | Display name |
+| ---------------- | -------------- | ------------ |
+| `alice@test.dev` | `Password123!` | Alice        |
+| `bob@test.dev`   | `Password123!` | Bob          |
+| `cara@test.dev`  | `Password123!` | Cara         |
 
 ## Checks
 
@@ -101,8 +101,8 @@ parallel:
   production dependencies
 - **Dependency review** (PRs only): blocks newly added vulnerable or
   copyleft-licensed packages
-- **Database tests**: `supabase db reset` + `supabase test db`; a no-op until
-  `supabase/config.toml` exists
+- **Database tests**: `supabase start` (applies migrations + seed) then
+  `supabase test db` (pgTAP)
 - **CI passed**: aggregates all of the above. Make this the single required
   status check in branch protection.
 

@@ -168,29 +168,16 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      # The supabase/ project lands in a later phase; until then this job is a no-op
-      # pass so it can already be a required check.
-      - name: Detect Supabase project
-        id: detect
-        run: |
-          if [[ -f supabase/config.toml ]]; then
-            echo "present=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "present=false" >> "$GITHUB_OUTPUT"
-            echo "::notice::No supabase/config.toml yet; skipping database tests."
-          fi
-      - if: steps.detect.outputs.present == 'true'
-        uses: supabase/setup-cli@689adcfb80d947100a1eab127289b97d1fb07b13 # v3.2.0
+      - uses: supabase/setup-cli@689adcfb80d947100a1eab127289b97d1fb07b13 # v3.2.0
         with:
-          # Keep in step with the CLI version the team uses locally.
-          version: 2.122.1
-      - if: steps.detect.outputs.present == 'true'
-        run: supabase start
-      - if: steps.detect.outputs.present == 'true'
-        run: supabase db reset
-      - if: steps.detect.outputs.present == 'true'
-        run: supabase test db
-      - if: always() && steps.detect.outputs.present == 'true'
+          # Same version as the db:* scripts in package.json.
+          version: 3.1.0
+      # Applies every migration in supabase/migrations and then seed.sql.
+      # Services the database tests don't need are skipped to save time.
+      - run: supabase start -x realtime,storage-api,imgproxy,studio,edge-runtime,logflare,vector
+      # pgTAP tests in supabase/tests (RLS, triggers, constraints).
+      - run: supabase test db
+      - if: always()
         run: supabase stop --no-backup
 
   # Single stable check for branch protection: require only "CI passed".
@@ -225,18 +212,3 @@ jobs:
               exit 1
             fi
           done
-
-  db:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: supabase/setup-cli@v1
-        with:
-          version: 3.1.0
-      # Applies every migration in supabase/migrations and then seed.sql.
-      # Services the database tests don't need are skipped to save time.
-      - run: supabase start -x realtime,storage-api,imgproxy,studio,edge-runtime,logflare,vector
-      # pgTAP tests in supabase/tests (RLS, triggers, constraints).
-      - run: supabase test db
-      - if: always()
-        run: supabase stop --no-backup
