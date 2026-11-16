@@ -1,0 +1,238 @@
+import { useState, type SubmitEvent } from 'react'
+import { Button } from '../../components/ui/Button'
+import Card from '../../components/ui/Card'
+import TextField from '../../components/ui/TextField'
+
+export interface GroupSummary {
+  id: string
+  name: string
+  joinCode: string
+  members: string[]
+  isLeader: boolean
+  isLocked: boolean
+}
+
+interface GroupsDashboardProps {
+  groups: GroupSummary[]
+  onCreateGroup: (name: string) => Promise<GroupSummary>
+  onJoinGroup: (code: string) => Promise<GroupSummary>
+  onLockGroup: (groupId: string) => Promise<void>
+}
+
+function getErrorMessage(error: unknown): string {
+  if (error instanceof Error) return error.message
+  if (typeof error === 'string') return error
+  return 'The request could not be completed. Please try again.'
+}
+
+export default function GroupsDashboard({
+  groups: initialGroups,
+  onCreateGroup,
+  onJoinGroup,
+  onLockGroup,
+}: GroupsDashboardProps) {
+  const [groups, setGroups] = useState(initialGroups)
+  const [groupName, setGroupName] = useState('')
+  const [joinCode, setJoinCode] = useState('')
+  const [error, setError] = useState<string | null>(null)
+  const [busy, setBusy] = useState(false)
+  const [copiedGroupId, setCopiedGroupId] = useState<string | null>(null)
+
+  async function handleCreate(event: SubmitEvent<HTMLFormElement>) {
+    event.preventDefault()
+    const name = groupName.trim()
+    if (!name) {
+      setError('Enter a group name.')
+      return
+    }
+
+    setBusy(true)
+    setError(null)
+    try {
+      const group = await onCreateGroup(name)
+      setGroups((current) => [...current, group])
+      setGroupName('')
+    } catch (reason) {
+      setError(getErrorMessage(reason))
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  async function handleJoin(event: SubmitEvent<HTMLFormElement>) {
+    event.preventDefault()
+    const code = joinCode.trim().toUpperCase()
+    if (!/^[A-Z0-9]{6}$/.test(code)) {
+      setError('Enter a valid 6-character group code.')
+      return
+    }
+
+    setBusy(true)
+    setError(null)
+    try {
+      const group = await onJoinGroup(code)
+      setGroups((current) => [
+        ...current.filter((existing) => existing.id !== group.id),
+        group,
+      ])
+      setJoinCode('')
+    } catch (reason) {
+      setError(getErrorMessage(reason))
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  async function handleCopyCode(group: GroupSummary) {
+    setError(null)
+    try {
+      await navigator.clipboard.writeText(group.joinCode)
+      setCopiedGroupId(group.id)
+    } catch {
+      setError('Could not copy the join code. Select and copy it instead.')
+    }
+  }
+
+  async function handleLock(groupId: string) {
+    setBusy(true)
+    setError(null)
+    try {
+      await onLockGroup(groupId)
+      setGroups((current) =>
+        current.map((group) =>
+          group.id === groupId ? { ...group, isLocked: true } : group,
+        ),
+      )
+    } catch (reason) {
+      setError(getErrorMessage(reason))
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  return (
+    <section
+      aria-labelledby="groups-heading"
+      className="mx-auto w-full max-w-4xl"
+    >
+      <header>
+        <p className="eyebrow">YOUR CREW</p>
+        <h1 className="dashboard-title" id="groups-heading">
+          Your groups
+        </h1>
+        <p className="mt-2 text-slate-300">
+          Start a group or join your crew with a code.
+        </p>
+      </header>
+
+      <div className="mt-8 grid gap-5 sm:grid-cols-2">
+        <Card className="p-6">
+          <h2 className="text-xl font-bold">Create a group</h2>
+          <p className="mt-2 text-sm text-slate-300">
+            Get a join code to share with your mates.
+          </p>
+          <form
+            className="mt-5 space-y-4"
+            onSubmit={(event) => void handleCreate(event)}
+          >
+            <TextField
+              autoComplete="off"
+              label="Group name"
+              maxLength={50}
+              onChange={(event) => setGroupName(event.target.value)}
+              placeholder="The Wednesday crew"
+              value={groupName}
+            />
+            <Button disabled={busy} type="submit" variant="primary">
+              {busy ? 'Working…' : 'Create group'}
+            </Button>
+          </form>
+        </Card>
+
+        <Card className="p-6">
+          <h2 className="text-xl font-bold">Join a group</h2>
+          <p className="mt-2 text-sm text-slate-300">
+            Enter the 6-character code your group shared with you.
+          </p>
+          <form
+            className="mt-5 space-y-4"
+            onSubmit={(event) => void handleJoin(event)}
+          >
+            <TextField
+              autoCapitalize="characters"
+              autoComplete="off"
+              label="Join code"
+              maxLength={6}
+              onChange={(event) => setJoinCode(event.target.value)}
+              placeholder="ABC123"
+              value={joinCode}
+            />
+            <Button disabled={busy} type="submit" variant="secondary">
+              {busy ? 'Working…' : 'Join group'}
+            </Button>
+          </form>
+        </Card>
+      </div>
+
+      {error ? (
+        <p className="form-error mt-5" role="alert">
+          {error}
+        </p>
+      ) : null}
+
+      <section aria-labelledby="your-groups-heading" className="mt-10">
+        <h2 className="text-2xl font-bold" id="your-groups-heading">
+          Groups you&apos;ve joined
+        </h2>
+        {groups.length === 0 ? (
+          <p className="mt-3 text-slate-300">
+            You haven&apos;t joined a group yet.
+          </p>
+        ) : (
+          <ul className="mt-4 grid list-none gap-4 p-0 sm:grid-cols-2">
+            {groups.map((group) => (
+              <li key={group.id}>
+                <Card className="h-full p-5">
+                  <h3 className="text-lg font-bold">{group.name}</h3>
+                  <p className="mt-2 text-sm text-slate-300">
+                    {group.members.length} of 10 members
+                  </p>
+                  <ul aria-label={`${group.name} members`} className="mt-2">
+                    {group.members.map((member) => (
+                      <li key={member}>{member}</li>
+                    ))}
+                  </ul>
+                  <div className="mt-4 flex flex-wrap items-center gap-2">
+                    <span className="font-mono tracking-widest">
+                      {group.joinCode}
+                    </span>
+                    <Button
+                      onClick={() => void handleCopyCode(group)}
+                      size="md"
+                      variant="ghost"
+                    >
+                      {copiedGroupId === group.id ? 'Copied' : 'Copy code'}
+                    </Button>
+                  </div>
+                  <p className="mt-3 text-sm text-slate-300">
+                    {group.isLocked ? 'Group locked' : 'Open to new members'}
+                  </p>
+                  {group.isLeader && !group.isLocked ? (
+                    <Button
+                      className="mt-4"
+                      disabled={busy}
+                      onClick={() => void handleLock(group.id)}
+                      variant="secondary"
+                    >
+                      Lock group
+                    </Button>
+                  ) : null}
+                </Card>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+    </section>
+  )
+}
