@@ -15,6 +15,13 @@
     "test": "vitest",
     "test:ci": "vitest run",
     "verify": "npm run format:check && npm run lint && npm run typecheck && npm run test:ci && npm run build"
+    "preview": "vite preview",
+    "format:check": "prettier --check package.json tsconfig.json tsconfig.app.json tsconfig.node.json vite.config.ts eslint.config.js tailwind.config.js postcss.config.js vercel.json \"src/**/*.{ts,tsx,css}\"",
+    "db:start": "npx --yes supabase@3.1.0 start",
+    "db:stop": "npx --yes supabase@3.1.0 stop",
+    "db:reset": "npx --yes supabase@3.1.0 db reset",
+    "db:test": "npx --yes supabase@3.1.0 test db",
+    "db:types": "npx --yes supabase@3.1.0 gen types typescript --local > src/lib/database.types.ts"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.0.0",

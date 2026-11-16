@@ -29,9 +29,47 @@ npm ci
 npm run dev
 ```
 
-The current app is a deployable frontend scaffold. Sign-in, groups, and
-wishlists are not implemented yet. Copy `.env.example` to `.env.local` when
-connecting Supabase; never commit local environment files.
+Copy `.env.example` to `.env.local` and fill in the Supabase URL and anon
+key (shared privately by the Tech Lead). Never commit local environment
+files.
+
+## Database (Supabase)
+
+All database changes are migration files in `supabase/migrations/`, merged
+through a PR. Never edit tables by hand in the Supabase dashboard.
+
+### Local database (optional, needs Docker Desktop)
+
+```sh
+npm run db:start   # starts Supabase locally, applies migrations + seed.sql
+npm run db:test    # runs the pgTAP database tests in supabase/tests/
+npm run db:reset   # rebuilds the local database from migrations + seed
+npm run db:types   # regenerates src/lib/database.types.ts after a migration
+npm run db:stop
+```
+
+`db:start` prints a local API URL and anon key. Put them in `.env.local` to
+run the app against your local database.
+
+### Hosted project (Tech Lead)
+
+After a migration PR is merged into `main`:
+
+```sh
+npx supabase@3.1.0 login
+npx supabase@3.1.0 link --project-ref <project-ref>
+npx supabase@3.1.0 db push --include-seed
+```
+
+### Test logins
+
+Test accounts only. Never use real passwords.
+
+| Email | Password | Display name |
+|-------|----------|--------------|
+| `alice@test.dev` | `Password123!` | Alice |
+| `bob@test.dev` | `Password123!` | Bob |
+| `cara@test.dev` | `Password123!` | Cara |
 
 ## Checks
 
@@ -71,6 +109,9 @@ parallel:
 Actions are pinned to commit SHAs, the workflow token is read-only, and stale
 runs on the same PR are cancelled. Dependabot opens weekly grouped PRs for npm
 packages and actions.
+GitHub Actions runs these checks on pull requests to `main` and pushes to
+`main`. A second `db` job starts Supabase, applies every migration and
+`seed.sql`, and runs the pgTAP tests (`npm run db:test`).
 
 **Live deployment:** not configured yet.
 
