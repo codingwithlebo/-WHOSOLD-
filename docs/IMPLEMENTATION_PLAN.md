@@ -288,6 +288,9 @@ Live link with **log-in (M1)**, the **database** and **groups + wishlist (M2, M3
 
 **UI owner:** Malebo · **Database owner:** Mandla · **UI folder:** `src/features/round/`; migrations are under `supabase/migrations/`
 
+**Product-approved copy and privacy behavior:** see the
+[round UX contract](round-ux-contract.md).
+
 | Task |
 |------|
 | 4.1 Database (Mandla): migration for `rounds`, `choices`, RLS, `start_round`, `submit_choice`, `get_round_status` |
