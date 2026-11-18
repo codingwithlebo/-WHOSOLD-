@@ -167,7 +167,7 @@ a {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #a78bfa, #7c3aed);
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
   box-shadow: 0 8px 24px -8px rgb(139 92 246 / 70%);
   color: white;
 }
@@ -183,13 +183,13 @@ a {
 }
 
 .btn-secondary {
-  border-color: rgb(196 181 253 / 35%);
+  border-color: rgb(196 181 253 / 55%);
   background: rgb(255 255 255 / 6%);
   color: var(--text);
 }
 
 .btn-danger {
-  background: var(--danger);
+  background: #be123c;
   color: white;
 }
 
@@ -266,7 +266,11 @@ a {
 .field-input:focus {
   border-color: var(--violet);
   box-shadow: 0 0 0 4px rgb(139 92 246 / 25%);
-  outline: none;
+}
+
+.field-input:focus-visible {
+  outline: 2px solid var(--violet-soft);
+  outline-offset: 3px;
 }
 
 .field-input[aria-invalid='true'] {

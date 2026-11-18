@@ -35,7 +35,7 @@ export default function TextField({
         {...props}
       />
       {error ? (
-        <p className="field-error" id={`${inputId}-error`}>
+        <p className="field-error" id={`${inputId}-error`} role="alert">
           {error}
         </p>
       ) : hint ? (

@@ -26,6 +26,18 @@ function renderWishlist(
 }
 
 describe('WishlistPanel', () => {
+  it('keeps add-form controls in keyboard order', async () => {
+    const user = userEvent.setup()
+    renderWishlist()
+
+    await user.tab()
+    expect(screen.getByLabelText('Item name')).toHaveFocus()
+    await user.tab()
+    expect(screen.getByLabelText('Price (Rand)')).toHaveFocus()
+    await user.tab()
+    expect(screen.getByRole('button', { name: 'Add item' })).toHaveFocus()
+  })
+
   it('adds an item using cents and updates the fund total', async () => {
     const onAddItem = vi.fn().mockResolvedValue(sampleItem)
     renderWishlist({ onAddItem })
@@ -48,10 +60,44 @@ describe('WishlistPanel', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Add item' }))
 
     expect(onAddItem).not.toHaveBeenCalled()
-    expect(screen.getByRole('alert')).toHaveTextContent(
-      'Enter a valid price greater than R0.00.',
-    )
+    const price = screen.getByLabelText('Price (Rand)')
+    const error = screen.getByRole('alert')
+    expect(error).toHaveTextContent('Enter a valid price greater than R0.00.')
+    expect(price).toHaveAttribute('aria-invalid', 'true')
+    expect(price).toHaveAttribute('aria-describedby', error.id)
     expect(screen.getByText('R0.00')).toBeInTheDocument()
+  })
+
+  it('associates an empty item-name error with its input', async () => {
+    renderWishlist()
+
+    await userEvent.type(screen.getByLabelText('Price (Rand)'), '20')
+    await userEvent.click(screen.getByRole('button', { name: 'Add item' }))
+
+    const itemName = screen.getByLabelText('Item name')
+    const error = screen.getByRole('alert')
+    expect(error).toHaveTextContent('Enter an item name.')
+    expect(itemName).toHaveAttribute('aria-invalid', 'true')
+    expect(itemName).toHaveAttribute('aria-describedby', error.id)
+  })
+
+  it('associates edit errors with the editing field only', async () => {
+    renderWishlist({ items: [sampleItem] })
+
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Edit Wireless headphones' }),
+    )
+    const item = screen.getByRole('listitem')
+    const name = within(item).getByLabelText('Item name')
+    await userEvent.clear(name)
+    await userEvent.click(within(item).getByRole('button', { name: 'Save' }))
+
+    const error = screen.getByRole('alert')
+    expect(error).toHaveTextContent('Enter an item name.')
+    expect(name).toHaveAttribute('aria-invalid', 'true')
+    expect(name).toHaveAttribute('aria-describedby', error.id)
+    const [addName] = screen.getAllByLabelText('Item name')
+    expect(addName).not.toHaveAttribute('aria-invalid', 'true')
   })
 
   it('edits an item and recalculates the total', async () => {
