@@ -15,6 +15,5 @@ Each screen folder contains a PNG preview and its HTML export:
 | Release day reveal | ![Release day reveal screen](stitch_interactive_3d_app_screens/whosold_release_day_reveal/screen.png) | [code.html](stitch_interactive_3d_app_screens/whosold_release_day_reveal/code.html) |
 
 The shared [Sunset Arcade design system](stitch_interactive_3d_app_screens/sunset_arcade/DESIGN.md)
-is included with the exports. These are reference designs; the app shell remains
-a temporary implementation scaffold, and the exports have not yet been reviewed
-or approved as final design sign-off.
+is included with the exports. These screens and design tokens have been reviewed
+and approved as the design sign-off for the current WHOSOLD? implementation.
