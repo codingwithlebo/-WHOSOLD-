@@ -97,16 +97,19 @@ session state as well.
 
 ### Phase 1 verification status
 
-The repository currently has automated coverage for form validation, successful
-log-in and sign-up, credential errors, network errors, missing Supabase
-configuration, protected-route redirects, authenticated access and the
-protected-route loading state.
+The existing automated suite covers login/signup field validation,
+successful login/signup navigation, login credential and network failures,
+the missing-Supabase warning on the login page, protected-route redirects,
+authenticated access and the protected-route loading state. Signup server
+failure handling and provider-level session/sign-out behavior still need
+explicit automated coverage.
 
 Before marking Phase 1 complete, add or confirm provider-level tests for
 restoring a session with `getSession`, reacting to auth-state changes, and
-signing out. Then run the live smoke test below against the configured hosted
-environment. A mocked component test does not prove that hosted Supabase
-credentials, profile creation or deployment environment variables are correct.
+signing out. Add signup failure tests as well. Then run the live smoke test
+below against the configured hosted environment. A mocked component test
+does not prove that hosted Supabase credentials, profile creation or
+deployment environment variables are correct.
 
 ### Phase 1 live smoke test
 
