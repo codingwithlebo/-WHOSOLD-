@@ -1,5 +1,5 @@
 import { useState, type SubmitEvent } from 'react'
-import { Button } from '../../components/ui/Button'
+import { Button, ButtonLink } from '../../components/ui/Button'
 import Card from '../../components/ui/Card'
 import TextField from '../../components/ui/TextField'
 
@@ -246,6 +246,15 @@ export default function GroupsDashboard({
                   <p className="mt-3 text-sm text-slate-300">
                     {group.isLocked ? 'Group locked' : 'Open to new members'}
                   </p>
+                  <ButtonLink
+                    aria-label={`View round history for ${group.name}`}
+                    className="mt-4"
+                    state={{ groupName: group.name }}
+                    to={`/groups/${encodeURIComponent(group.id)}/history`}
+                    variant="ghost"
+                  >
+                    Round history
+                  </ButtonLink>
                   {group.isLeader && !group.isLocked ? (
                     <Button
                       className="mt-4"
