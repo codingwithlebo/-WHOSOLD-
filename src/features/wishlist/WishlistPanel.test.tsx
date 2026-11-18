@@ -100,6 +100,22 @@ describe('WishlistPanel', () => {
     expect(addName).not.toHaveAttribute('aria-invalid', 'true')
   })
 
+  it('associates add errors with the add form while an item is being edited', async () => {
+    renderWishlist({ items: [sampleItem] })
+
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Edit Wireless headphones' }),
+    )
+    await userEvent.click(screen.getByRole('button', { name: 'Add item' }))
+
+    const [addName, editingName] = screen.getAllByLabelText('Item name')
+    const error = screen.getByRole('alert')
+    expect(error).toHaveTextContent('Enter an item name.')
+    expect(addName).toHaveAttribute('aria-invalid', 'true')
+    expect(addName).toHaveAttribute('aria-describedby', error.id)
+    expect(editingName).not.toHaveAttribute('aria-invalid', 'true')
+  })
+
   it('edits an item and recalculates the total', async () => {
     const updatedItem = {
       ...sampleItem,

@@ -28,6 +28,7 @@ function getErrorMessage(error: unknown): string {
 }
 
 type ItemField = 'name' | 'price'
+type ItemForm = 'add' | 'edit'
 
 function parseItem(
   nameInput: string,
@@ -66,6 +67,7 @@ export default function WishlistPanel({
   const [editingPrice, setEditingPrice] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [fieldError, setFieldError] = useState<{
+    form: ItemForm
     field: ItemField
     message: string
   } | null>(null)
@@ -73,8 +75,10 @@ export default function WishlistPanel({
 
   const fundTotal = items.reduce((total, item) => total + item.priceCents, 0)
 
-  function clearFieldError(field: ItemField) {
-    setFieldError((current) => (current?.field === field ? null : current))
+  function clearFieldError(form: ItemForm, field: ItemField) {
+    setFieldError((current) =>
+      current?.form === form && current.field === field ? null : current,
+    )
   }
 
   async function handleAdd(event: SubmitEvent<HTMLFormElement>) {
@@ -82,7 +86,7 @@ export default function WishlistPanel({
     const parsed = parseItem(itemName, itemPrice)
     if (!parsed.ok) {
       setError(null)
-      setFieldError({ field: parsed.field, message: parsed.error })
+      setFieldError({ form: 'add', field: parsed.field, message: parsed.error })
       return
     }
 
@@ -117,7 +121,11 @@ export default function WishlistPanel({
     const parsed = parseItem(editingName, editingPrice)
     if (!parsed.ok) {
       setError(null)
-      setFieldError({ field: parsed.field, message: parsed.error })
+      setFieldError({
+        form: 'edit',
+        field: parsed.field,
+        message: parsed.error,
+      })
       return
     }
 
@@ -173,7 +181,7 @@ export default function WishlistPanel({
           <TextField
             autoComplete="off"
             error={
-              editingItemId === null && fieldError?.field === 'name'
+              fieldError?.form === 'add' && fieldError.field === 'name'
                 ? fieldError.message
                 : undefined
             }
@@ -181,7 +189,7 @@ export default function WishlistPanel({
             maxLength={100}
             onChange={(event) => {
               setItemName(event.target.value)
-              clearFieldError('name')
+              clearFieldError('add', 'name')
             }}
             placeholder="Wireless headphones"
             required
@@ -189,7 +197,7 @@ export default function WishlistPanel({
           />
           <TextField
             error={
-              editingItemId === null && fieldError?.field === 'price'
+              fieldError?.form === 'add' && fieldError.field === 'price'
                 ? fieldError.message
                 : undefined
             }
@@ -197,7 +205,7 @@ export default function WishlistPanel({
             label="Price (Rand)"
             onChange={(event) => {
               setItemPrice(event.target.value)
-              clearFieldError('price')
+              clearFieldError('add', 'price')
             }}
             placeholder="1 250.00"
             required
@@ -242,8 +250,8 @@ export default function WishlistPanel({
                     <TextField
                       autoComplete="off"
                       error={
-                        editingItemId === item.id &&
-                        fieldError?.field === 'name'
+                        fieldError?.form === 'edit' &&
+                        fieldError.field === 'name'
                           ? fieldError.message
                           : undefined
                       }
@@ -251,15 +259,15 @@ export default function WishlistPanel({
                       maxLength={100}
                       onChange={(event) => {
                         setEditingName(event.target.value)
-                        clearFieldError('name')
+                        clearFieldError('edit', 'name')
                       }}
                       required
                       value={editingName}
                     />
                     <TextField
                       error={
-                        editingItemId === item.id &&
-                        fieldError?.field === 'price'
+                        fieldError?.form === 'edit' &&
+                        fieldError.field === 'price'
                           ? fieldError.message
                           : undefined
                       }
@@ -267,7 +275,7 @@ export default function WishlistPanel({
                       label="Price (Rand)"
                       onChange={(event) => {
                         setEditingPrice(event.target.value)
-                        clearFieldError('price')
+                        clearFieldError('edit', 'price')
                       }}
                       required
                       value={editingPrice}

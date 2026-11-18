@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><title>WHOSOLD?</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,400..900;1,400..900&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100vw;min-height:100vh;margin:0;padding:0;background-color:#FFF8F3;}body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent;font-family:'Rubik',sans-serif;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "vibrant-orange": "#FF7626",
+        "vibrant-orange-dark": "#D85B12",
+        "vibrant-purple": "#A879E8",
+        "vibrant-purple-dark": "#8A54D4",
+        "vibrant-coral": "#FF7185",
+        "vibrant-coral-dark": "#DE4D63",
+        "warm-cream": "#FFF8F3",
+        "peach-light": "#FFE8DE",
+        "peach-card": "#FFE2D4",
+        "caramel-bevel": "#E59A6E",
+        "caramel-shadow": "#C97E52",
+        "card-tile": "#FFFFFF",
+        "on-surface-dark": "#3D2418",
+        "on-surface-muted": "#8A695A",
+        "mint-funded": "#10B981",
+        "mint-funded-dark": "#059669"
+      },
+      borderRadius: {
+        DEFAULT: "1rem",
+        lg: "1.5rem",
+        xl: "2rem",
+        full: "9999px"
+      },
+      fontFamily: {
+        headline: ["Rubik", "sans-serif"],
+        body: ["Rubik", "sans-serif"]
+      }
+    }
+  }
+};</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head><body class="bg-gradient-to-b from-[#FFF8F3] via-[#FFF1E8] to-[#FFE8DE] text-on-surface-dark antialiased min-h-screen flex flex-col justify-between items-center selection:bg-vibrant-orange selection:text-white"><div class="fixed inset-0 z-0 pointer-events-none bg-gradient-to-b from-[#FFF8F3] via-[#FFF1E8] to-[#FFE8DE]" id="three-canvas-container"></div><header class="fixed top-0 w-full z-50 pt-safe"><div class="max-w-md mx-auto h-20 px-4 flex items-center justify-between bg-white/75 backdrop-blur-xl border-b border-caramel-bevel/20"><div class="flex items-center gap-2"><div class="relative flex items-center justify-center bg-gradient-to-b from-vibrant-purple to-vibrant-purple-dark px-3 py-1.5 rounded-2xl shadow-[0_4px_0_#7437BA] ring-2 ring-white/80 active:translate-y-0.5"><span class="font-bold text-sm tracking-wider uppercase text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.25)]">WHOSOLD?</span></div><div class="flex items-center bg-peach-light/80 px-2 py-1 rounded-xl border border-caramel-bevel/30"><span class="text-[11px] font-bold text-vibrant-orange-dark tracking-widest">WH0-7X9</span></div></div><div class="flex items-center gap-2"><div class="flex items-center gap-1.5 bg-gradient-to-r from-vibrant-orange to-vibrant-coral px-3 py-1.5 rounded-2xl shadow-[0_3px_0_#D85B12] text-white"><span class="material-symbols-outlined text-[17px]">account_balance_wallet</span><span class="text-xs font-black tracking-wide">R 48,500</span></div><div class="relative flex items-center justify-center min-w-[40px] min-h-[40px]"><div class="w-9 h-9 rounded-full bg-gradient-to-tr from-vibrant-coral to-vibrant-orange flex items-center justify-center ring-2 ring-white shadow-sm"><span class="material-symbols-outlined text-white text-[19px]">person</span></div><div class="absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full bg-vibrant-purple flex items-center justify-center ring-1 ring-white shadow"><span class="text-[9px] text-white leading-none font-black">5</span></div></div></div></div></header><main class="flex-1 flex flex-col relative w-full max-w-md mx-auto px-4 pt-24 pb-28 z-10 bg-transparent"><div class="flex flex-col w-full relative pb-4">
+<!-- Interactive Three.js background: Candy scene with vibrant orange, purple, coral spheres & cubes -->
+<canvas class="absolute inset-0 w-full h-full pointer-events-none -z-0 opacity-85" height="1344" id="three-bg-canvas" style="width: 358px; height: 896px;" width="537"></canvas>
+<div class="relative z-10 flex flex-col w-full gap-3.5">
+<!-- Top Plaque: Vibrant 3D Purple Ribbon Banner -->
+<div class="relative flex items-center justify-center pt-1">
+<div class="relative z-10 flex items-center gap-2 bg-gradient-to-b from-[#BA91FA] via-vibrant-purple to-vibrant-purple-dark px-6 py-2.5 rounded-2xl shadow-[0_6px_0_#6E33B5,0_10px_16px_rgba(168,121,232,0.35)] ring-2 ring-white/60 active:translate-y-0.5 transition-transform">
+<span class="material-symbols-outlined text-white text-[22px] drop-shadow-[0_1px_1px_rgba(0,0,0,0.3)]">redeem</span>
+<span class="font-extrabold text-[17px] text-white tracking-wider drop-shadow-[0_2px_0_#6E33B5] uppercase">GROUP WISHLIST</span>
+<span class="material-symbols-outlined text-peach-light text-[22px] drop-shadow-[0_1px_1px_rgba(0,0,0,0.3)]">auto_awesome</span>
+</div>
+<div class="absolute -bottom-1.5 w-36 h-3 bg-vibrant-purple/25 blur-md rounded-full"></div>
+</div>
+<!-- Cohort Lock Notice Pill -->
+<div class="flex items-center justify-center">
+<div class="flex items-center gap-1.5 bg-white/90 backdrop-blur-sm px-3.5 py-1.5 rounded-full shadow-[0_2px_0_rgba(229,154,110,0.4)] border border-peach-card">
+<span class="material-symbols-outlined text-vibrant-orange text-[16px]">lock</span>
+<span class="text-xs font-bold text-on-surface-muted tracking-wide">Locked by Leader (Lerato) • Round #04</span>
+</div>
+</div>
+<!-- Mystery Treasure Vault Plaque -->
+<div class="relative bg-gradient-to-b from-peach-light to-peach-card rounded-3xl p-2 shadow-[0_8px_0_#E59A6E,0_12px_24px_rgba(229,154,110,0.25)] ring-1 ring-white/60">
+<!-- Top Floating Pill Banner -->
+<div class="absolute -top-3.5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1 bg-gradient-to-r from-vibrant-orange via-vibrant-coral to-vibrant-purple px-4 py-1 rounded-full shadow-[0_4px_0_#D85B12] ring-2 ring-white">
+<span class="material-symbols-outlined text-white text-[14px]">military_tech</span>
+<span class="text-[10px] uppercase text-white font-black tracking-widest drop-shadow-[0_1px_0_rgba(0,0,0,0.2)]">MYSTERY BILLIONAIRE VAULT</span>
+</div>
+<div class="bg-gradient-to-b from-white/90 to-[#FFF6F0] rounded-2xl p-4 flex flex-col items-center justify-center shadow-[inset_0_2px_6px_rgba(229,154,110,0.25)] border border-white">
+<div class="text-center pt-2">
+<p class="text-xs font-extrabold uppercase tracking-wider text-vibrant-orange-dark">Allocated Prize Bounty</p>
+</div>
+<!-- Total Fund Display Box -->
+<div class="w-full mt-2.5 bg-gradient-to-b from-white to-[#FFFBF8] rounded-2xl p-3.5 flex flex-col items-center justify-center shadow-[0_4px_12px_rgba(255,118,38,0.12),inset_0_1px_2px_rgba(255,255,255,0.9)] border border-caramel-bevel/30">
+<div class="flex items-center gap-2.5">
+<div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-vibrant-orange to-vibrant-coral flex items-center justify-center shadow-[0_3px_0_#D85B12] -rotate-6">
+<span class="material-symbols-outlined text-white text-[24px]">monetization_on</span>
+</div>
+<div class="text-[34px] font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-vibrant-orange via-vibrant-coral to-vibrant-purple leading-tight drop-shadow-[0_1px_0_rgba(255,255,255,0.8)]">
+              R 48,500
+            </div>
+</div>
+<!-- Double Up Stash Toggle / Simulation Pill -->
+<div class="mt-3 w-full bg-gradient-to-r from-[#FFF5F0] to-[#FDF4FF] hover:from-white hover:to-white rounded-xl p-2.5 flex items-center justify-between cursor-pointer transition-all border border-caramel-bevel/25 shadow-sm active:scale-[0.98]" id="double-toggle">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-lg bg-vibrant-orange/15 flex items-center justify-center">
+<span class="material-symbols-outlined text-vibrant-orange text-[16px]">bolt</span>
+</div>
+<span class="text-xs font-bold text-on-surface-dark">If unanimous DOUBLE:</span>
+</div>
+<div class="flex items-center gap-1.5 bg-gradient-to-r from-vibrant-orange via-vibrant-coral to-vibrant-purple px-3 py-1 rounded-xl shadow-[0_3px_0_#D85B12]">
+<span class="text-sm font-black text-white tracking-wide drop-shadow-[0_1px_1px_rgba(0,0,0,0.2)]">R 97,000</span>
+<span class="text-white text-[13px]">✨</span>
+</div>
+</div>
+</div>
+<!-- Mini Progress / Budget Fill Indicator -->
+<div class="w-full mt-3 flex items-center justify-between px-1">
+<span class="text-xs font-bold text-on-surface-muted">Wishlist Goal Reach</span>
+<span class="text-xs font-black text-vibrant-orange-dark">100% FUNDED (4/4)</span>
+</div>
+<div class="w-full h-3 bg-peach-light rounded-full p-0.5 mt-1.5 shadow-[inset_0_2px_3px_rgba(229,154,110,0.35)]">
+<div class="h-full bg-gradient-to-r from-vibrant-orange via-vibrant-coral to-vibrant-purple rounded-full shadow-[0_1px_3px_rgba(255,113,133,0.4)] w-full"></div>
+</div>
+</div>
+</div>
+<!-- Main Content Panel: Sunset Cartoon UI Style Shelf -->
+<div class="relative bg-gradient-to-b from-peach-light to-peach-card rounded-3xl p-2.5 shadow-[0_8px_0_#E59A6E,0_12px_24px_rgba(229,154,110,0.25)] ring-1 ring-white/60">
+<!-- Top Plaque Header of the inner list -->
+<div class="flex items-center justify-between px-2 pt-1 pb-2">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-xl bg-gradient-to-b from-vibrant-purple to-vibrant-purple-dark flex items-center justify-center shadow-[0_3px_0_#6E33B5]">
+<span class="material-symbols-outlined text-white text-[16px]">checklist</span>
+</div>
+<span class="font-extrabold text-sm text-on-surface-dark tracking-tight uppercase">COHORT CART</span>
+</div>
+<!-- UI Reference Inspiration Pill -->
+<div class="flex items-center gap-1 bg-white/80 px-2.5 py-1 rounded-full border border-caramel-bevel/30 shadow-sm">
+<span class="material-symbols-outlined text-mint-funded text-[14px]">stars</span>
+<span class="text-[10px] text-on-surface-dark font-black tracking-wider">ALL LOCKED IN</span>
+</div>
+</div>
+<!-- Inset Recessed Sheet Container -->
+<div class="bg-gradient-to-b from-white/90 to-[#FFF7F2] rounded-2xl p-2.5 flex flex-col gap-2.5 shadow-[inset_0_3px_6px_rgba(229,154,110,0.2)] border border-white">
+<!-- Item 1 (Purple Icon Block) -->
+<div class="relative bg-white rounded-2xl p-3 shadow-[0_4px_0_#FFE0D1,0_2px_8px_rgba(229,154,110,0.15)] border border-peach-light active:translate-y-0.5 transition-transform flex flex-col gap-1.5">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-center gap-2.5 min-w-0">
+<div class="w-11 h-11 rounded-2xl bg-gradient-to-b from-[#BA91FA] to-vibrant-purple flex-shrink-0 flex items-center justify-center shadow-[0_4px_0_#7437BA] text-white">
+<span class="material-symbols-outlined text-[24px]">sports_esports</span>
+</div>
+<div class="min-w-0">
+<div class="font-bold text-sm text-on-surface-dark truncate">PlayStation 5 Pro &amp; Extra Controllers</div>
+<div class="flex items-center gap-1.5 mt-0.5">
+<span class="text-xs font-semibold text-on-surface-muted">By Sipho</span>
+<span class="w-1 h-1 rounded-full bg-caramel-bevel"></span>
+<div class="flex items-center text-vibrant-orange text-[12px]">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Price & Funded Tag -->
+<div class="flex flex-col items-end flex-shrink-0">
+<span class="font-black text-sm text-on-surface-dark">R 14,999</span>
+<span class="bg-gradient-to-b from-[#34D399] to-mint-funded px-2 py-0.5 rounded-full text-[10px] text-white shadow-[0_2px_0_#059669] uppercase tracking-wider font-black">FUNDED</span>
+</div>
+</div>
+</div>
+<!-- Item 2 (Coral Pink Icon Block) -->
+<div class="relative bg-white rounded-2xl p-3 shadow-[0_4px_0_#FFE0D1,0_2px_8px_rgba(229,154,110,0.15)] border border-peach-light active:translate-y-0.5 transition-transform flex flex-col gap-1.5">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-center gap-2.5 min-w-0">
+<div class="w-11 h-11 rounded-2xl bg-gradient-to-b from-[#FF8FA0] to-vibrant-coral flex-shrink-0 flex items-center justify-center shadow-[0_4px_0_#DE4D63] text-white">
+<span class="material-symbols-outlined text-[24px]">cabin</span>
+</div>
+<div class="min-w-0">
+<div class="font-bold text-sm text-on-surface-dark truncate">Weekend Cabin Getaway &amp; Braai Fest</div>
+<div class="flex items-center gap-1.5 mt-0.5">
+<span class="text-xs font-semibold text-on-surface-muted">By Lerato</span>
+<span class="w-1 h-1 rounded-full bg-caramel-bevel"></span>
+<div class="flex items-center text-vibrant-orange text-[12px]">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Price & Funded Tag -->
+<div class="flex flex-col items-end flex-shrink-0">
+<span class="font-black text-sm text-on-surface-dark">R 18,500</span>
+<span class="bg-gradient-to-b from-[#34D399] to-mint-funded px-2 py-0.5 rounded-full text-[10px] text-white shadow-[0_2px_0_#059669] uppercase tracking-wider font-black">FUNDED</span>
+</div>
+</div>
+</div>
+<!-- Item 3 (Orange Icon Block) -->
+<div class="relative bg-white rounded-2xl p-3 shadow-[0_4px_0_#FFE0D1,0_2px_8px_rgba(229,154,110,0.15)] border border-peach-light active:translate-y-0.5 transition-transform flex flex-col gap-1.5">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-center gap-2.5 min-w-0">
+<div class="w-11 h-11 rounded-2xl bg-gradient-to-b from-[#FF924F] to-vibrant-orange flex-shrink-0 flex items-center justify-center shadow-[0_4px_0_#D85B12] text-white">
+<span class="material-symbols-outlined text-[24px]">headphones</span>
+</div>
+<div class="min-w-0">
+<div class="font-bold text-sm text-on-surface-dark truncate">Noise-Cancelling Studio Headphones x4</div>
+<div class="flex items-center gap-1.5 mt-0.5">
+<span class="text-xs font-semibold text-on-surface-muted">By Amara</span>
+<span class="w-1 h-1 rounded-full bg-caramel-bevel"></span>
+<div class="flex items-center text-vibrant-orange text-[12px]">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 0;">star</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Price & Funded Tag -->
+<div class="flex flex-col items-end flex-shrink-0">
+<span class="font-black text-sm text-on-surface-dark">R 11,200</span>
+<span class="bg-gradient-to-b from-[#34D399] to-mint-funded px-2 py-0.5 rounded-full text-[10px] text-white shadow-[0_2px_0_#059669] uppercase tracking-wider font-black">FUNDED</span>
+</div>
+</div>
+</div>
+<!-- Item 4 (Purple/Coral Icon Block) -->
+<div class="relative bg-white rounded-2xl p-3 shadow-[0_4px_0_#FFE0D1,0_2px_8px_rgba(229,154,110,0.15)] border border-peach-light active:translate-y-0.5 transition-transform flex flex-col gap-1.5">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-center gap-2.5 min-w-0">
+<div class="w-11 h-11 rounded-2xl bg-gradient-to-b from-vibrant-coral to-vibrant-orange flex-shrink-0 flex items-center justify-center shadow-[0_4px_0_#D85B12] text-white">
+<span class="material-symbols-outlined text-[24px]">coffee</span>
+</div>
+<div class="min-w-0">
+<div class="font-bold text-sm text-on-surface-dark truncate">Artisanal Coffee &amp; Snack Stash for Lab</div>
+<div class="flex items-center gap-1.5 mt-0.5">
+<span class="text-xs font-semibold text-on-surface-muted">By Kevin</span>
+<span class="w-1 h-1 rounded-full bg-caramel-bevel"></span>
+<div class="flex items-center text-vibrant-orange text-[12px]">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Price & Funded Tag -->
+<div class="flex flex-col items-end flex-shrink-0">
+<span class="font-black text-sm text-on-surface-dark">R 3,801</span>
+<span class="bg-gradient-to-b from-[#34D399] to-mint-funded px-2 py-0.5 rounded-full text-[10px] text-white shadow-[0_2px_0_#059669] uppercase tracking-wider font-black">FUNDED</span>
+</div>
+</div>
+</div>
+</div>
+<!-- UI Kit Reference Badge / Visual Note -->
+<div class="mt-2.5 flex items-center justify-between px-2">
+<div class="flex items-center gap-1.5">
+<img alt="UI Theme Kit thumbnail" class="w-6 h-6 rounded-lg object-cover ring-1 ring-caramel-bevel/40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcQ8pEbGEdDkq0ZsfDuJKhgiVnxCHOb1xLA4NjYLQwpt2OgrelPxE2bKn_Ui0zSa0Ua3aEHZtH0n2h9cE1DC8ArODUykDLSRuIbsF50YvZE-2NljxAKntzoBOhs-zaUtI4RA5y_wqPrkyliuO5U-g1KrJAz2859VxkWsH_JVwzS-MDbO5vNuZKcAAInhUq2bZcdKG3QKlJTTUBXms74OdUX2RR_XhOD8AF5c4DNmcQN30CKWpqcDE4Uw"/>
+<span class="text-xs font-semibold text-on-surface-muted">Arcade Theme Active</span>
+</div>
+<span class="text-xs font-bold text-vibrant-orange-dark">Total Claim: R 48,500</span>
+</div>
+</div>
+<!-- Tactile Action Button: Add Wishlist Item (Glossy 3D Candy Button in Coral Pink to Orange) -->
+<div class="w-full pt-1">
+<button class="w-full relative flex items-center justify-center gap-2 bg-gradient-to-r from-vibrant-coral via-[#FF6C4B] to-vibrant-orange py-4 px-5 rounded-2xl shadow-[0_6px_0_#C43D17,0_10px_20px_rgba(255,113,133,0.35)] active:translate-y-1 active:shadow-[0_2px_0_#C43D17] transition-all ring-2 ring-white/60" id="add-item-btn" type="button">
+<div class="w-8 h-8 rounded-full bg-white/25 flex items-center justify-center backdrop-blur-sm">
+<span class="material-symbols-outlined text-white text-[22px] font-bold">add</span>
+</div>
+<span class="font-black text-base text-white tracking-wider drop-shadow-[0_2px_0_#C43D17] uppercase">
+          ADD WISHLIST ITEM
+        </span>
+</button>
+<p class="text-center text-xs font-medium text-on-surface-muted mt-2">
+        Submissions reviewable during intermission round.
+      </p>
+</div>
+<!-- Mini Drawer / Modal (Hidden by default, triggered by Add Wishlist Item button) -->
+<div class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#3D2418]/40 backdrop-blur-sm" id="add-modal">
+<div class="relative w-full max-w-xs bg-gradient-to-b from-peach-light to-peach-card rounded-3xl p-2.5 shadow-[0_10px_0_#E59A6E,0_20px_35px_rgba(61,36,24,0.3)] animate-scale-up border border-white">
+<!-- Overhanging Ribbon Title -->
+<div class="absolute -top-4 left-1/2 -translate-x-1/2 z-20 flex items-center justify-center bg-gradient-to-r from-vibrant-purple to-vibrant-purple-dark px-5 py-1.5 rounded-xl shadow-[0_4px_0_#6E33B5] ring-2 ring-white">
+<span class="font-black text-sm text-white tracking-wider uppercase drop-shadow-[0_1px_1px_rgba(0,0,0,0.3)]">NEW REWARD</span>
+</div>
+<!-- Close "X" Button -->
+<button class="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-vibrant-coral shadow-[0_3px_0_#DE4D63] text-white font-black flex items-center justify-center active:translate-y-0.5 ring-2 ring-white" id="close-modal-btn" type="button">
+          ✕
+        </button>
+<div class="bg-white rounded-2xl p-4 pt-6 flex flex-col gap-3 shadow-[inset_0_2px_4px_rgba(229,154,110,0.2)] border border-peach-light">
+<div>
+<label class="block text-xs font-bold text-on-surface-dark mb-1">Item Title</label>
+<input class="w-full bg-[#FFF6F0] px-3 py-2 rounded-xl text-on-surface-dark text-sm placeholder:text-on-surface-muted/60 border border-caramel-bevel/40 outline-none focus:ring-2 focus:ring-vibrant-orange" placeholder="e.g. Ergonomic Office Chairs" type="text"/>
+</div>
+<div>
+<label class="block text-xs font-bold text-on-surface-dark mb-1">Estimated Cost (ZAR)</label>
+<input class="w-full bg-[#FFF6F0] px-3 py-2 rounded-xl text-on-surface-dark text-sm placeholder:text-on-surface-muted/60 border border-caramel-bevel/40 outline-none focus:ring-2 focus:ring-vibrant-orange" placeholder="R 6,500" type="text"/>
+</div>
+<button class="mt-1 w-full bg-gradient-to-r from-vibrant-coral to-vibrant-orange py-3 rounded-xl shadow-[0_4px_0_#C43D17] active:translate-y-1 active:shadow-[0_1px_0_#C43D17] font-black text-sm text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.3)] uppercase tracking-wider" id="submit-item-btn" type="button">
+            SUBMIT FOR VOTE
+          </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+  // Three.js floating vibrant candy spheres and cubes: Orange (#FF7626), Purple (#A879E8), Coral Pink (#FF7185)
+  (function initThreeBackground() {
+    const canvas = document.getElementById('three-bg-canvas');
+    if (!canvas || typeof THREE === 'undefined') return;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, canvas.clientWidth / canvas.clientHeight, 0.1, 100);
+    camera.position.z = 8;
+
+    const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+    renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const ambientLight = new THREE.AmbientLight(0xfff3e8, 1.1);
+    scene.add(ambientLight);
+
+    const dirLight = new THREE.DirectionalLight(0xff7626, 1.2);
+    dirLight.position.set(4, 8, 6);
+    scene.add(dirLight);
+
+    const purpleLight = new THREE.PointLight(0xa879e8, 1.4, 20);
+    purpleLight.position.set(-4, -2, 5);
+    scene.add(purpleLight);
+
+    // Vibrant sunset candy materials
+    const orangeMat = new THREE.MeshStandardMaterial({
+      color: 0xFF7626,
+      roughness: 0.25,
+      metalness: 0.15
+    });
+
+    const purpleMat = new THREE.MeshStandardMaterial({
+      color: 0xA879E8,
+      roughness: 0.3,
+      metalness: 0.1
+    });
+
+    const coralMat = new THREE.MeshStandardMaterial({
+      color: 0xFF7185,
+      roughness: 0.2,
+      metalness: 0.2
+    });
+
+    const sphereGeo = new THREE.SphereGeometry(0.45, 24, 24);
+    const boxGeo = new THREE.BoxGeometry(0.65, 0.65, 0.65);
+    const octaGeo = new THREE.OctahedronGeometry(0.5, 0);
+
+    const materials = [orangeMat, purpleMat, coralMat];
+    const geometries = [sphereGeo, boxGeo, octaGeo];
+    const items = [];
+    const count = 15;
+
+    for (let i = 0; i < count; i++) {
+      const geo = geometries[i % geometries.length];
+      const mat = materials[i % materials.length];
+      const mesh = new THREE.Mesh(geo, mat);
+
+      mesh.position.x = (Math.random() - 0.5) * 8.5;
+      mesh.position.y = (Math.random() - 0.5) * 13;
+      mesh.position.z = (Math.random() - 0.5) * 4;
+      mesh.rotation.x = Math.random() * Math.PI;
+      mesh.rotation.y = Math.random() * Math.PI;
+
+      mesh.userData = {
+        rx: (Math.random() - 0.5) * 0.02,
+        ry: (Math.random() - 0.5) * 0.02,
+        speedY: 0.007 + Math.random() * 0.012
+      };
+
+      scene.add(mesh);
+      items.push(mesh);
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      items.forEach(item => {
+        item.rotation.x += item.userData.rx;
+        item.rotation.y += item.userData.ry;
+        item.position.y -= item.userData.speedY;
+        if (item.position.y < -7.5) {
+          item.position.y = 7.5;
+          item.position.x = (Math.random() - 0.5) * 8.5;
+        }
+      });
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      if (!canvas) return;
+      camera.aspect = canvas.clientWidth / canvas.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+    });
+  })();
+
+  // Micro-interactions
+  const addBtn = document.getElementById('add-item-btn');
+  const addModal = document.getElementById('add-modal');
+  const closeModalBtn = document.getElementById('close-modal-btn');
+  const submitItemBtn = document.getElementById('submit-item-btn');
+  const doubleToggle = document.getElementById('double-toggle');
+
+  if (addBtn && addModal) {
+    addBtn.addEventListener('click', () => {
+      addModal.classList.remove('hidden');
+    });
+  }
+
+  if (closeModalBtn && addModal) {
+    closeModalBtn.addEventListener('click', () => {
+      addModal.classList.add('hidden');
+    });
+  }
+
+  if (submitItemBtn && addModal) {
+    submitItemBtn.addEventListener('click', () => {
+      addModal.classList.add('hidden');
+    });
+  }
+
+  if (doubleToggle) {
+    doubleToggle.addEventListener('click', () => {
+      doubleToggle.classList.toggle('ring-2');
+      doubleToggle.classList.toggle('ring-vibrant-orange');
+    });
+  }
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe" data-active-classes="bg-gradient-to-r from-vibrant-orange to-vibrant-coral text-white shadow-[0_4px_0_#D85B12] -translate-y-1"><div class="max-w-md mx-auto px-4 py-2 bg-white/90 backdrop-blur-xl border-t border-caramel-bevel/20"><div class="flex justify-between items-center bg-peach-light/80 p-1.5 rounded-2xl border border-white/80 shadow-inner"><a aria-current="page" class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] flex-1 py-1 rounded-xl transition-all duration-150 bg-gradient-to-r from-vibrant-orange to-vibrant-coral text-white shadow-[0_4px_0_#D85B12] -translate-y-1" data-path="wishlist-group" href="#"><span class="material-symbols-outlined text-[22px]">featured_seasonal_and_gifts</span><span class="text-[11px] font-black mt-0.5">Group</span></a><a class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] flex-1 py-1 rounded-xl text-on-surface-muted hover:text-vibrant-orange transition-transform duration-100" data-path="double-or-pass" href="#"><span class="material-symbols-outlined text-[22px]">local_fire_department</span><span class="text-[11px] font-bold mt-0.5">Play</span></a><a class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] flex-1 py-1 rounded-xl text-on-surface-muted hover:text-vibrant-orange transition-transform duration-100" data-path="quiz-arena" href="#"><span class="material-symbols-outlined text-[22px]">psychology</span><span class="text-[11px] font-bold mt-0.5">Arena</span></a><a class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] flex-1 py-1 rounded-xl text-on-surface-muted hover:text-vibrant-orange transition-transform duration-100" data-path="results-reveal" href="#"><span class="material-symbols-outlined text-[22px]">emoji_events</span><span class="text-[11px] font-bold mt-0.5">Reveal</span></a><a class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] flex-1 py-1 rounded-xl text-on-surface-muted hover:text-vibrant-orange transition-transform duration-100" data-path="history-rules" href="#"><span class="material-symbols-outlined text-[22px]">menu_book</span><span class="text-[11px] font-bold mt-0.5">Rules</span></a></div></div></nav>
+</body></html>

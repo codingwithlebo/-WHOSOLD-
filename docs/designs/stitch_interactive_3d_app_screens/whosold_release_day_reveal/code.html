@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><title>WHOSOLD?</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,400..900;1,400..900&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>@layer base{html,body{width:100vw;min-height:100vh;margin:0;padding:0;background-color:#FFF8F3;}body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent;font-family:'Rubik',sans-serif;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "sunset-orange": "#FF7626",
+        "sunset-orange-deep": "#E05608",
+        "sunset-orange-shadow": "#B83A00",
+        "sunset-purple": "#A879E8",
+        "sunset-purple-deep": "#8B54D4",
+        "sunset-purple-shadow": "#6530A8",
+        "sunset-coral": "#FF7185",
+        "sunset-coral-deep": "#E84E66",
+        "sunset-coral-shadow": "#B8233C",
+        "sunset-cream": "#FFF8F3",
+        "sunset-peach": "#FFEAE0",
+        "sunset-lavender": "#F4EEFF",
+        "panel-border": "#FFA970",
+        "panel-base": "#FFE3D1",
+        "panel-inner": "#FFF9F5",
+        "espresso-text": "#381B10",
+        background: "#FFF8F3",
+        "on-background": "#291619",
+        surface: "#FFF8F3",
+        "surface-container": "#FFEAE0",
+        "surface-container-high": "#FFDFD1",
+        "surface-container-lowest": "#FFFFFF",
+        primary: "#FF7626",
+        secondary: "#A879E8",
+        tertiary: "#FF7185"
+      },
+      borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", "2xl": "2rem", full: "9999px"},
+      spacing: {"space-lg": "1.25rem", "space-sm": "0.5rem", "margin-mobile": "1rem", "space-xl": "1.75rem", "space-xs": "0.25rem", "space-2xl": "2.5rem", gutter: "1rem", "space-md": "0.875rem", margin: "1.5rem", "gutter-mobile": "0.75rem"},
+      fontFamily: {headline: ["Rubik"], display: ["Rubik"], body: ["Rubik"], label: ["Rubik"]},
+      fontSize: {
+        "headline-xxl-mobile": ["32px", {lineHeight: "36px", fontWeight: "900"}],
+        "headline-sm": ["18px", {lineHeight: "24px", fontWeight: "800"}],
+        "label-md": ["13px", {lineHeight: "18px", fontWeight: "700"}],
+        "body-lg": ["16px", {lineHeight: "24px", fontWeight: "600"}],
+        "label-sm": ["11px", {lineHeight: "14px", fontWeight: "700"}],
+        "headline-lg": ["26px", {lineHeight: "34px", fontWeight: "800"}],
+        "label-lg": ["15px", {lineHeight: "20px", fontWeight: "800"}],
+        "body-md": ["14px", {lineHeight: "20px", fontWeight: "500"}],
+        "body-sm": ["12px", {lineHeight: "16px", fontWeight: "600"}]
+      }
+    }
+  }
+};</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+    .gloss-shine {
+      background: linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.05) 50%, rgba(0,0,0,0.06) 100%);
+    }
+  </style>
+</head><body class="bg-gradient-to-b from-[#FFF8F3] via-[#FFEAE0] to-[#FBF2FF] text-espresso-text antialiased min-h-screen flex flex-col justify-between items-center selection:bg-sunset-orange selection:text-white">
+<!-- Three.js Ambient Floating Canvas (Orange, Purple, Coral 3D Confetti cubes & spheres) -->
+<div class="fixed inset-0 z-0 pointer-events-none overflow-hidden" id="three-canvas-container"></div>
+<!-- Top Sticky Mobile Header -->
+<header class="fixed top-0 w-full z-50 pt-safe">
+<div class="max-w-md mx-auto h-16 px-margin-mobile flex items-center justify-between bg-white/75 backdrop-blur-xl border-b border-[#FFD9C7]/60 shadow-[0_4px_20px_rgba(255,118,38,0.08)]">
+<div class="flex items-center gap-space-xs">
+<div class="relative flex items-center justify-center bg-gradient-to-b from-sunset-purple to-sunset-purple-deep px-3 py-1 rounded-xl shadow-[0_3px_0_#6530A8] border-t border-white/40">
+<span class="font-headline-sm text-[16px] tracking-wider uppercase text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.3)]">WHOSOLD?</span>
+</div>
+<div class="flex items-center bg-sunset-peach px-2 py-1 rounded-lg border border-[#FFD9C7]">
+<span class="font-label-sm text-sunset-purple-deep tracking-widest font-extrabold">WH0-7X9</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<div class="relative flex items-center justify-center min-w-[40px] min-h-[40px]">
+<div class="w-9 h-9 rounded-full bg-gradient-to-b from-sunset-orange to-sunset-orange-deep flex items-center justify-center shadow-[0_3px_0_#B83A00] ring-2 ring-white">
+<span class="material-symbols-outlined text-white text-[19px]">person</span>
+</div>
+<div class="absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full bg-sunset-purple flex items-center justify-center shadow-[0_1px_2px_rgba(0,0,0,0.2)]">
+<span class="font-label-sm text-[9px] text-white font-black leading-none">5</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-1 flex flex-col relative w-full max-w-md mx-auto px-margin-mobile pt-20 pb-28 z-10 bg-transparent">
+<div class="flex flex-col w-full relative">
+<!-- Top Header Ribbon "REVEAL DAY OUTCOME" (Glossy 3D Purple Banner) -->
+<div class="relative w-full flex flex-col items-center pt-2 pb-4">
+<div class="relative z-10 flex items-center justify-center">
+<!-- Ribbon Wing Left -->
+<div class="absolute -left-3.5 -bottom-1.5 w-7 h-7 bg-sunset-purple-shadow rounded-md -rotate-12 -z-10 shadow-md"></div>
+<!-- Ribbon Wing Right -->
+<div class="absolute -right-3.5 -bottom-1.5 w-7 h-7 bg-sunset-purple-shadow rounded-md rotate-12 -z-10 shadow-md"></div>
+<!-- Main Ribbon Plaque -->
+<div class="relative flex items-center gap-2 bg-gradient-to-b from-[#B68BF0] via-sunset-purple to-sunset-purple-deep px-6 py-2 rounded-2xl shadow-[0_5px_0_#6530A8] border-t border-white/50">
+<span class="material-symbols-outlined text-[#FFE366] text-[20px] drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]">stars</span>
+<span class="font-headline-sm text-[16px] uppercase text-white tracking-wider drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)]">REVEAL DAY OUTCOME</span>
+<span class="material-symbols-outlined text-[#FFE366] text-[20px] drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]">arrow_back_ios_new</span>
+</div>
+</div>
+</div>
+<!-- Grand Outcome Card: Bright Festive Cream Card with Dimensional Caramel/Peach Bevel -->
+<div class="relative w-full bg-gradient-to-b from-[#FFEBDC] to-[#FFD8C2] rounded-3xl p-2.5 shadow-[0_7px_0_#E0956E] mb-5">
+<div class="relative bg-gradient-to-b from-[#FFFFFF] to-[#FFF9F5] rounded-2xl p-4 flex flex-col items-center text-center shadow-[inset_0_3px_6px_rgba(255,118,38,0.12)] border border-white">
+<!-- Round Outcome Dynamic Status Badge -->
+<div class="flex items-center gap-1.5 bg-gradient-to-b from-sunset-coral via-[#FF5F77] to-sunset-coral-deep px-5 py-1.5 rounded-full shadow-[0_4px_0_#B8233C] -mt-7 mb-3 border-t border-white/40" id="outcome-badge">
+<span class="material-symbols-outlined text-white text-[18px]">verified</span>
+<span class="font-label-lg text-white tracking-wide uppercase drop-shadow-[0_1px_1px_rgba(0,0,0,0.3)]">FUND DOUBLED! 🎉</span>
+</div>
+<!-- Big Stakes Jackpot Display Pill -->
+<div class="w-full bg-gradient-to-b from-[#FFEFE5] to-[#FFE3D4] rounded-2xl p-1.5 shadow-[0_4px_0_#FFC3A4] mb-3 border border-white">
+<div class="bg-white rounded-xl py-3 px-3 flex flex-col items-center shadow-[inset_0_2px_4px_rgba(0,0,0,0.03)]">
+<span class="font-label-sm uppercase tracking-widest text-espresso-text/80 font-black">JACKPOT SECURED</span>
+<div class="flex items-center justify-center gap-1.5 mt-1">
+<span class="material-symbols-outlined text-sunset-orange text-[32px] drop-shadow-[0_2px_0_#FFE0CF]">payments</span>
+<span class="font-headline-xxl-mobile text-[34px] leading-tight font-black bg-gradient-to-r from-sunset-orange via-sunset-coral to-sunset-purple bg-clip-text text-transparent drop-shadow-sm">
+                R 97,000
+              </span>
+</div>
+<div class="flex items-center gap-1.5 mt-1.5 bg-[#FFF2EB] px-3 py-0.5 rounded-full border border-[#FFD9C7]">
+<span class="font-label-sm text-sunset-orange-deep font-extrabold">2X MULTIPLIER</span>
+<span class="font-body-sm text-espresso-text/70 font-medium">Doubled from R48,500</span>
+</div>
+</div>
+</div>
+<!-- Narrative Box -->
+<p class="font-body-md text-espresso-text font-medium max-w-xs leading-snug">
+          The Mystery Billionaire has wired the wishlist funds! Zero traitors sold out this cycle.
+        </p>
+<!-- View Simulator Mode Toggle: Glossy Purple and Coral Pink buttons -->
+<div class="w-full grid grid-cols-2 gap-2 mt-4 bg-[#FFF2EA] p-1.5 rounded-xl border border-[#FFDFC9]">
+<button class="flex items-center justify-center gap-1.5 py-2.5 rounded-lg bg-gradient-to-b from-sunset-purple via-[#9F6FE3] to-sunset-purple-deep shadow-[0_3px_0_#6530A8] text-white border-t border-white/40 transition-transform active:translate-y-1" id="tab-won" onclick="switchOutcomeView('won')">
+<span class="material-symbols-outlined text-[17px]">celebration</span>
+<span class="font-label-sm uppercase tracking-wide">Official Win</span>
+</button>
+<button class="flex items-center justify-center gap-1.5 py-2.5 rounded-lg bg-white/90 hover:bg-white text-espresso-text/80 shadow-[0_2px_0_#FFD9C7] transition-transform active:translate-y-1" id="tab-lost" onclick="switchOutcomeView('lost')">
+<span class="material-symbols-outlined text-sunset-coral text-[17px]">visibility</span>
+<span class="font-label-sm uppercase tracking-wide">Traitor View</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Rating / Trust Leaderboard Container -->
+<div class="relative w-full bg-gradient-to-b from-[#FFEBDC] to-[#FFD8C2] rounded-3xl p-2.5 shadow-[0_7px_0_#E0956E] mb-5">
+<!-- Overhanging Plaque in Vibrant Purple (#A879E8) -->
+<div class="relative -mt-6 mb-2 flex justify-center">
+<div class="bg-gradient-to-b from-[#B68BF0] via-sunset-purple to-sunset-purple-deep px-5 py-1.5 rounded-2xl shadow-[0_4px_0_#6530A8] border-t border-white/50 flex items-center gap-2">
+<span class="material-symbols-outlined text-[#FFE366] text-[18px]">military_tech</span>
+<span class="font-label-lg uppercase text-white tracking-wider drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]">THE BREAKDOWN: WHO PLAYED</span>
+</div>
+</div>
+<!-- Inner Slats Playfield Area: Soft Cream Base -->
+<div class="bg-gradient-to-b from-[#FFFFFF] to-[#FFF9F5] rounded-2xl p-2 flex flex-col gap-2 shadow-[inset_0_3px_6px_rgba(255,118,38,0.12)] border border-white">
+<!-- Rank 1 (Lerato - Candy Orange + Lavender Leader) -->
+<div class="relative bg-white p-2.5 rounded-xl flex items-center justify-between shadow-[0_3px_0_#FFE0D0] border border-[#FFE7DB]">
+<div class="flex items-center gap-2.5 min-w-0">
+<div class="relative w-9 h-9 rounded-full bg-gradient-to-b from-sunset-orange via-[#FF8038] to-sunset-orange-deep flex items-center justify-center shadow-[0_3px_0_#B83A00] flex-shrink-0 border-t border-white/50">
+<span class="font-headline-sm text-white">1</span>
+<span class="material-symbols-outlined absolute -top-1.5 -right-1 text-[#FFE366] text-[14px] drop-shadow-[0_1px_1px_rgba(0,0,0,0.4)]">crown</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-label-lg text-espresso-text truncate">Lerato</span>
+<span class="bg-sunset-lavender text-sunset-purple-deep border border-sunset-purple/30 font-label-sm text-[10px] px-1.5 py-0.2 rounded font-black uppercase">Leader</span>
+</div>
+<div class="flex items-center gap-1 text-espresso-text/80">
+<span class="font-label-sm">Choice: <span class="text-sunset-coral-deep font-black">DOUBLE</span></span>
+<span class="text-[10px]">•</span>
+<span class="font-label-sm text-sunset-orange-deep font-black">5/5 Quiz</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-end flex-shrink-0">
+<span class="bg-gradient-to-b from-sunset-coral to-sunset-coral-deep text-white font-label-sm text-[10px] px-2.5 py-0.5 rounded-full shadow-[0_2px_0_#B8233C] uppercase font-bold border-t border-white/30">
+              HERO 👑
+            </span>
+<span class="font-body-sm text-[11px] text-sunset-orange-deep font-bold mt-0.5">+R24,250</span>
+</div>
+</div>
+<!-- Rank 2 (Sipho) -->
+<div class="relative bg-white p-2.5 rounded-xl flex items-center justify-between shadow-[0_3px_0_#FFE0D0] border border-[#FFE7DB]">
+<div class="flex items-center gap-2.5 min-w-0">
+<div class="w-8 h-8 rounded-full bg-gradient-to-b from-[#FFEAE0] to-[#FFD8C5] flex items-center justify-center shadow-[0_2px_0_#FFBFA0] flex-shrink-0 border border-white">
+<span class="font-label-lg text-sunset-orange-deep font-extrabold">2</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-lg text-espresso-text truncate">Sipho</span>
+<div class="flex items-center gap-1 text-espresso-text/80">
+<span class="font-label-sm">Choice: <span class="text-sunset-purple font-black">PASS</span></span>
+<span class="text-[10px]">•</span>
+<span class="font-label-sm text-espresso-text/60 font-medium">No Quiz</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-end flex-shrink-0">
+<span class="bg-sunset-lavender text-sunset-purple-deep border border-sunset-purple/30 font-label-sm text-[10px] px-2 py-0.5 rounded-full uppercase font-bold">
+              SAFE 🛡️
+            </span>
+<span class="font-body-sm text-[11px] text-espresso-text/80 font-semibold mt-0.5">Fund Guarded</span>
+</div>
+</div>
+<!-- Rank 3 (Amara - Coral Rank Badge & Clutch) -->
+<div class="relative bg-white p-2.5 rounded-xl flex items-center justify-between shadow-[0_3px_0_#FFE0D0] border border-[#FFE7DB]">
+<div class="flex items-center gap-2.5 min-w-0">
+<div class="w-8 h-8 rounded-full bg-gradient-to-b from-sunset-coral via-[#FF667D] to-sunset-coral-deep flex items-center justify-center shadow-[0_2px_0_#B8233C] flex-shrink-0 border-t border-white/40">
+<span class="font-label-lg text-white font-extrabold">3</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-lg text-espresso-text truncate">Amara</span>
+<div class="flex items-center gap-1 text-espresso-text/80">
+<span class="font-label-sm">Choice: <span class="text-sunset-coral-deep font-black">DOUBLE</span></span>
+<span class="text-[10px]">•</span>
+<span class="font-label-sm text-sunset-orange font-black">4/5 Clutch</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-end flex-shrink-0">
+<span class="bg-gradient-to-b from-sunset-orange to-sunset-orange-deep text-white font-label-sm text-[10px] px-2 py-0.5 rounded-full shadow-[0_2px_0_#B83A00] uppercase font-bold border-t border-white/30">
+              CLUTCH ⚡
+            </span>
+<span class="font-body-sm text-[11px] text-sunset-coral-deep font-bold mt-0.5">+R24,250</span>
+</div>
+</div>
+<!-- Rank 4 (Kevin) -->
+<div class="relative bg-white p-2.5 rounded-xl flex items-center justify-between shadow-[0_3px_0_#FFE0D0] border border-[#FFE7DB]">
+<div class="flex items-center gap-2.5 min-w-0">
+<div class="w-8 h-8 rounded-full bg-gradient-to-b from-[#FFEAE0] to-[#FFD8C5] flex items-center justify-center shadow-[0_2px_0_#FFBFA0] flex-shrink-0 border border-white">
+<span class="font-label-lg text-sunset-orange-deep font-extrabold">4</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-lg text-espresso-text truncate">Kevin</span>
+<div class="flex items-center gap-1 text-espresso-text/80">
+<span class="font-label-sm">Choice: <span class="text-sunset-purple font-black">PASS</span></span>
+<span class="text-[10px]">•</span>
+<span class="font-label-sm text-espresso-text/60 font-medium">No Quiz</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-end flex-shrink-0">
+<span class="bg-sunset-lavender text-sunset-purple-deep border border-sunset-purple/30 font-label-sm text-[10px] px-2 py-0.5 rounded-full uppercase font-bold">
+              SAFE 🛡️
+            </span>
+<span class="font-body-sm text-[11px] text-espresso-text/80 font-semibold mt-0.5">Fund Guarded</span>
+</div>
+</div>
+<!-- Rank 5 (Zoe) -->
+<div class="relative bg-white/70 p-2.5 rounded-xl flex items-center justify-between shadow-[0_2px_0_#FFE5D6] border border-[#FFEFE7]">
+<div class="flex items-center gap-2.5 min-w-0">
+<div class="w-8 h-8 rounded-full bg-[#FFF2EB] flex items-center justify-center shadow-[0_1px_0_#FFD9C7] flex-shrink-0">
+<span class="font-label-lg text-espresso-text/50 font-bold">5</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-lg text-espresso-text/70 truncate">Zoe</span>
+<div class="flex items-center gap-1 text-espresso-text/60">
+<span class="font-label-sm">Auto-Pass</span>
+<span class="text-[10px]">•</span>
+<span class="font-label-sm text-espresso-text/50 font-medium">AFK</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-end flex-shrink-0">
+<span class="bg-[#FFF0E7] text-espresso-text/60 font-label-sm text-[9px] px-2 py-0.5 rounded-full uppercase font-bold">
+              TIMEOUT
+            </span>
+<span class="font-body-sm text-[11px] text-espresso-text/60 font-medium mt-0.5">No Vote</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Deck: Tactile 3D Sunset Buttons -->
+<div class="flex flex-col gap-3 w-full pb-2">
+<!-- "SHARE BRAGGING RIGHTS" CTA: Tactile Chunky Coral-Pink to Sunset-Orange Button -->
+<button class="group relative w-full flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl bg-gradient-to-r from-sunset-coral via-[#FF6856] to-sunset-orange shadow-[0_6px_0_#B8233C] active:translate-y-1 active:shadow-[0_2px_0_#B8233C] transition-transform border-t border-white/40" id="btn-share" onclick="triggerPartyConfetti()">
+<span class="material-symbols-outlined text-white text-[24px] drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]">share</span>
+<span class="font-headline-sm text-[18px] uppercase text-white drop-shadow-[0_2px_0_#9E1A30] tracking-wider font-black">
+          SHARE BRAGGING RIGHTS
+        </span>
+<span class="material-symbols-outlined text-[#FFE366] text-[20px] ml-1 group-hover:rotate-12 transition-transform drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]">military_tech</span>
+</button>
+<!-- Action buttons: Creamy Dimensional Arcade Buttons with Orange & Purple accents -->
+<div class="flex items-center justify-between gap-2.5">
+<button class="flex-1 flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-gradient-to-b from-white to-[#FFF5EE] shadow-[0_4px_0_#E8C6B2] border border-white text-espresso-text active:translate-y-1 active:shadow-[0_1px_0_#E8C6B2] transition-transform">
+<span class="material-symbols-outlined text-sunset-purple text-[19px]">history</span>
+<span class="font-label-md uppercase text-espresso-text font-black">ROUND ARCHIVE</span>
+</button>
+<button class="flex-1 flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-gradient-to-b from-white to-[#FFF5EE] shadow-[0_4px_0_#E8C6B2] border border-white text-espresso-text active:translate-y-1 active:shadow-[0_1px_0_#E8C6B2] transition-transform">
+<span class="material-symbols-outlined text-sunset-orange text-[19px]">redeem</span>
+<span class="font-label-md uppercase text-espresso-text font-black">PURCHASE ITEMS</span>
+</button>
+</div>
+</div>
+<!-- Interactive script: Dynamic Tab Switch & Toast & Three.js 3D Sunset Floating Particle System -->
+<script>
+      function switchOutcomeView(mode) {
+        const badge = document.getElementById('outcome-badge');
+        const tabWon = document.getElementById('tab-won');
+        const tabLost = document.getElementById('tab-lost');
+
+        if (mode === 'lost') {
+          badge.className = "flex items-center gap-1.5 bg-gradient-to-b from-sunset-coral via-[#FF4D68] to-sunset-coral-deep px-5 py-1.5 rounded-full shadow-[0_4px_0_#B8233C] -mt-7 mb-3 border-t border-white/40 animate-bounce";
+          badge.innerHTML = '<span class="material-symbols-outlined text-white text-[18px]">gavel</span><span class="font-label-lg text-white tracking-wide uppercase drop-shadow-[0_1px_1px_rgba(0,0,0,0.3)]">WHAT IF: WHO SOLD?! 🚨</span>';
+
+          tabLost.className = "flex items-center justify-center gap-1.5 py-2.5 rounded-lg bg-gradient-to-b from-sunset-coral via-[#FF4D68] to-sunset-coral-deep shadow-[0_3px_0_#B8233C] text-white border-t border-white/40";
+          tabWon.className = "flex items-center justify-center gap-1.5 py-2.5 rounded-lg bg-white/90 text-espresso-text/80 shadow-[0_2px_0_#FFD9C7]";
+        } else {
+          badge.className = "flex items-center gap-1.5 bg-gradient-to-b from-sunset-coral via-[#FF5F77] to-sunset-coral-deep px-5 py-1.5 rounded-full shadow-[0_4px_0_#B8233C] -mt-7 mb-3 border-t border-white/40";
+          badge.innerHTML = '<span class="material-symbols-outlined text-white text-[18px]">verified</span><span class="font-label-lg text-white tracking-wide uppercase drop-shadow-[0_1px_1px_rgba(0,0,0,0.3)]">FUND DOUBLED! 🎉</span>';
+
+          tabWon.className = "flex items-center justify-center gap-1.5 py-2.5 rounded-lg bg-gradient-to-b from-sunset-purple via-[#9F6FE3] to-sunset-purple-deep shadow-[0_3px_0_#6530A8] text-white border-t border-white/40";
+          tabLost.className = "flex items-center justify-center gap-1.5 py-2.5 rounded-lg bg-white/90 text-espresso-text/80 shadow-[0_2px_0_#FFD9C7]";
+        }
+      }
+
+      function triggerPartyConfetti() {
+        const btn = document.getElementById('btn-share');
+        btn.classList.add('scale-95');
+        setTimeout(() => btn.classList.remove('scale-95'), 150);
+
+        const toast = document.createElement('div');
+        toast.className = "fixed bottom-24 left-1/2 -translate-x-1/2 bg-gradient-to-r from-sunset-purple to-sunset-coral text-white px-5 py-2.5 rounded-full font-label-md text-label-md shadow-[0_5px_0_#6530A8] border border-white/40 flex items-center gap-2 z-50 animate-bounce";
+        toast.innerHTML = '<span class="material-symbols-outlined text-[#FFE366] text-[20px]">celebration</span> Copied outcome to WhatsApp group!';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2600);
+      }
+
+      // Three.js Sunset Confetti Particle Engine (Orange #FF7626, Purple #A879E8, Coral #FF7185)
+      (function initThreeSunsetCanvas() {
+        const container = document.getElementById('three-canvas-container');
+        if (!container || typeof THREE === 'undefined') return;
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 24;
+
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        container.appendChild(renderer.domElement);
+
+        // Lighting for cute dimensional shine
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
+        scene.add(ambientLight);
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.7);
+        dirLight.position.set(5, 10, 8);
+        scene.add(dirLight);
+
+        // Sunset Color Palette: Orange, Purple, Coral Pink
+        const palette = [0xFF7626, 0xA879E8, 0xFF7185, 0xFFA066, 0xBD9BF2, 0xFF99A8];
+        const geometries = [
+          new THREE.BoxGeometry(0.5, 0.5, 0.5),
+          new THREE.SphereGeometry(0.35, 12, 12),
+          new THREE.CylinderGeometry(0.38, 0.38, 0.12, 16) // Gold/Orange token coins
+        ];
+
+        const particleCount = 38;
+        const meshGroup = new THREE.Group();
+        const particles = [];
+
+        for (let i = 0; i < particleCount; i++) {
+          const geom = geometries[Math.floor(Math.random() * geometries.length)];
+          const col = palette[Math.floor(Math.random() * palette.length)];
+          const mat = new THREE.MeshStandardMaterial({
+            color: col,
+            roughness: 0.35,
+            metalness: 0.15
+          });
+          const mesh = new THREE.Mesh(geom, mat);
+
+          const x = (Math.random() - 0.5) * 18;
+          const y = (Math.random() - 0.5) * 26;
+          const z = (Math.random() - 0.5) * 10;
+          mesh.position.set(x, y, z);
+
+          mesh.rotation.x = Math.random() * Math.PI;
+          mesh.rotation.y = Math.random() * Math.PI;
+
+          meshGroup.add(mesh);
+          particles.push({
+            mesh: mesh,
+            vy: -(Math.random() * 0.025 + 0.012),
+            vx: (Math.random() - 0.5) * 0.008,
+            rotSpeedX: (Math.random() - 0.5) * 0.02,
+            rotSpeedY: (Math.random() - 0.5) * 0.025
+          });
+        }
+        scene.add(meshGroup);
+
+        function animate() {
+          requestAnimationFrame(animate);
+          particles.forEach(p => {
+            p.mesh.position.y += p.vy;
+            p.mesh.position.x += p.vx;
+            p.mesh.rotation.x += p.rotSpeedX;
+            p.mesh.rotation.y += p.rotSpeedY;
+
+            if (p.mesh.position.y < -14) {
+              p.mesh.position.y = 14;
+              p.mesh.position.x = (Math.random() - 0.5) * 18;
+            }
+          });
+          renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+      })();
+    </script>
+</div>
+</main>
+<!-- Fixed Mobile Bottom Navigation Tab Bar (Sunset Vibrancy) -->
+<nav class="fixed bottom-0 w-full z-50 pb-safe">
+<div class="max-w-md mx-auto px-gutter-mobile py-2 bg-white/80 backdrop-blur-xl border-t border-[#FFD9C7]/70 shadow-[0_-4px_20px_rgba(255,118,38,0.06)]">
+<div class="flex justify-between items-center bg-[#FFF2EA] p-1.5 rounded-2xl border border-[#FFDFC9]">
+<a class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] flex-1 py-1 rounded-xl text-espresso-text/60 hover:text-espresso-text transition-transform duration-100" data-path="wishlist-group" href="#">
+<span class="material-symbols-outlined text-[22px]">featured_seasonal_and_gifts</span>
+<span class="font-label-sm text-[10px] mt-0.5">Group</span>
+</a>
+<a class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] flex-1 py-1 rounded-xl text-espresso-text/60 hover:text-espresso-text transition-transform duration-100" data-path="double-or-pass" href="#">
+<span class="material-symbols-outlined text-[22px]">local_fire_department</span>
+<span class="font-label-sm text-[10px] mt-0.5">Play</span>
+</a>
+<a class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] flex-1 py-1 rounded-xl text-espresso-text/60 hover:text-espresso-text transition-transform duration-100" data-path="quiz-arena" href="#">
+<span class="material-symbols-outlined text-[22px]">psychology</span>
+<span class="font-label-sm text-[10px] mt-0.5">Arena</span>
+</a>
+<!-- Active Reveal Tab: Vibrant 3D Sunset Orange/Coral -->
+<a aria-current="page" class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] flex-1 py-1 rounded-xl transition-transform duration-100 bg-gradient-to-b from-sunset-orange to-sunset-coral text-white shadow-[0_4px_0_#B83A00] -translate-y-1 border-t border-white/40" data-path="results-reveal" href="#">
+<span class="material-symbols-outlined text-[22px]">emoji_events</span>
+<span class="font-label-sm text-[10px] font-black mt-0.5">Reveal</span>
+</a>
+<a class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] flex-1 py-1 rounded-xl text-espresso-text/60 hover:text-espresso-text transition-transform duration-100" data-path="history-rules" href="#">
+<span class="material-symbols-outlined text-[22px]">menu_book</span>
+<span class="font-label-sm text-[10px] mt-0.5">Rules</span>
+</a>
+</div>
+</div>
+</nav>
+</body></html>
