@@ -102,6 +102,16 @@ describe('GroupsDashboard', () => {
     ).not.toBeInTheDocument()
   })
 
+  it('links each group to its round history', () => {
+    renderGroups({ groups: [sampleGroup] })
+
+    expect(
+      screen.getByRole('link', {
+        name: `View round history for ${sampleGroup.name}`,
+      }),
+    ).toHaveAttribute('href', '/groups/group-1/history')
+  })
+
   it('copies a group join code and confirms the action', async () => {
     const writeText = vi.fn().mockResolvedValue(undefined)
     Object.defineProperty(navigator, 'clipboard', {
