@@ -13,9 +13,9 @@ for a migration to merge.
 
 | Phase | Your deliverables |
 |---|---|
-| 1 — Accounts | [ ] Own `profiles` schema, sign-up trigger, RLS and DB tests. [ ] Implement Supabase auth UI/session flow in `src/features/auth/`. [ ] Generate types and verify profile/session behavior. |
-| 2 — Groups | [ ] Write the groups/members migration, policies, `create_group`, `join_group`, and `lock_group`. [ ] Publish the contract before UI integration. [ ] Test unique codes, membership, capacity, lock and non-member denial. |
-| 3 — Wishlist | [ ] Write wishlist schema/RLS and enforce the open-round edit restriction. [ ] Define cents-based read/write contract. [ ] Test membership and item ownership rules. |
+| 1 — Accounts | [x] Own `profiles` schema, sign-up trigger, RLS and DB tests. [x] Implement Supabase auth UI/session flow in `src/features/auth/`. [x] Generate types and verify profile/session behavior. |
+| 2 — Groups | [x] Write the groups/members migration, policies, `create_group`, `join_group`, and `lock_group`. [x] Publish the contract before UI integration. [x] Test unique codes, membership, capacity, lock and non-member denial. |
+| 3 — Wishlist | [x] Write wishlist schema/RLS. [ ] Enforce the open-round edit restriction (needs Phase 4 rounds). [x] Define cents-based read/write contract. [x] Test membership and item ownership rules. |
 | 4 — Rounds | [ ] Write rounds/choices schema, RLS, `start_round`, `submit_choice`, and `get_round_status`. [ ] Keep other members' choices private. [ ] Test timing, one-choice-only, group lock and fund constraints. |
 | 5 — Quiz | [ ] Own quiz tables, RLS, server-side timing/scoring RPCs, and database tests. [ ] Load the approved question bank through a migration. [ ] Implement the quiz UI in its owned feature folder. [ ] Ensure responses never expose answer keys, correctness or score before release. |
 | 6 — Resolution | [ ] Write `resolve_round`, `resolve_due_rounds`, and `get_reveal` database logic. [ ] Test every outcome and idempotence. [ ] Coordinate the function contract and timing with Ntokozo; do not own his deployment schedule/UI files. |
