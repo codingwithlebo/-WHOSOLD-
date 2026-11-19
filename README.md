@@ -63,8 +63,13 @@ After a migration PR is merged into `main`:
 ```sh
 npx supabase@3.1.0 login
 npx supabase@3.1.0 link --project-ref <project-ref>
-npx supabase@3.1.0 db push --include-seed
+npx supabase@3.1.0 db push --remote --dry-run   # check what will change
+npx supabase@3.1.0 db push --remote
 ```
+
+CLI 3.x pushes to the local stack unless you pass `--remote`. Add
+`--include-seed` only when the seed should be (re)applied; it is safe to run
+more than once.
 
 ### Test logins
 
@@ -75,6 +80,9 @@ Test accounts only. Never use real passwords.
 | `alice@test.dev` | `Password123!` | Alice        |
 | `bob@test.dev`   | `Password123!` | Bob          |
 | `cara@test.dev`  | `Password123!` | Cara         |
+
+The seed also creates **Demo Crew** (join code `DEMO42`), led by Alice with
+Bob as a member. Log in as Cara to try joining it.
 
 ## Checks
 

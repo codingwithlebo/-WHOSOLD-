@@ -54,6 +54,22 @@ against a local Supabase with every migration applied.
 - Players cannot change `id`, insert profiles directly, or delete profiles.
 - Anonymous visitors cannot read profiles.
 
+`groups.test.sql` covers:
+
+- Both tables exist, RLS is enabled, join codes are unique, and a player can
+  be in a group only once.
+- `create_group` trims the name, makes a 6-character code, and adds the
+  creator as leader and first member; blank or over-50-character names fail.
+- A non-member cannot see the group, its members or the leader's profile.
+- `join_group` accepts a lower-case code, is safe to retry, and rejects
+  unknown codes, badly formatted codes, locked groups and full groups
+  (10 members).
+- After joining, group mates can see each other's display names.
+- Only the leader can lock; members and outsiders get the same error.
+- Players cannot insert members or update groups directly, and logged-out
+  visitors cannot call `create_group`.
+- Deleting a group deletes its member rows.
+
 Every new table or RPC needs at least one "allowed" and one "denied" test.
 
 ## Manual check on the live link (Phase 1)
@@ -63,6 +79,15 @@ Every new table or RPC needs at least one "allowed" and one "denied" test.
 3. Refresh: you stay logged in. Log out: you return to the landing page.
 4. Log in as `alice@test.dev` / `Password123!`.
 5. In the Supabase dashboard, confirm the new user has a `profiles` row.
+
+## Manual check on the live link (Phase 2, once the groups UI is connected)
+
+1. Log in as `cara@test.dev` and join with code `DEMO42`: Demo Crew shows
+   Alice, Bob and Cara.
+2. Log in as Bob: the **Lock** button is not shown or is refused.
+3. Log in as Alice and lock Demo Crew. A new account then gets
+   "This group is locked, so no new members can join."
+4. Create a group as any user: a 6-character code appears and can be copied.
 
 ## Planned coverage
 

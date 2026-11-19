@@ -76,3 +76,20 @@ where u.email in ('alice@test.dev', 'bob@test.dev', 'cara@test.dev')
     select 1 from auth.identities i
     where i.user_id = u.id and i.provider = 'email'
   );
+
+-- Demo group: Alice leads "Demo Crew" with Bob. Cara is left out so the demo
+-- can show joining with the code DEMO42. Unlocked so others can still join.
+insert into public.groups (id, name, join_code, leader_id)
+values (
+  'd0d0d0d0-0000-4000-8000-000000000001',
+  'Demo Crew',
+  'DEMO42',
+  'a1a1a1a1-0000-4000-8000-000000000001'
+)
+on conflict (id) do nothing;
+
+insert into public.group_members (group_id, user_id)
+values
+  ('d0d0d0d0-0000-4000-8000-000000000001', 'a1a1a1a1-0000-4000-8000-000000000001'),
+  ('d0d0d0d0-0000-4000-8000-000000000001', 'b2b2b2b2-0000-4000-8000-000000000002')
+on conflict do nothing;
