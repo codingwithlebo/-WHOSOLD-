@@ -5,7 +5,7 @@ import App from './App'
 import { makeAuth, renderWithProviders } from './test/renderWithProviders'
 
 describe('App round-history route', () => {
-  it('renders history for a signed-in member', async () => {
+  it('keeps the unfinished history route unavailable', async () => {
     renderWithProviders(<App />, {
       auth: makeAuth({
         session: { user: { id: 'u1' } } as Session,
@@ -14,10 +14,9 @@ describe('App round-history route', () => {
     })
 
     expect(
-      await screen.findByRole('heading', { name: 'Round history' }),
+      await screen.findByRole('heading', {
+        name: /this page is not in the game/i,
+      }),
     ).toBeInTheDocument()
-    expect(screen.getByRole('status')).toHaveTextContent(
-      'Round history is not connected yet. No history has been loaded.',
-    )
   })
 })

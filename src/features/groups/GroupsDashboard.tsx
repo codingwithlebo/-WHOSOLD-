@@ -1,19 +1,22 @@
-import { useState, type SubmitEvent } from 'react'
+import {
+  useState,
+  type Dispatch,
+  type SetStateAction,
+  type SubmitEvent,
+} from 'react'
 import { Button, ButtonLink } from '../../components/ui/Button'
 import Card from '../../components/ui/Card'
 import TextField from '../../components/ui/TextField'
+import type { GroupSummary } from './groupService'
 
-export interface GroupSummary {
-  id: string
-  name: string
-  joinCode: string
-  members: string[]
-  isLeader: boolean
-  isLocked: boolean
-}
+export type { GroupSummary } from './groupService'
 
 interface GroupsDashboardProps {
   groups: GroupSummary[]
+  onGroupsChange?: Dispatch<SetStateAction<GroupSummary[]>>
+  groupsLoading?: boolean
+  groupsLoadError?: string | null
+  onRetryGroups?: () => void
   onCreateGroup: (name: string) => Promise<GroupSummary>
   onJoinGroup: (code: string) => Promise<GroupSummary>
   onLockGroup: (groupId: string) => Promise<void>
@@ -27,11 +30,17 @@ function getErrorMessage(error: unknown): string {
 
 export default function GroupsDashboard({
   groups: initialGroups,
+  onGroupsChange,
+  groupsLoading = false,
+  groupsLoadError = null,
+  onRetryGroups,
   onCreateGroup,
   onJoinGroup,
   onLockGroup,
 }: GroupsDashboardProps) {
-  const [groups, setGroups] = useState(initialGroups)
+  const [localGroups, setLocalGroups] = useState(initialGroups)
+  const groups = onGroupsChange ? initialGroups : localGroups
+  const setGroups = onGroupsChange ?? setLocalGroups
   const [groupName, setGroupName] = useState('')
   const [joinCode, setJoinCode] = useState('')
   const [error, setError] = useState<string | null>(null)
@@ -206,7 +215,26 @@ export default function GroupsDashboard({
         <h2 className="text-2xl font-bold" id="your-groups-heading">
           Groups you&apos;ve joined
         </h2>
-        {groups.length === 0 ? (
+        {groupsLoadError ? (
+          <div className="mt-3">
+            <p className="form-error" role="alert">
+              {groupsLoadError}
+            </p>
+            {onRetryGroups ? (
+              <Button
+                className="mt-3"
+                onClick={onRetryGroups}
+                variant="secondary"
+              >
+                Retry loading groups
+              </Button>
+            ) : null}
+          </div>
+        ) : groupsLoading ? (
+          <p className="mt-3 text-slate-300" role="status">
+            Loading your groups…
+          </p>
+        ) : groups.length === 0 ? (
           <p className="mt-3 text-slate-300">
             You haven&apos;t joined a group yet.
           </p>
@@ -222,8 +250,11 @@ export default function GroupsDashboard({
                     {group.members.length} of 10 members
                   </p>
                   <ul aria-label={`${group.name} members`} className="mt-2">
-                    {group.members.map((member) => (
-                      <li className="[overflow-wrap:anywhere]" key={member}>
+                    {group.members.map((member, index) => (
+                      <li
+                        className="[overflow-wrap:anywhere]"
+                        key={`${member}-${index}`}
+                      >
                         {member}
                       </li>
                     ))}
@@ -247,13 +278,12 @@ export default function GroupsDashboard({
                     {group.isLocked ? 'Group locked' : 'Open to new members'}
                   </p>
                   <ButtonLink
-                    aria-label={`View round history for ${group.name}`}
+                    aria-label={`Open ${group.name}`}
                     className="mt-4"
-                    state={{ groupName: group.name }}
-                    to={`/groups/${encodeURIComponent(group.id)}/history`}
-                    variant="ghost"
+                    to={`/groups/${encodeURIComponent(group.id)}`}
+                    variant="primary"
                   >
-                    Round history
+                    Open group
                   </ButtonLink>
                   {group.isLeader && !group.isLocked ? (
                     <Button

@@ -6,7 +6,7 @@ import LoginPage from './features/auth/LoginPage'
 import ProtectedRoute from './features/auth/ProtectedRoute'
 import SignupPage from './features/auth/SignupPage'
 import DashboardPage from './features/dashboard/DashboardPage'
-import RoundHistoryRoute from './features/history/RoundHistoryRoute'
+import GroupPage from './features/groups/GroupPage'
 import HomePage from './features/landing/HomePage'
 import NotFoundPage from './pages/NotFoundPage'
 
@@ -40,10 +40,7 @@ export default function App() {
           />
           <Route element={<ProtectedRoute />}>
             <Route element={<DashboardPage />} path="dashboard" />
-            <Route
-              element={<RoundHistoryRoute />}
-              path="groups/:groupId/history"
-            />
+            <Route element={<GroupPage />} path="groups/:groupId" />
           </Route>
           <Route element={<NotFoundPage />} path="*" />
         </Route>

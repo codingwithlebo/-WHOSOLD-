@@ -8,6 +8,7 @@ export interface WishlistItem {
   id: string
   name: string
   priceCents: number
+  canManage?: boolean
 }
 
 interface WishlistPanelProps {
@@ -302,24 +303,26 @@ export default function WishlistPanel({
                         {formatRand(item.priceCents)}
                       </p>
                     </div>
-                    <div className="flex gap-2">
-                      <Button
-                        aria-label={`Edit ${item.name}`}
-                        disabled={busy}
-                        onClick={() => startEditing(item)}
-                        variant="ghost"
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        aria-label={`Delete ${item.name}`}
-                        disabled={busy}
-                        onClick={() => void handleDelete(item.id)}
-                        variant="ghost"
-                      >
-                        Delete
-                      </Button>
-                    </div>
+                    {item.canManage === false ? null : (
+                      <div className="flex gap-2">
+                        <Button
+                          aria-label={`Edit ${item.name}`}
+                          disabled={busy}
+                          onClick={() => startEditing(item)}
+                          variant="ghost"
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          aria-label={`Delete ${item.name}`}
+                          disabled={busy}
+                          onClick={() => void handleDelete(item.id)}
+                          variant="ghost"
+                        >
+                          Delete
+                        </Button>
+                      </div>
+                    )}
                   </>
                 )}
               </li>
