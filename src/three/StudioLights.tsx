@@ -11,7 +11,7 @@ export default function StudioLights() {
       <ambientLight intensity={0.4} />
       <directionalLight intensity={1.6} position={[3, 6, 4]} />
       <pointLight
-        color="#8b5cf6"
+        color="#a879e8"
         distance={12}
         intensity={30}
         position={[-4, 2, 2]}

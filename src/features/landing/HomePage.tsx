@@ -121,7 +121,7 @@ export default function HomePage() {
                           .title
                       }
                     </p>
-                    <p className="text-sm text-slate-400">
+                    <p className="text-sm text-on-surface-muted">
                       {
                         RESULT_COPY[demo.phase as Exclude<DemoPhase, 'idle'>]
                           .body
@@ -131,7 +131,7 @@ export default function HomePage() {
                 ) : (
                   <motion.p
                     animate={{ opacity: 1 }}
-                    className="text-sm text-slate-400"
+                    className="text-sm text-on-surface-muted"
                     initial={{ opacity: 0 }}
                     key="idle"
                   >

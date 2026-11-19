@@ -38,6 +38,7 @@ export default function App() {
             }
             path="signup"
           />
+          <Route element={<Navigate replace to="/login" />} path="groups" />
           <Route element={<ProtectedRoute />}>
             <Route element={<DashboardPage />} path="dashboard" />
             <Route element={<GroupPage />} path="groups/:groupId" />

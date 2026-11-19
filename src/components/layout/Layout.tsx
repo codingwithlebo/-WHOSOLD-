@@ -29,7 +29,7 @@ export default function Layout() {
         <nav aria-label="Main" className="flex items-center gap-2 sm:gap-3">
           {session ? (
             <>
-              <span className="hidden text-sm text-slate-300 sm:inline">
+              <span className="hidden text-sm text-on-surface-muted sm:inline">
                 {displayName ?? 'Player'}
               </span>
               <ButtonLink to="/dashboard" variant="ghost">

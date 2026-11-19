@@ -42,4 +42,15 @@ describe('App', () => {
       }),
     ).toBeInTheDocument()
   })
+
+  it('sends the bare groups path through the login flow', async () => {
+    renderWithProviders(<App />, { route: '/groups' })
+
+    expect(await screen.findByLabelText('Email')).toBeInTheDocument()
+    expect(
+      screen.queryByRole('heading', {
+        name: /this page is not in the game/i,
+      }),
+    ).not.toBeInTheDocument()
+  })
 })

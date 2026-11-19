@@ -161,87 +161,32 @@ export default function WishlistPanel({
   }
 
   return (
-    <section aria-labelledby="wishlist-heading" className="mx-auto w-full">
-      <header>
-        <p className="eyebrow">YOUR CREW</p>
-        <h2 className="dashboard-title" id="wishlist-heading">
-          Group wishlist
+    <section aria-labelledby="wishlist-heading" className="wishlist-panel">
+      <Card className="group-vault-card">
+        <p className="group-vault-label">Mystery billionaire vault</p>
+        <h2 className="group-vault-title" id="wishlist-heading">
+          Allocated virtual fund
         </h2>
-        <p className="mt-2 text-slate-300">
-          Sponsored by a mystery billionaire · virtual funds
+        <p className="group-fund-amount">{formatRand(fundTotal)}</p>
+        <p className="group-vault-note">
+          {items.length} wishlist {items.length === 1 ? 'item' : 'items'} ·
+          virtual funds only
         </p>
-      </header>
-
-      <Card className="mt-6 p-6">
-        <h3 className="text-xl font-bold">Add an item</h3>
-        <form
-          className="mt-5 grid gap-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] sm:items-end"
-          noValidate
-          onSubmit={(event) => void handleAdd(event)}
-        >
-          <TextField
-            autoComplete="off"
-            error={
-              fieldError?.form === 'add' && fieldError.field === 'name'
-                ? fieldError.message
-                : undefined
-            }
-            label="Item name"
-            maxLength={100}
-            onChange={(event) => {
-              setItemName(event.target.value)
-              clearFieldError('add', 'name')
-            }}
-            placeholder="Wireless headphones"
-            required
-            value={itemName}
-          />
-          <TextField
-            error={
-              fieldError?.form === 'add' && fieldError.field === 'price'
-                ? fieldError.message
-                : undefined
-            }
-            inputMode="decimal"
-            label="Price (Rand)"
-            onChange={(event) => {
-              setItemPrice(event.target.value)
-              clearFieldError('add', 'price')
-            }}
-            placeholder="1 250.00"
-            required
-            value={itemPrice}
-          />
-          <Button disabled={busy} type="submit" variant="primary">
-            {busy ? 'Working…' : 'Add item'}
-          </Button>
-        </form>
       </Card>
 
-      {error ? (
-        <p className="form-error mt-5" role="alert">
-          {error}
-        </p>
-      ) : null}
-
-      <Card className="mt-6 p-6">
-        <div className="flex flex-wrap items-baseline justify-between gap-3">
-          <h3 className="text-xl font-bold">Wishlist items</h3>
-          <p aria-live="polite" className="text-lg font-semibold">
-            <span className="text-slate-300">Fund total: </span>
-            <span>{formatRand(fundTotal)}</span>
-          </p>
+      <Card className="wishlist-cart-card">
+        <div className="group-cart-heading">
+          <h2 className="group-cart-title">Cohort cart</h2>
+          <span className="group-item-count">
+            {items.length} {items.length === 1 ? 'item' : 'items'}
+          </span>
         </div>
-
         {items.length === 0 ? (
-          <p className="mt-4 text-slate-300">No wishlist items yet.</p>
+          <p className="text-on-surface-muted">No wishlist items yet.</p>
         ) : (
-          <ul className="mt-4 list-none space-y-3 p-0">
+          <ul aria-label="Wishlist items" className="wishlist-item-list">
             {items.map((item) => (
-              <li
-                className="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 py-3 last:border-b-0"
-                key={item.id}
-              >
+              <li className="wishlist-item-row" key={item.id}>
                 {editingItemId === item.id ? (
                   <form
                     className="grid w-full gap-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto_auto] sm:items-end"
@@ -297,9 +242,9 @@ export default function WishlistPanel({
                   </form>
                 ) : (
                   <>
-                    <div className="min-w-0 flex-1 [overflow-wrap:anywhere]">
-                      <p className="font-semibold">{item.name}</p>
-                      <p className="text-slate-300">
+                    <div className="wishlist-item-copy">
+                      <p className="wishlist-item-name">{item.name}</p>
+                      <p className="wishlist-item-price">
                         {formatRand(item.priceCents)}
                       </p>
                     </div>
@@ -329,6 +274,62 @@ export default function WishlistPanel({
             ))}
           </ul>
         )}
+        <div className="group-cart-total">
+          <span>Total claim</span>
+          <strong>{formatRand(fundTotal)}</strong>
+        </div>
+      </Card>
+
+      {error ? (
+        <p className="form-error" role="alert">
+          {error}
+        </p>
+      ) : null}
+
+      <Card className="wishlist-add-card">
+        <h2 className="wishlist-add-heading">Add wishlist item</h2>
+        <form
+          className="grid gap-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] sm:items-end"
+          noValidate
+          onSubmit={(event) => void handleAdd(event)}
+        >
+          <TextField
+            autoComplete="off"
+            error={
+              fieldError?.form === 'add' && fieldError.field === 'name'
+                ? fieldError.message
+                : undefined
+            }
+            label="Item name"
+            maxLength={100}
+            onChange={(event) => {
+              setItemName(event.target.value)
+              clearFieldError('add', 'name')
+            }}
+            placeholder="Wireless headphones"
+            required
+            value={itemName}
+          />
+          <TextField
+            error={
+              fieldError?.form === 'add' && fieldError.field === 'price'
+                ? fieldError.message
+                : undefined
+            }
+            inputMode="decimal"
+            label="Price (Rand)"
+            onChange={(event) => {
+              setItemPrice(event.target.value)
+              clearFieldError('add', 'price')
+            }}
+            placeholder="1 250.00"
+            required
+            value={itemPrice}
+          />
+          <Button disabled={busy} type="submit" variant="primary">
+            {busy ? 'Working…' : 'Add item'}
+          </Button>
+        </form>
       </Card>
     </section>
   )
