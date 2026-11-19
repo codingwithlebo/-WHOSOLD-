@@ -19,6 +19,13 @@ The current unit tests cover:
 - Money helpers: `formatRand` and `parseRandToCents`.
 - Auth: form validation, log-in and sign-up pages, and `ProtectedRoute`.
 - The landing-page demo reducer (win doubles, loss wipes, pass keeps).
+- Groups: the dashboard (create and join forms, group list), the group page
+  (members, leader-only **Lock**, not-found and retry states) and
+  `groupService`, including database error messages reaching the player.
+- Wishlist: adding, editing and deleting items, who may edit which item, and
+  the fund total.
+- Round history: the page renders, but its route stays hidden until rounds
+  exist (Phase 10).
 
 3D scenes are decorative and are not unit-tested: jsdom has no WebGL, so tests
 render the static fallback instead. Check them manually (see below).
@@ -94,23 +101,39 @@ Every new table or RPC needs at least one "allowed" and one "denied" test.
 4. Log in as `alice@test.dev` / `Password123!`.
 5. In the Supabase dashboard, confirm the new user has a `profiles` row.
 
-## Manual check on the live link (Phase 2, once the groups UI is connected)
+## Manual check on the live link (Phases 2–3: groups and wishlist)
 
-1. Log in as `cara@test.dev` and join with code `DEMO42`: Demo Crew shows
-   Alice, Bob and Cara.
-2. Log in as Bob: the **Lock** button is not shown or is refused.
-3. Log in as Alice and lock Demo Crew. A new account then gets
-   "This group is locked, so no new members can join."
-4. Create a group as any user: a 6-character code appears and can be copied.
-5. As Bob in Demo Crew, the wishlist shows two items and a fund of
-   R27 499.00. Add, edit and delete your own item; Alice's item cannot be
-   changed. As Alice, edit Bob's item.
+**Keep the demo data usable.** Locking cannot be undone, and there is no way
+to leave a group, so:
+
+- **Never lock Demo Crew.** Test locking on a group you create.
+- Join Demo Crew with a **new** account, not Cara, so Cara stays an outsider
+  for the markers' "try joining" demo.
+- Delete any wishlist items you add, so the fund stays at R27 499.00.
+
+1. Sign up a new account and join with code `DEMO42` (lower case also works):
+   Demo Crew shows Alice (leader), Bob and the new account.
+2. As the new account, try `ZZZZZZ` and `ab`: you see "No group found with
+   that code." and "Enter a valid 6-character group code."
+3. Log in as Bob: the **Lock** button is not shown.
+4. As Bob in Demo Crew, the wishlist shows two items and a fund of
+   R27 499.00. Add, edit and delete your own item and refresh after each step:
+   the change is saved. Alice's item cannot be changed.
+5. Log in as Alice: Alice can edit Bob's item. Change it back afterwards.
+6. As any account, create a new group: a 6-character code appears. Join it
+   from a second account, then lock it as its creator. A third account now
+   gets "This group is locked, so no new members can join."
+7. Open `/groups/abc` and `/history`: you see "This group could not be found
+   or you are not a member." and the not-found page.
+
+Record the URL, browser, date and pass/fail on the PR or issue (never a
+password).
 
 ## Planned coverage
 
-End-to-end account/group flows are not enabled yet. Add Playwright coverage
-when the sign-in/group flows exist; do not treat their absence as a passing
-test.
+End-to-end browser tests (Playwright) are not set up yet; the live-link checks
+above are done by hand. Add Playwright coverage after the MVP; do not treat its
+absence as a passing test.
 
 
 ## Phase 1 — Accounts and authentication acceptance
