@@ -1,4 +1,4 @@
-import { getSupabaseClient } from '../../lib/supabase'
+import { getSupabaseClient, toError } from '../../lib/supabase'
 
 export interface GroupSummary {
   id: string
@@ -50,7 +50,7 @@ export async function loadGroups(userId: string): Promise<GroupSummary[]> {
     .select(GROUP_SELECT)
     .order('created_at')
 
-  if (error) throw error
+  if (error) throw toError(error)
 
   return data.map((group) => mapGroup(group, userId))
 }
@@ -65,7 +65,7 @@ export async function loadGroup(
     .eq('id', groupId)
     .maybeSingle()
 
-  if (error) throw error
+  if (error) throw toError(error)
   return data ? mapGroup(data, userId) : null
 }
 
@@ -78,7 +78,7 @@ export async function createGroup(
     group_name: name,
   })
 
-  if (error) throw error
+  if (error) throw toError(error)
 
   return {
     id: data.id,
@@ -96,7 +96,7 @@ export async function joinGroup(
 ): Promise<GroupSummary> {
   const { data, error } = await getSupabaseClient().rpc('join_group', { code })
 
-  if (error) throw error
+  if (error) throw toError(error)
 
   const group = await loadGroup(data.id, userId)
   if (!group) {
@@ -111,5 +111,5 @@ export async function lockGroup(groupId: string): Promise<void> {
     target_group_id: groupId,
   })
 
-  if (error) throw error
+  if (error) throw toError(error)
 }

@@ -1,4 +1,4 @@
-import { getSupabaseClient } from '../../lib/supabase'
+import { getSupabaseClient, toError } from '../../lib/supabase'
 import type { WishlistItem } from './WishlistPanel'
 
 interface WishlistRow {
@@ -34,7 +34,7 @@ export async function loadWishlist(
     .eq('group_id', groupId)
     .order('created_at')
 
-  if (error) throw error
+  if (error) throw toError(error)
 
   return data.map((item) => mapItem(item, userId, isLeader))
 }
@@ -52,7 +52,7 @@ export async function addWishlistItem(
     .select(ITEM_SELECT)
     .single()
 
-  if (error) throw error
+  if (error) throw toError(error)
 
   return mapItem(data, userId, isLeader)
 }
@@ -71,7 +71,7 @@ export async function updateWishlistItem(
     .select(ITEM_SELECT)
     .single()
 
-  if (error) throw error
+  if (error) throw toError(error)
 
   return mapItem(data, userId, isLeader)
 }
@@ -84,5 +84,5 @@ export async function deleteWishlistItem(itemId: string): Promise<void> {
     .select('id')
     .single()
 
-  if (error) throw error
+  if (error) throw toError(error)
 }

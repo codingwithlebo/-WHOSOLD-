@@ -21,3 +21,7 @@ export function getSupabaseClient(): SupabaseClient<Database> {
 
   return supabase
 }
+
+export function toError(error: { message: string }): Error {
+  return new Error(error.message)
+}
