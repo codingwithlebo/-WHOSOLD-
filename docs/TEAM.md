@@ -22,7 +22,8 @@ Individual phase checklists: [Mandla](team/mandla-sikhosana.md) ·
 - **Mandla owns all database changes**: Supabase schema, migrations, RLS,
   functions/RPCs, database-loaded question content, database tests, seed data,
   and generated database types. No other member edits these files or applies
-  migrations to the hosted project.
+  migrations to the hosted project, except Ntokozo as backup when Mandla asks
+  (see the hosted Supabase ground rules, #35).
 - Feature owners own their own `src/features/<name>/` UI folder. Owethu owns
   groups and wishlist UI; Malebo owns round/choice UI; Mandla owns auth and
   quiz UI; Ntokozo owns reveal UI and scheduling/release operations.
