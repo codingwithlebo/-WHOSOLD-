@@ -357,6 +357,8 @@ Live link with **log-in (M1)**, the **database** and **groups + wishlist (M2, M3
 | 7.5 Manual test run on the live link in an incognito window; bug fixes | Everyone (led by Malebo) |
 | 7.6 README complete (all Step 7 items), screenshots, known issues; Loom recorded | Ntokozo (README), everyone (Loom) |
 
+Round-history UI is merged, but keep its link and route hidden until resolved rounds are available from Phase 4. Resume the history integration after Friday; do not expose fixture data as live history. The groups/wishlist live smoke test requires the merged database migrations to be applied and the Vercel Supabase environment variables configured.
+
 **Code freeze:** Thu 19 Nov, 18:00. After that, only bug-fix PRs. **Submission:** Fri 20 Nov, 10:00.
 
 ### Phase 8 — Stabilization

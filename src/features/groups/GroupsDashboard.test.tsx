@@ -9,7 +9,10 @@ const sampleGroup: GroupSummary = {
   id: 'group-1',
   name: 'The Wednesday crew',
   joinCode: 'ABC123',
-  members: ['Lebo', 'Mandla'],
+  members: [
+    { userId: 'user-1', displayName: 'Lebo', isLeader: true },
+    { userId: 'user-2', displayName: 'Mandla', isLeader: false },
+  ],
   isLeader: true,
   isLocked: false,
 }
@@ -40,6 +43,7 @@ describe('GroupsDashboard', () => {
     expect(await screen.findByText('The Wednesday crew')).toBeInTheDocument()
     expect(screen.getByText('ABC123')).toBeInTheDocument()
     expect(screen.getByText('2 of 10 members')).toBeInTheDocument()
+    expect(screen.getByText('Lebo · leader')).toBeInTheDocument()
   })
 
   it('requires a group name before calling the create service', async () => {
@@ -122,14 +126,17 @@ describe('GroupsDashboard', () => {
     expect(screen.getByRole('button', { name: 'Join group' })).toHaveFocus()
   })
 
-  it('links each group to its round history', () => {
+  it('opens the group detail and does not expose round history yet', () => {
     renderGroups({ groups: [sampleGroup] })
 
     expect(
       screen.getByRole('link', {
-        name: `View round history for ${sampleGroup.name}`,
+        name: `Open ${sampleGroup.name}`,
       }),
-    ).toHaveAttribute('href', '/groups/group-1/history')
+    ).toHaveAttribute('href', '/groups/group-1')
+    expect(
+      screen.queryByRole('link', { name: /round history/i }),
+    ).not.toBeInTheDocument()
   })
 
   it('copies a group join code and confirms the action', async () => {

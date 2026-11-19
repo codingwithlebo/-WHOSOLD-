@@ -158,6 +158,18 @@ describe('WishlistPanel', () => {
     expect(screen.getByText('R0.00')).toBeInTheDocument()
   })
 
+  it('hides edit and delete controls for items the member cannot manage', () => {
+    renderWishlist({ items: [{ ...sampleItem, canManage: false }] })
+
+    expect(
+      screen.queryByRole('button', { name: 'Edit Wireless headphones' }),
+    ).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('button', { name: 'Delete Wireless headphones' }),
+    ).not.toBeInTheDocument()
+    expect(screen.getAllByText('R1 250.50')).toHaveLength(2)
+  })
+
   it('shows service errors without applying the failed add', async () => {
     const onAddItem = vi
       .fn()
