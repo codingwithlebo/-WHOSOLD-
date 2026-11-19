@@ -250,12 +250,13 @@ export default function GroupsDashboard({
                     {group.members.length} of 10 members
                   </p>
                   <ul aria-label={`${group.name} members`} className="mt-2">
-                    {group.members.map((member, index) => (
+                    {group.members.map((member) => (
                       <li
                         className="[overflow-wrap:anywhere]"
-                        key={`${member}-${index}`}
+                        key={member.userId}
                       >
-                        {member}
+                        {member.displayName}
+                        {member.isLeader ? ' · leader' : ''}
                       </li>
                     ))}
                   </ul>

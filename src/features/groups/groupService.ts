@@ -4,9 +4,15 @@ export interface GroupSummary {
   id: string
   name: string
   joinCode: string
-  members: string[]
+  members: GroupMember[]
   isLeader: boolean
   isLocked: boolean
+}
+
+export interface GroupMember {
+  userId: string
+  displayName: string
+  isLeader: boolean
 }
 
 const GROUP_SELECT =
@@ -31,7 +37,11 @@ function mapGroup(
       throw new Error('Could not load the names of this group’s members.')
     }
 
-    return member.profiles.display_name
+    return {
+      userId: member.user_id,
+      displayName: member.profiles.display_name,
+      isLeader: member.user_id === row.leader_id,
+    }
   })
 
   return {
@@ -80,12 +90,14 @@ export async function createGroup(
 
   if (error) throw toError(error)
 
+  const isLeader = data.leader_id === userId
+
   return {
     id: data.id,
     name: data.name,
     joinCode: data.join_code,
-    members: [displayName ?? 'You'],
-    isLeader: data.leader_id === userId,
+    members: [{ userId, displayName: displayName ?? 'You', isLeader }],
+    isLeader,
     isLocked: data.is_locked,
   }
 }

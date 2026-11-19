@@ -17,10 +17,13 @@ vi.mock('../wishlist/wishlistService', () => ({
 }))
 
 const group: GroupSummary = {
-  id: 'group-1',
+  id: '11111111-1111-4111-8111-111111111111',
   name: 'The Wednesday crew',
   joinCode: 'ABC123',
-  members: ['Lebo', 'Mandla'],
+  members: [
+    { userId: 'user-1', displayName: 'Lebo', isLeader: true },
+    { userId: 'user-2', displayName: 'Mandla', isLeader: false },
+  ],
   isLeader: true,
   isLocked: false,
 }
@@ -34,14 +37,14 @@ const wishlist = [
   },
 ]
 
-function renderGroupPage() {
+function renderGroupPage(route = `/groups/${group.id}`) {
   return renderWithProviders(
     <Routes>
       <Route element={<GroupPage />} path="/groups/:groupId" />
     </Routes>,
     {
       auth: makeAuth({ user: { id: 'user-1' } as User }),
-      route: '/groups/group-1',
+      route,
     },
   )
 }
@@ -65,17 +68,17 @@ describe('GroupPage', () => {
     expect(
       await screen.findByRole('heading', { name: group.name }),
     ).toBeInTheDocument()
-    expect(screen.getByText('Lebo')).toBeInTheDocument()
+    expect(screen.getByText('Lebo · leader')).toBeInTheDocument()
     expect(screen.getAllByText('R1 250.50')).toHaveLength(2)
 
     await userEvent.type(screen.getByLabelText('Item name'), 'A book')
     await userEvent.type(screen.getByLabelText('Price (Rand)'), '20.00')
     await userEvent.click(screen.getByRole('button', { name: 'Add item' }))
 
-    expect(loadGroup).toHaveBeenCalledWith('group-1', 'user-1')
-    expect(loadWishlist).toHaveBeenCalledWith('group-1', 'user-1', true)
+    expect(loadGroup).toHaveBeenCalledWith(group.id, 'user-1')
+    expect(loadWishlist).toHaveBeenCalledWith(group.id, 'user-1', true)
     expect(addWishlistItem).toHaveBeenCalledWith(
-      'group-1',
+      group.id,
       'A book',
       2000,
       'user-1',
@@ -93,6 +96,18 @@ describe('GroupPage', () => {
       'This group could not be found or you are not a member.',
     )
     expect(loadWishlist).not.toHaveBeenCalled()
+  })
+
+  it('treats a malformed group URL as not found without offering a retry', async () => {
+    renderGroupPage('/groups/abc')
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'This group could not be found or you are not a member.',
+    )
+    expect(loadGroup).not.toHaveBeenCalled()
+    expect(
+      screen.queryByRole('button', { name: 'Retry loading group' }),
+    ).not.toBeInTheDocument()
   })
 
   it('lets the member retry after a transient group data load error', async () => {

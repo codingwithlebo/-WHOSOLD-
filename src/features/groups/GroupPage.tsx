@@ -11,6 +11,8 @@ import {
 } from '../wishlist/wishlistService'
 import { loadGroup, type GroupSummary } from './groupService'
 
+const UUID_PATTERN = /^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/i
+
 export default function GroupPage() {
   const { user } = useAuth()
   const [group, setGroup] = useState<GroupSummary | null>(null)
@@ -25,7 +27,11 @@ export default function GroupPage() {
     let active = true
 
     async function fetchGroup() {
-      if (!user || !groupId) {
+      setLoading(true)
+      setError(null)
+      setNotFound(false)
+
+      if (!user) {
         setError(
           'Could not identify the group. Return to your groups and try again.',
         )
@@ -33,9 +39,11 @@ export default function GroupPage() {
         return
       }
 
-      setLoading(true)
-      setError(null)
-      setNotFound(false)
+      if (!groupId || !UUID_PATTERN.test(groupId)) {
+        setNotFound(true)
+        setLoading(false)
+        return
+      }
 
       try {
         const loadedGroup = await loadGroup(groupId, user.id)
@@ -138,9 +146,10 @@ export default function GroupPage() {
           Group members
         </h2>
         <ul className="mt-2">
-          {group.members.map((member, index) => (
-            <li className="[overflow-wrap:anywhere]" key={`${member}-${index}`}>
-              {member}
+          {group.members.map((member) => (
+            <li className="[overflow-wrap:anywhere]" key={member.userId}>
+              {member.displayName}
+              {member.isLeader ? ' · leader' : ''}
             </li>
           ))}
         </ul>

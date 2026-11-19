@@ -9,7 +9,10 @@ const sampleGroup: GroupSummary = {
   id: 'group-1',
   name: 'The Wednesday crew',
   joinCode: 'ABC123',
-  members: ['Lebo', 'Mandla'],
+  members: [
+    { userId: 'user-1', displayName: 'Lebo', isLeader: true },
+    { userId: 'user-2', displayName: 'Mandla', isLeader: false },
+  ],
   isLeader: true,
   isLocked: false,
 }
@@ -40,6 +43,7 @@ describe('GroupsDashboard', () => {
     expect(await screen.findByText('The Wednesday crew')).toBeInTheDocument()
     expect(screen.getByText('ABC123')).toBeInTheDocument()
     expect(screen.getByText('2 of 10 members')).toBeInTheDocument()
+    expect(screen.getByText('Lebo · leader')).toBeInTheDocument()
   })
 
   it('requires a group name before calling the create service', async () => {

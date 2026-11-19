@@ -25,7 +25,7 @@ const group: GroupSummary = {
   id: 'group-1',
   name: 'The Wednesday crew',
   joinCode: 'ABC123',
-  members: ['Owethu'],
+  members: [{ userId: 'user-1', displayName: 'Owethu', isLeader: true }],
   isLeader: true,
   isLocked: false,
 }
@@ -33,7 +33,7 @@ const createdGroup: GroupSummary = {
   id: 'group-2',
   name: 'New crew',
   joinCode: 'NEW234',
-  members: ['Owethu'],
+  members: [{ userId: 'user-1', displayName: 'Owethu', isLeader: true }],
   isLeader: true,
   isLocked: false,
 }
