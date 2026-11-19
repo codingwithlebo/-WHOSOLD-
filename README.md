@@ -82,7 +82,8 @@ Test accounts only. Never use real passwords.
 | `cara@test.dev`  | `Password123!` | Cara         |
 
 The seed also creates **Demo Crew** (join code `DEMO42`), led by Alice with
-Bob as a member. Log in as Cara to try joining it.
+Bob as a member, with a two-item wishlist (fund R27 499.00). Log in as Cara
+to try joining it.
 
 ## Checks
 
