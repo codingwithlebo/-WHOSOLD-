@@ -5,12 +5,14 @@ import { renderWithProviders } from '../../test/renderWithProviders'
 import RoundPage from './RoundPage'
 
 function makeProps() {
+  const now = Date.now()
+
   return {
     groupName: 'Wednesday crew',
     startingFundCents: 2749900,
-    opensAt: new Date(Date.now() - 60_000).toISOString(),
-    closesAt: new Date(Date.now() + 10 * 60_000).toISOString(),
-    releaseAt: new Date(Date.now() + 24 * 60 * 60_000).toISOString(),
+    opensAt: new Date(now - 60_000).toISOString(),
+    closesAt: new Date(now + 10 * 60_000).toISOString(),
+    releaseAt: new Date(now + 24 * 60 * 60_000).toISOString(),
     answeredCount: 3,
     memberCount: 5,
     myChoice: null as 'pass' | 'double' | null,
@@ -73,7 +75,9 @@ describe('RoundPage', () => {
 
   it('does not allow a choice after the scheduled window closes', () => {
     const props = makeProps()
-    props.closesAt = new Date(Date.now() - 60_000).toISOString()
+    const now = Date.now()
+    props.opensAt = new Date(now - 2 * 60_000).toISOString()
+    props.closesAt = new Date(now - 60_000).toISOString()
 
     renderWithProviders(<RoundPage {...props} />)
 
