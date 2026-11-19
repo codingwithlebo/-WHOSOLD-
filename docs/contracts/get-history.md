@@ -32,9 +32,10 @@ Only signed-in players can call it (`authenticated`); logged-out visitors
 
 ## Response
 
-An array of rows (`setof`), **newest first** (`resolved_at` descending, then
-`id` to break ties). No pagination: a group plays at most one round a week, so
-the list stays short.
+An array of rows (`setof`), **newest first**: `resolved_at` descending, and if
+two rounds share a `resolved_at`, then `id` descending, so the order is always
+the same. No pagination: a group plays at most one round a week, so the list
+stays short.
 
 | Field                 | SQL type      | JSON / TS type                         | Never null | Meaning                                                                                       |
 | --------------------- | ------------- | -------------------------------------- | ---------- | --------------------------------------------------------------------------------------------- |
@@ -134,10 +135,10 @@ migration, not here:
   `final_fund_cents`
 
 The function will be `security definer`, `stable`, `set search_path = ''`,
-check membership with the existing `private.is_group_member`, and be granted
-to `authenticated` only. Its pgTAP tests must cover: a member, an outsider, an
-anonymous caller, unresolved and unreleased rounds, an empty history and
-newest-first order.
+check membership with the existing `private.is_group_member`, order by
+`resolved_at desc, id desc`, and be granted to `authenticated` only. Its pgTAP
+tests must cover: a member, an outsider, an anonymous caller, unresolved and
+unreleased rounds, an empty history and newest-first order.
 
 ## Changing this contract
 

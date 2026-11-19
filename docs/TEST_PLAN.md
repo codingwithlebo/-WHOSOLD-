@@ -95,6 +95,14 @@ Every new table or RPC needs at least one "allowed" and one "denied" test.
 
 ## Manual check on the live link (Phase 1)
 
+**Emails for new sign-ups:** use an address on a real email domain. Supabase
+can reject made-up domains such as `test.dev` when signing up. (The seeded
+`@test.dev` logins still work, because the seed creates them directly in the
+database.) A Gmail "plus" address works well: `yourname+whosold1@gmail.com`
+arrives in your own inbox and counts as a new email each time you change the
+number. The hosted project confirms new accounts automatically, so no
+confirmation email is needed.
+
 1. In an incognito window, sign up with a new email and a display name.
 2. Confirm you land on the dashboard with your display name shown.
 3. Refresh: you stay logged in. Log out: you return to the landing page.
@@ -182,8 +190,9 @@ profile creation or deployment environment variables are correct.
 ### Phase 1 live smoke test
 
 1. In a private/incognito browser window, open the deployed app.
-2. Create an account using a new test email and a display name of 2–30
-   characters. Confirm successful navigation to the dashboard.
+2. Create an account using a new real-domain email (see the Phase 1 note
+   above) and a display name of 2–30 characters. Confirm successful
+   navigation to the dashboard.
 3. Refresh the dashboard. Confirm the session is restored and the user remains
    signed in.
 4. Open `/dashboard` in a second private window while signed out. Confirm it
