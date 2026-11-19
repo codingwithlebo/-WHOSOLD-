@@ -139,19 +139,22 @@ session state as well.
 
 ### Phase 1 verification status
 
-The existing automated suite covers login/signup field validation,
-successful login/signup navigation, login credential and network failures,
-the missing-Supabase warning on the login page, protected-route redirects,
-authenticated access and the protected-route loading state. Signup server
-failure handling and provider-level session/sign-out behavior still need
-explicit automated coverage.
+The automated suite covers log-in and sign-up field validation, successful
+log-in and sign-up navigation, log-in and sign-up server and network failures
+(the form stays usable for a retry), the missing-Supabase warning,
+protected-route redirects, authenticated access and the protected-route loading
+state.
 
-Before marking Phase 1 complete, add or confirm provider-level tests for
-restoring a session with `getSession`, reacting to auth-state changes, and
-signing out. Add signup failure tests as well. Then run the live smoke test
-below against the configured hosted environment. A mocked component test
-does not prove that hosted Supabase credentials, profile creation or
-deployment environment variables are correct.
+`AuthProvider.test.tsx` covers the provider itself against a fake Supabase
+client: loading until the saved session is restored (`getSession`), starting
+signed out with no saved session, recovering when restoring fails, following
+log-in and log-out events (`onAuthStateChange`), signing out, passing on the
+Supabase error message, sending the display name with sign-up, unsubscribing
+on unmount, and the "not connected" message when the keys are missing.
+
+To finish Phase 1, run the live smoke test below against the hosted
+environment. A mocked test does not prove that hosted Supabase credentials,
+profile creation or deployment environment variables are correct.
 
 ### Phase 1 live smoke test
 
