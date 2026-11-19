@@ -17,6 +17,7 @@ A group of friends gets their wishlist funded by a billionaire, but before the m
 
 - [Product Requirements Document](docs/PRD.md)
 - [Implementation Plan](docs/IMPLEMENTATION_PLAN.md)
+- [Phase 10 discovery proposal — group round history](docs/PHASE_10_DISCOVERY.md)
 - [Test Plan](docs/TEST_PLAN.md)
 - [Team delivery map](docs/TEAM.md)
 - [Mandla Sikhosana — delivery checklist](docs/team/mandla-sikhosana.md)
