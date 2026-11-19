@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { ButtonLink } from '../../components/ui/Button'
+import { Button, ButtonLink } from '../../components/ui/Button'
 import { useAuth } from '../auth/AuthContext'
 import WishlistPanel, { type WishlistItem } from '../wishlist/WishlistPanel'
 import {
@@ -18,6 +18,7 @@ export default function GroupPage() {
   const [loading, setLoading] = useState(true)
   const [notFound, setNotFound] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [retryCount, setRetryCount] = useState(0)
   const { groupId } = useParams<{ groupId: string }>()
 
   useEffect(() => {
@@ -69,7 +70,7 @@ export default function GroupPage() {
     return () => {
       active = false
     }
-  }, [groupId, user])
+  }, [groupId, retryCount, user])
 
   if (loading) {
     return (
@@ -98,6 +99,19 @@ export default function GroupPage() {
         <p className="form-error" role="alert">
           {error ?? 'Your session has expired. Please sign in again.'}
         </p>
+        {error && groupId && user ? (
+          <Button
+            className="mt-4"
+            onClick={() => {
+              setLoading(true)
+              setError(null)
+              setRetryCount((current) => current + 1)
+            }}
+            variant="secondary"
+          >
+            Retry loading group
+          </Button>
+        ) : null}
         <ButtonLink className="mt-4" to="/dashboard" variant="secondary">
           Back to groups
         </ButtonLink>

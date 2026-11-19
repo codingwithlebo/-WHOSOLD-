@@ -94,4 +94,24 @@ describe('GroupPage', () => {
     )
     expect(loadWishlist).not.toHaveBeenCalled()
   })
+
+  it('lets the member retry after a transient group data load error', async () => {
+    vi.mocked(loadWishlist)
+      .mockRejectedValueOnce(new Error('Network temporarily unavailable.'))
+      .mockResolvedValueOnce(wishlist)
+    renderGroupPage()
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Network temporarily unavailable.',
+    )
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Retry loading group' }),
+    )
+
+    expect(
+      await screen.findByRole('heading', { name: group.name }),
+    ).toBeInTheDocument()
+    expect(loadGroup).toHaveBeenCalledTimes(2)
+    expect(loadWishlist).toHaveBeenCalledTimes(2)
+  })
 })
