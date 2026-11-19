@@ -111,3 +111,64 @@ Every new table or RPC needs at least one "allowed" and one "denied" test.
 End-to-end account/group flows are not enabled yet. Add Playwright coverage
 when the sign-in/group flows exist; do not treat their absence as a passing
 test.
+
+
+## Phase 1 — Accounts and authentication acceptance
+
+Use these cases when reviewing the account flow. A case is not complete merely
+because its form renders: verify the expected navigation, auth result and
+session state as well.
+
+| Area | Scenario | Expected result | Evidence |
+|---|---|---|---|
+| Sign-up | Submit a valid display name, email and password | Account creation is requested with a trimmed display name; successful sign-up proceeds to the dashboard | SignupPage component test and live smoke test |
+| Sign-up validation | Empty or 1-character display name; display name over 30 characters | Field-level validation is shown; no sign-up request is made | validation and SignupPage tests |
+| Sign-up validation | Empty or malformed email | Email validation is shown; no sign-up request is made | validation and SignupPage tests |
+| Sign-up validation | Password shorter than 8 characters | Password validation is shown; no sign-up request is made | validation and SignupPage tests |
+| Sign-up failure | Supabase rejects the request (for example, an already registered email) | A readable error is announced; user stays on sign-up; submit control becomes usable again | SignupPage failure test / manual check |
+| Sign-up failure | Auth request throws because of a network failure | Connection error is announced; user stays on sign-up and can retry | SignupPage failure test / manual check |
+| Log-in | Submit a valid email and password | Email is trimmed; successful log-in opens the dashboard or the originally requested protected route | LoginPage component test |
+| Log-in validation | Empty or malformed email, or empty password | Relevant field errors appear; no log-in request is made | validation and LoginPage tests |
+| Log-in failure | Supabase rejects credentials | Error is announced; user remains on log-in and can correct credentials | LoginPage component test |
+| Log-in failure | Auth request throws / network unavailable | Connection error is announced and retry is possible | LoginPage component test |
+| Configuration | Supabase environment keys are absent | UI explains that Supabase is not connected; no false successful login or signup is shown | LoginPage / SignupPage tests and live environment check |
+| Session restore | Reload while a valid session exists | Loading state is shown until the saved session is restored, then the protected page appears | AuthProvider integration test and live refresh |
+| Session restore | Reload with no saved session | Protected route redirects to log-in; requested path is retained for return after login | ProtectedRoute test |
+| Protected route | Open /dashboard directly while signed out | Redirect to /login; protected content is never rendered | ProtectedRoute test and incognito smoke test |
+| Sign-out | Sign out from an authenticated session | Supabase session is cleared and protected routes redirect to log-in | AuthProvider integration test and live smoke test |
+
+### Phase 1 verification status
+
+The existing automated suite covers login/signup field validation,
+successful login/signup navigation, login credential and network failures,
+the missing-Supabase warning on the login page, protected-route redirects,
+authenticated access and the protected-route loading state. Signup server
+failure handling and provider-level session/sign-out behavior still need
+explicit automated coverage.
+
+Before marking Phase 1 complete, add or confirm provider-level tests for
+restoring a session with `getSession`, reacting to auth-state changes, and
+signing out. Add signup failure tests as well. Then run the live smoke test
+below against the configured hosted environment. A mocked component test
+does not prove that hosted Supabase credentials, profile creation or
+deployment environment variables are correct.
+
+### Phase 1 live smoke test
+
+1. In a private/incognito browser window, open the deployed app.
+2. Create an account using a new test email and a display name of 2–30
+   characters. Confirm successful navigation to the dashboard.
+3. Refresh the dashboard. Confirm the session is restored and the user remains
+   signed in.
+4. Open `/dashboard` in a second private window while signed out. Confirm it
+   redirects to `/login` and does not expose dashboard content.
+5. Log out. Confirm the app returns to the public landing/log-in flow.
+6. Log in again with the test account. Confirm the dashboard is accessible.
+7. Try an invalid password and a malformed email. Confirm errors are visible,
+   no protected content is shown, and the form can be retried.
+8. Confirm the new user has a matching `profiles` row in Supabase. This
+   database inspection belongs to Mandla; report the expected result to him
+   rather than editing database files.
+9. Record the deployment URL, test account identifier (never its password),
+   browser, date, and pass/fail result in the Phase 1 issue. Never commit test
+   credentials or secrets.
