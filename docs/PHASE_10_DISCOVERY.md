@@ -1,6 +1,6 @@
 # Phase 10 Discovery — Group Round History
 
-**Status:** Draft for Product Owner and team review; not approved for implementation  
+**Status:** Product Owner accepted; implementation is blocked on the backend contract and round/resolution data
 **Product Owner:** Owethu Jezile  
 **Date:** 19 November 2026  
 **Related:** PRD FR-14; Owethu checklist issue #24
@@ -56,12 +56,30 @@ acceptance criteria. This proposal adds no new game rules.
   empty-state and release-time scenarios.
 - **Ntokozo:** verify the connected flow on a Supabase-enabled preview.
 
-Implementation remains blocked on the round/resolution data and `get_history`
-contract. Discovery and scope review can proceed now. Draw mode, notifications,
-editing past rounds and unreleased member choices/results are out of scope.
+## Work items
+
+- [#43](https://github.com/codingwithlebo/-WHOSOLD-/issues/43): agree and
+  publish the `get_history` API contract. This can proceed now, before the
+  round/resolution tables exist.
+- [#44](https://github.com/codingwithlebo/-WHOSOLD-/issues/44): implement the
+  RPC after the Phase 4 round schema and Phase 6 resolution/release data are
+  available. This item is explicitly blocked until then.
+- [#45](https://github.com/codingwithlebo/-WHOSOLD-/issues/45): connect the
+  existing history UI to live data; do not duplicate the UI already delivered
+  by [#31](https://github.com/codingwithlebo/-WHOSOLD-/issues/31).
+- [#46](https://github.com/codingwithlebo/-WHOSOLD-/issues/46): define and
+  verify the history acceptance scenarios. Preview setup remains tracked in
+  [#26](https://github.com/codingwithlebo/-WHOSOLD-/issues/26), so no duplicate
+  DevOps issue was created.
+
+The scope is accepted, but live history implementation remains blocked on the
+round/resolution data and `get_history` contract. Contract definition and QA
+planning can proceed now. Draw mode, notifications, editing past rounds and
+unreleased member choices/results are out of scope.
 
 ## Decision gate
 
-This is a proposal, not product approval. Implementation starts only after
-the Product Owner and team accept the scope, the backend contract is available,
-and the work is split into independently testable issues.
+The Product Owner accepted this scope on 19 November 2026. Implementation starts
+only after the backend contract and round/resolution data are available; the
+work is now split into independently testable issues above. Team review may
+refine implementation details without reopening the accepted product scope.
