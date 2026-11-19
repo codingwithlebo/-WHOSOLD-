@@ -352,7 +352,7 @@ function drawBand() {
   const { canvas, ctx } = makeCanvas(256, 256)
   const g = ctx.createLinearGradient(0, 0, 256, 0)
   g.addColorStop(0, '#5b21b6')
-  g.addColorStop(0.5, '#8b5cf6')
+  g.addColorStop(0.5, '#a879e8')
   g.addColorStop(1, '#5b21b6')
   ctx.fillStyle = g
   ctx.fillRect(0, 0, 256, 256)

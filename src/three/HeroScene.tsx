@@ -23,7 +23,7 @@ const NOTES = 12
 
 /** Phase accent colours: violet waiting, gold doubled, red lost, teal intact. */
 const PHASE_COLOR: Record<DemoPhase, string> = {
-  idle: '#8b5cf6',
+  idle: '#a879e8',
   doubled: '#fbbf24',
   lost: '#f43f5e',
   intact: '#2dd4bf',

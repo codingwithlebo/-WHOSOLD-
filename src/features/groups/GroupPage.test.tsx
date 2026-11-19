@@ -66,10 +66,12 @@ describe('GroupPage', () => {
     renderGroupPage()
 
     expect(
-      await screen.findByRole('heading', { name: group.name }),
+      await screen.findByRole('heading', { name: 'Group wishlist' }),
     ).toBeInTheDocument()
-    expect(screen.getByText('Lebo · leader')).toBeInTheDocument()
-    expect(screen.getAllByText('R1 250.50')).toHaveLength(2)
+    expect(screen.getByText(group.name)).toBeInTheDocument()
+    expect(screen.getByText('Open to new members')).toBeInTheDocument()
+    expect(screen.getByText('2 members')).toBeInTheDocument()
+    expect(screen.getAllByText('R1 250.50')).toHaveLength(3)
 
     await userEvent.type(screen.getByLabelText('Item name'), 'A book')
     await userEvent.type(screen.getByLabelText('Price (Rand)'), '20.00')
@@ -85,7 +87,7 @@ describe('GroupPage', () => {
       true,
     )
     expect(await screen.findByText('R20.00')).toBeInTheDocument()
-    expect(screen.getAllByText('R1 270.50')).toHaveLength(1)
+    expect(screen.getAllByText('R1 270.50')).toHaveLength(2)
   })
 
   it('does not request wishlist data for a group the member cannot access', async () => {
@@ -124,7 +126,7 @@ describe('GroupPage', () => {
     )
 
     expect(
-      await screen.findByRole('heading', { name: group.name }),
+      await screen.findByRole('heading', { name: 'Group wishlist' }),
     ).toBeInTheDocument()
     expect(loadGroup).toHaveBeenCalledTimes(2)
     expect(loadWishlist).toHaveBeenCalledTimes(2)

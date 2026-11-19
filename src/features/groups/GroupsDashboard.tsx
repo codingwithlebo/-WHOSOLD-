@@ -139,7 +139,7 @@ export default function GroupsDashboard({
         <h1 className="dashboard-title" id="groups-heading">
           Your groups
         </h1>
-        <p className="mt-2 text-slate-300">
+        <p className="mt-2 text-on-surface-muted">
           Start a group or join your crew with a code.
         </p>
       </header>
@@ -147,7 +147,7 @@ export default function GroupsDashboard({
       <div className="mt-8 grid gap-5 sm:grid-cols-2">
         <Card className="p-6">
           <h2 className="text-xl font-bold">Create a group</h2>
-          <p className="mt-2 text-sm text-slate-300">
+          <p className="mt-2 text-sm text-on-surface-muted">
             Get a join code to share with your mates.
           </p>
           <form
@@ -176,7 +176,7 @@ export default function GroupsDashboard({
 
         <Card className="p-6">
           <h2 className="text-xl font-bold">Join a group</h2>
-          <p className="mt-2 text-sm text-slate-300">
+          <p className="mt-2 text-sm text-on-surface-muted">
             Enter the 6-character code your group shared with you.
           </p>
           <form
@@ -231,11 +231,11 @@ export default function GroupsDashboard({
             ) : null}
           </div>
         ) : groupsLoading ? (
-          <p className="mt-3 text-slate-300" role="status">
+          <p className="mt-3 text-on-surface-muted" role="status">
             Loading your groups…
           </p>
         ) : groups.length === 0 ? (
-          <p className="mt-3 text-slate-300">
+          <p className="mt-3 text-on-surface-muted">
             You haven&apos;t joined a group yet.
           </p>
         ) : (
@@ -246,7 +246,7 @@ export default function GroupsDashboard({
                   <h3 className="text-lg font-bold [overflow-wrap:anywhere]">
                     {group.name}
                   </h3>
-                  <p className="mt-2 text-sm text-slate-300">
+                  <p className="mt-2 text-sm text-on-surface-muted">
                     {group.members.length} of 10 members
                   </p>
                   <ul aria-label={`${group.name} members`} className="mt-2">
@@ -275,7 +275,7 @@ export default function GroupsDashboard({
                       {copiedGroupId === group.id ? 'Join code copied.' : ''}
                     </span>
                   </div>
-                  <p className="mt-3 text-sm text-slate-300">
+                  <p className="mt-3 text-sm text-on-surface-muted">
                     {group.isLocked ? 'Group locked' : 'Open to new members'}
                   </p>
                   <ButtonLink

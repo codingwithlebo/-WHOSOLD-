@@ -48,7 +48,7 @@ describe('WishlistPanel', () => {
 
     expect(onAddItem).toHaveBeenCalledWith('Headphones', 125050)
     expect(await screen.findByText('Wireless headphones')).toBeInTheDocument()
-    expect(screen.getAllByText('R1 250.50')).toHaveLength(2)
+    expect(screen.getAllByText('R1 250.50')).toHaveLength(3)
   })
 
   it('rejects invalid prices without calling the add service', async () => {
@@ -65,7 +65,7 @@ describe('WishlistPanel', () => {
     expect(error).toHaveTextContent('Enter a valid price greater than R0.00.')
     expect(price).toHaveAttribute('aria-invalid', 'true')
     expect(price).toHaveAttribute('aria-describedby', error.id)
-    expect(screen.getByText('R0.00')).toBeInTheDocument()
+    expect(screen.getAllByText('R0.00')).toHaveLength(2)
   })
 
   it('associates an empty item-name error with its input', async () => {
@@ -96,7 +96,7 @@ describe('WishlistPanel', () => {
     expect(error).toHaveTextContent('Enter an item name.')
     expect(name).toHaveAttribute('aria-invalid', 'true')
     expect(name).toHaveAttribute('aria-describedby', error.id)
-    const [addName] = screen.getAllByLabelText('Item name')
+    const [, addName] = screen.getAllByLabelText('Item name')
     expect(addName).not.toHaveAttribute('aria-invalid', 'true')
   })
 
@@ -108,7 +108,7 @@ describe('WishlistPanel', () => {
     )
     await userEvent.click(screen.getByRole('button', { name: 'Add item' }))
 
-    const [addName, editingName] = screen.getAllByLabelText('Item name')
+    const [editingName, addName] = screen.getAllByLabelText('Item name')
     const error = screen.getByRole('alert')
     expect(error).toHaveTextContent('Enter an item name.')
     expect(addName).toHaveAttribute('aria-invalid', 'true')
@@ -140,7 +140,7 @@ describe('WishlistPanel', () => {
 
     expect(onUpdateItem).toHaveBeenCalledWith('item-1', 'New headphones', 3550)
     expect(await screen.findByText('New headphones')).toBeInTheDocument()
-    expect(screen.getAllByText('R35.50')).toHaveLength(2)
+    expect(screen.getAllByText('R35.50')).toHaveLength(3)
   })
 
   it('deletes an item and recalculates the total', async () => {
@@ -155,7 +155,7 @@ describe('WishlistPanel', () => {
     expect(
       await screen.findByText('No wishlist items yet.'),
     ).toBeInTheDocument()
-    expect(screen.getByText('R0.00')).toBeInTheDocument()
+    expect(screen.getAllByText('R0.00')).toHaveLength(2)
   })
 
   it('hides edit and delete controls for items the member cannot manage', () => {
@@ -167,7 +167,7 @@ describe('WishlistPanel', () => {
     expect(
       screen.queryByRole('button', { name: 'Delete Wireless headphones' }),
     ).not.toBeInTheDocument()
-    expect(screen.getAllByText('R1 250.50')).toHaveLength(2)
+    expect(screen.getAllByText('R1 250.50')).toHaveLength(3)
   })
 
   it('shows service errors without applying the failed add', async () => {
@@ -184,6 +184,6 @@ describe('WishlistPanel', () => {
       'Wishlist service is unavailable.',
     )
     expect(screen.getByText('No wishlist items yet.')).toBeInTheDocument()
-    expect(screen.getByText('R0.00')).toBeInTheDocument()
+    expect(screen.getAllByText('R0.00')).toHaveLength(2)
   })
 })

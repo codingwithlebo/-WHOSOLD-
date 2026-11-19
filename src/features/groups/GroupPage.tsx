@@ -82,7 +82,7 @@ export default function GroupPage() {
 
   if (loading) {
     return (
-      <main className="dashboard mx-auto w-full max-w-4xl" role="status">
+      <main className="dashboard group-detail" role="status">
         Loading group…
       </main>
     )
@@ -90,7 +90,7 @@ export default function GroupPage() {
 
   if (notFound) {
     return (
-      <main className="dashboard mx-auto w-full max-w-4xl">
+      <main className="dashboard group-detail">
         <p className="form-error" role="alert">
           This group could not be found or you are not a member.
         </p>
@@ -103,7 +103,7 @@ export default function GroupPage() {
 
   if (error || !group || !user) {
     return (
-      <main className="dashboard mx-auto w-full max-w-4xl">
+      <main className="dashboard group-detail">
         <p className="form-error" role="alert">
           {error ?? 'Your session has expired. Please sign in again.'}
         </p>
@@ -127,51 +127,50 @@ export default function GroupPage() {
     )
   }
 
+  const leaderName =
+    group.members.find((member) => member.isLeader)?.displayName ??
+    'group leader'
+
   return (
-    <main className="dashboard mx-auto w-full max-w-4xl">
-      <ButtonLink to="/dashboard" variant="ghost">
-        Back to groups
-      </ButtonLink>
-      <header className="mt-6">
-        <p className="eyebrow">YOUR CREW</p>
-        <h1 className="dashboard-title [overflow-wrap:anywhere]">
-          {group.name}
-        </h1>
-        <p className="mt-2 text-slate-300">
-          {group.members.length} of 10 members · Join code {group.joinCode}
-        </p>
-      </header>
-      <section aria-labelledby="group-members-heading" className="mt-6">
-        <h2 className="text-xl font-bold" id="group-members-heading">
-          Group members
-        </h2>
-        <ul className="mt-2">
-          {group.members.map((member) => (
-            <li className="[overflow-wrap:anywhere]" key={member.userId}>
-              {member.displayName}
-              {member.isLeader ? ' · leader' : ''}
-            </li>
-          ))}
-        </ul>
-      </section>
-      <div className="mt-8">
-        <WishlistPanel
-          items={items}
-          onAddItem={(name, priceCents) =>
-            addWishlistItem(group.id, name, priceCents, user.id, group.isLeader)
-          }
-          onUpdateItem={(itemId, name, priceCents) =>
-            updateWishlistItem(
-              itemId,
-              name,
-              priceCents,
-              user.id,
-              group.isLeader,
-            )
-          }
-          onDeleteItem={deleteWishlistItem}
-        />
+    <main className="dashboard group-detail">
+      <div className="group-detail-topbar">
+        <ButtonLink to="/dashboard" variant="ghost">
+          Back to groups
+        </ButtonLink>
+        <span className="group-code-pill">
+          Code <strong>{group.joinCode}</strong>
+        </span>
       </div>
+      <header className="group-title-plaque">
+        <p className="eyebrow">YOUR CREW</p>
+        <h1>Group wishlist</h1>
+        <p>{group.name}</p>
+      </header>
+      <div className="group-status-pill">
+        <span>
+          {group.isLocked
+            ? `Locked by Leader (${leaderName})`
+            : 'Open to new members'}
+        </span>
+        <span aria-hidden="true">·</span>
+        <strong>{group.members.length} members</strong>
+      </div>
+      <WishlistPanel
+        items={items}
+        onAddItem={(name, priceCents) =>
+          addWishlistItem(group.id, name, priceCents, user.id, group.isLeader)
+        }
+        onUpdateItem={(itemId, name, priceCents) =>
+          updateWishlistItem(itemId, name, priceCents, user.id, group.isLeader)
+        }
+        onDeleteItem={deleteWishlistItem}
+      />
+      <nav aria-label="Group navigation" className="group-page-nav">
+        <ButtonLink to="/dashboard" variant="primary">
+          Groups
+        </ButtonLink>
+        <a href="#wishlist-heading">Wishlist</a>
+      </nav>
     </main>
   )
 }

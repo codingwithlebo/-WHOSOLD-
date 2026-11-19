@@ -96,7 +96,9 @@ export default function DashboardPage() {
         <AmbientScene count={14} />
       </Scene3D>
       <div className="relative z-10 mx-auto w-full max-w-4xl">
-        <p className="mb-5 text-slate-300">Hey {displayName ?? 'player'} 👋</p>
+        <p className="mb-5 text-on-surface-muted">
+          Hey {displayName ?? 'player'} 👋
+        </p>
         <GroupsDashboard
           groups={groups}
           onGroupsChange={setGroups}
