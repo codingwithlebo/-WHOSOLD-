@@ -1,5 +1,5 @@
 import Card from '../../components/ui/Card'
-import { ButtonLink } from '../../components/ui/Button'
+import { Button, ButtonLink } from '../../components/ui/Button'
 import { formatRand } from '../../lib/money'
 
 export type RoundOutcome = 'intact' | 'doubled' | 'lost'
@@ -21,6 +21,7 @@ export type RoundHistoryState =
 interface RoundHistoryPageProps {
   groupName: string | null
   state: RoundHistoryState
+  onRetry?: () => void
 }
 
 const outcomeLabels: Record<RoundOutcome, string> = {
@@ -38,6 +39,7 @@ function formatResolvedAt(value: string) {
 export default function RoundHistoryPage({
   groupName,
   state,
+  onRetry,
 }: RoundHistoryPageProps) {
   const heading = groupName ? `Round history — ${groupName}` : 'Round history'
 
@@ -74,9 +76,16 @@ export default function RoundHistoryPage({
       ) : null}
 
       {state.status === 'error' ? (
-        <p className="form-error mt-6" role="alert">
-          {state.message}
-        </p>
+        <div className="mt-6">
+          <p className="form-error" role="alert">
+            {state.message}
+          </p>
+          {onRetry ? (
+            <Button className="mt-3" onClick={onRetry} variant="secondary">
+              Retry loading history
+            </Button>
+          ) : null}
+        </div>
       ) : null}
 
       {state.status === 'loaded' && state.rounds.length === 0 ? (

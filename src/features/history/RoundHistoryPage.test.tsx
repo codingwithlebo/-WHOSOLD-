@@ -1,5 +1,5 @@
-import { screen } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { fireEvent, screen } from '@testing-library/react'
+import { describe, expect, it, vi } from 'vitest'
 import { renderWithProviders } from '../../test/renderWithProviders'
 import RoundHistoryPage, { type RoundHistoryState } from './RoundHistoryPage'
 
@@ -27,9 +27,13 @@ const resolvedRounds = [
   },
 ] satisfies Extract<RoundHistoryState, { status: 'loaded' }>['rounds']
 
-function renderHistory(state: RoundHistoryState) {
+function renderHistory(state: RoundHistoryState, onRetry?: () => void) {
   return renderWithProviders(
-    <RoundHistoryPage groupName="The Wednesday crew" state={state} />,
+    <RoundHistoryPage
+      groupName="The Wednesday crew"
+      onRetry={onRetry}
+      state={state}
+    />,
   )
 }
 
@@ -76,6 +80,23 @@ describe('RoundHistoryPage', () => {
     expect(screen.getByRole('alert')).toHaveTextContent(
       'Could not load round history. Please try again.',
     )
+  })
+
+  it('lets the member retry after a history load error', () => {
+    const onRetry = vi.fn()
+    renderHistory(
+      {
+        status: 'error',
+        message: 'Could not load round history. Please try again.',
+      },
+      onRetry,
+    )
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Retry loading history' }),
+    )
+
+    expect(onRetry).toHaveBeenCalledOnce()
   })
 
   it('announces loading state', () => {
