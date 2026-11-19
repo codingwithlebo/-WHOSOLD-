@@ -27,18 +27,27 @@ function getErrorMessage(error: unknown): string {
   return 'The request could not be completed. Please try again.'
 }
 
+type ItemField = 'name' | 'price'
+type ItemForm = 'add' | 'edit'
+
 function parseItem(
   nameInput: string,
   priceInput: string,
 ):
   | { ok: true; name: string; priceCents: number }
-  | { ok: false; error: string } {
+  | { ok: false; field: ItemField; error: string } {
   const name = nameInput.trim()
-  if (!name) return { ok: false, error: 'Enter an item name.' }
+  if (!name) {
+    return { ok: false, field: 'name', error: 'Enter an item name.' }
+  }
 
   const priceCents = parseRandToCents(priceInput)
   if (priceCents === null) {
-    return { ok: false, error: 'Enter a valid price greater than R0.00.' }
+    return {
+      ok: false,
+      field: 'price',
+      error: 'Enter a valid price greater than R0.00.',
+    }
   }
 
   return { ok: true, name, priceCents }
@@ -57,18 +66,31 @@ export default function WishlistPanel({
   const [editingName, setEditingName] = useState('')
   const [editingPrice, setEditingPrice] = useState('')
   const [error, setError] = useState<string | null>(null)
+  const [fieldError, setFieldError] = useState<{
+    form: ItemForm
+    field: ItemField
+    message: string
+  } | null>(null)
   const [busy, setBusy] = useState(false)
 
   const fundTotal = items.reduce((total, item) => total + item.priceCents, 0)
+
+  function clearFieldError(form: ItemForm, field: ItemField) {
+    setFieldError((current) =>
+      current?.form === form && current.field === field ? null : current,
+    )
+  }
 
   async function handleAdd(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault()
     const parsed = parseItem(itemName, itemPrice)
     if (!parsed.ok) {
-      setError(parsed.error)
+      setError(null)
+      setFieldError({ form: 'add', field: parsed.field, message: parsed.error })
       return
     }
 
+    setFieldError(null)
     setBusy(true)
     setError(null)
     try {
@@ -87,6 +109,7 @@ export default function WishlistPanel({
     setEditingItemId(item.id)
     setEditingName(item.name)
     setEditingPrice(formatRand(item.priceCents))
+    setFieldError(null)
     setError(null)
   }
 
@@ -97,10 +120,16 @@ export default function WishlistPanel({
     event.preventDefault()
     const parsed = parseItem(editingName, editingPrice)
     if (!parsed.ok) {
-      setError(parsed.error)
+      setError(null)
+      setFieldError({
+        form: 'edit',
+        field: parsed.field,
+        message: parsed.error,
+      })
       return
     }
 
+    setFieldError(null)
     setBusy(true)
     setError(null)
     try {
@@ -117,6 +146,7 @@ export default function WishlistPanel({
   }
 
   async function handleDelete(itemId: string) {
+    setFieldError(null)
     setBusy(true)
     setError(null)
     try {
@@ -145,21 +175,40 @@ export default function WishlistPanel({
         <h3 className="text-xl font-bold">Add an item</h3>
         <form
           className="mt-5 grid gap-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] sm:items-end"
+          noValidate
           onSubmit={(event) => void handleAdd(event)}
         >
           <TextField
             autoComplete="off"
+            error={
+              fieldError?.form === 'add' && fieldError.field === 'name'
+                ? fieldError.message
+                : undefined
+            }
             label="Item name"
             maxLength={100}
-            onChange={(event) => setItemName(event.target.value)}
+            onChange={(event) => {
+              setItemName(event.target.value)
+              clearFieldError('add', 'name')
+            }}
             placeholder="Wireless headphones"
+            required
             value={itemName}
           />
           <TextField
+            error={
+              fieldError?.form === 'add' && fieldError.field === 'price'
+                ? fieldError.message
+                : undefined
+            }
             inputMode="decimal"
             label="Price (Rand)"
-            onChange={(event) => setItemPrice(event.target.value)}
+            onChange={(event) => {
+              setItemPrice(event.target.value)
+              clearFieldError('add', 'price')
+            }}
             placeholder="1 250.00"
+            required
             value={itemPrice}
           />
           <Button disabled={busy} type="submit" variant="primary">
@@ -195,19 +244,40 @@ export default function WishlistPanel({
                 {editingItemId === item.id ? (
                   <form
                     className="grid w-full gap-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto_auto] sm:items-end"
+                    noValidate
                     onSubmit={(event) => void handleUpdate(event, item.id)}
                   >
                     <TextField
                       autoComplete="off"
+                      error={
+                        fieldError?.form === 'edit' &&
+                        fieldError.field === 'name'
+                          ? fieldError.message
+                          : undefined
+                      }
                       label="Item name"
                       maxLength={100}
-                      onChange={(event) => setEditingName(event.target.value)}
+                      onChange={(event) => {
+                        setEditingName(event.target.value)
+                        clearFieldError('edit', 'name')
+                      }}
+                      required
                       value={editingName}
                     />
                     <TextField
+                      error={
+                        fieldError?.form === 'edit' &&
+                        fieldError.field === 'price'
+                          ? fieldError.message
+                          : undefined
+                      }
                       inputMode="decimal"
                       label="Price (Rand)"
-                      onChange={(event) => setEditingPrice(event.target.value)}
+                      onChange={(event) => {
+                        setEditingPrice(event.target.value)
+                        clearFieldError('edit', 'price')
+                      }}
+                      required
                       value={editingPrice}
                     />
                     <Button disabled={busy} type="submit" variant="primary">
@@ -215,7 +285,10 @@ export default function WishlistPanel({
                     </Button>
                     <Button
                       disabled={busy}
-                      onClick={() => setEditingItemId(null)}
+                      onClick={() => {
+                        setEditingItemId(null)
+                        setFieldError(null)
+                      }}
                       variant="ghost"
                     >
                       Cancel
@@ -223,7 +296,7 @@ export default function WishlistPanel({
                   </form>
                 ) : (
                   <>
-                    <div>
+                    <div className="min-w-0 flex-1 [overflow-wrap:anywhere]">
                       <p className="font-semibold">{item.name}</p>
                       <p className="text-slate-300">
                         {formatRand(item.priceCents)}

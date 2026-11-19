@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><title>WHOSOLD?</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,400..900;1,400..900&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100vw;min-height:100vh;margin:0;padding:0;background-color:#FFF8F3;}body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent;font-family:'Rubik',sans-serif;color:#3C1D14;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "sunset-orange": "#FF7626",
+        "sunset-orange-shadow": "#C95209",
+        "sunset-purple": "#A879E8",
+        "sunset-purple-shadow": "#7D4FC4",
+        "sunset-coral": "#FF7185",
+        "sunset-coral-shadow": "#D94B60",
+        "warm-espresso": "#3C1D14",
+        "warm-chestnut": "#583023",
+        "warm-cream": "#FFF9F5",
+        "panel-bevel": "#E59A6E",
+        "panel-bevel-shadow": "#C87C4F",
+        "panel-bg": "#FFEEDF",
+        "card-bg": "#FFF4EC",
+        "gold-accent": "#FFB800",
+        "success-green": "#22C55E",
+        "success-green-shadow": "#15803D"
+      },
+      borderRadius: {
+        DEFAULT: "0.5rem",
+        lg: "0.875rem",
+        xl: "1.25rem",
+        "2xl": "1.75rem",
+        "3xl": "2.25rem",
+        full: "9999px"
+      },
+      spacing: {
+        "space-lg": "1.25rem",
+        "space-sm": "0.5rem",
+        "margin-mobile": "1rem",
+        "space-xl": "1.75rem",
+        "space-xs": "0.25rem",
+        "space-2xl": "2.5rem",
+        gutter: "1rem",
+        "space-md": "0.875rem",
+        margin: "1.5rem",
+        "gutter-mobile": "0.75rem"
+      },
+      fontFamily: {
+        body: ["Rubik", "sans-serif"],
+        headline: ["Rubik", "sans-serif"]
+      },
+      fontSize: {
+        "headline-sm": ["18px", {lineHeight: "24px", fontWeight: "800"}],
+        "label-md": ["13px", {lineHeight: "18px", fontWeight: "700"}],
+        "body-lg": ["16px", {lineHeight: "24px", fontWeight: "600"}],
+        "label-sm": ["11px", {lineHeight: "14px", fontWeight: "700"}],
+        "headline-lg": ["26px", {lineHeight: "34px", fontWeight: "800"}],
+        "label-lg": ["16px", {lineHeight: "20px", fontWeight: "800"}],
+        "body-md": ["14px", {lineHeight: "20px", fontWeight: "500"}],
+        "headline-md": ["20px", {lineHeight: "28px", fontWeight: "800"}],
+        "body-sm": ["12px", {lineHeight: "16px", fontWeight: "500"}]
+      }
+    }
+  }
+};</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head><body class="bg-gradient-to-b from-[#FFF8F3] via-[#FFF2EB] to-[#FFE8DE] text-warm-espresso antialiased min-h-screen flex flex-col justify-between items-center selection:bg-sunset-orange selection:text-white"><div class="fixed inset-0 z-0 pointer-events-none" id="three-canvas-container"><canvas height="1527" style="display: block; width: 390px; height: 1018px;" width="585"></canvas></div><header class="fixed top-0 w-full z-50 pt-safe"><div class="max-w-md mx-auto h-20 px-margin-mobile flex items-center justify-between bg-white/85 backdrop-blur-xl border-b border-sunset-orange/20 shadow-sm"><div class="flex items-center gap-space-xs"><div class="relative flex items-center justify-center bg-gradient-to-r from-sunset-orange to-sunset-coral px-3.5 py-1.5 rounded-xl shadow-[0_4px_0_#C95209] ring-2 ring-white"><span class="font-headline-sm text-[16px] tracking-wider uppercase text-white drop-shadow-[0_2px_0_#A83800]">WHOSOLD?</span></div><div class="flex items-center bg-sunset-purple/15 border border-sunset-purple/30 px-2 py-1 rounded-lg"><span class="font-label-sm text-[11px] text-sunset-purple font-black tracking-widest">WH0-7X9</span></div></div><div class="flex items-center gap-space-xs"><div class="flex items-center gap-1.5 bg-gradient-to-r from-sunset-purple to-sunset-coral px-3.5 py-1.5 rounded-full shadow-[0_3px_0_#7D4FC4] ring-2 ring-white/80"><span class="material-symbols-outlined text-white text-[17px]">monetization_on</span><span class="font-label-md text-white font-black tracking-tight text-[14px] drop-shadow-sm">R 48,500</span></div><div class="relative flex items-center justify-center min-w-[42px] min-h-[42px]"><div class="w-9 h-9 rounded-full bg-gradient-to-b from-sunset-orange to-sunset-coral flex items-center justify-center ring-2 ring-white shadow-[0_2px_4px_rgba(255,118,38,0.3)]"><span class="material-symbols-outlined text-white text-[19px]">person</span></div><div class="absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full bg-sunset-purple flex items-center justify-center ring-1 ring-white shadow-sm"><span class="font-label-sm text-[9px] text-white font-bold leading-none">5</span></div></div></div></div></header><main class="flex-1 flex flex-col relative w-full max-w-md mx-auto px-margin-mobile pt-20 pb-28 z-10 bg-transparent"><div class="flex flex-col w-full relative pb-4">
+<div class="relative w-full pt-4">
+<div class="relative z-20 flex justify-center -mb-5">
+<div class="bg-gradient-to-r from-sunset-purple via-[#9965E5] to-sunset-coral px-5 py-2 rounded-2xl shadow-[0_6px_0_#7D4FC4] border-2 border-white flex items-center gap-2 transform -rotate-1 active:rotate-0 transition-transform">
+<span class="material-symbols-outlined text-white text-[22px] drop-shadow-sm">casino</span>
+<span class="font-headline-sm text-headline-sm uppercase tracking-wider text-white drop-shadow-[0_2px_0_#7D4FC4]">DOUBLE OR PASS?</span>
+<span class="material-symbols-outlined text-white text-[22px] drop-shadow-sm">local_fire_department</span>
+</div>
+</div>
+<div class="relative z-10 w-full bg-[#FFEEDF] rounded-3xl p-3.5 shadow-[0_8px_0_#E59A6E] border-2 border-white flex flex-col gap-3">
+<div class="w-full bg-[#FFF9F5] rounded-2xl p-4 shadow-[inset_0_2px_6px_rgba(229,154,110,0.35)] border border-[#FAD8C3] flex flex-col gap-3.5">
+<div class="flex items-center justify-between bg-white/95 px-3.5 py-2.5 rounded-xl border border-sunset-coral/25 shadow-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sunset-coral animate-pulse text-[20px]">timer</span>
+<span class="font-label-sm text-label-sm uppercase text-warm-chestnut tracking-wider font-extrabold">WINDOW CLOSES IN</span>
+</div>
+<div class="bg-gradient-to-r from-sunset-coral/15 to-sunset-orange/15 border border-sunset-coral/30 px-3 py-1 rounded-lg">
+<span class="font-headline-sm text-headline-sm text-sunset-orange font-mono tracking-wider font-black" id="countdown-timer">04:08:55</span>
+</div>
+</div>
+<div class="flex items-start gap-3 bg-[#FFEBD9] p-3 rounded-2xl border border-white shadow-[0_3px_0_#E59A6E]">
+<div class="relative shrink-0">
+<div class="w-14 h-14 rounded-2xl bg-gradient-to-b from-sunset-orange to-sunset-coral p-0.5 shadow-[0_3px_0_#C95209]">
+<div class="w-full h-full rounded-2xl bg-white flex items-center justify-center overflow-hidden relative">
+<span class="material-symbols-outlined text-sunset-orange text-[36px]">sentiment_very_satisfied</span>
+<div class="absolute bottom-0 right-0 bg-sunset-purple px-1.5 py-0.5 rounded-tl-md">
+<span class="font-label-sm text-[9px] text-white font-bold">VIP</span>
+</div>
+</div>
+</div>
+</div>
+<div class="flex-1 bg-white p-3 rounded-xl border border-[#F6D5C2] shadow-[0_2px_4px_rgba(229,154,110,0.15)] relative">
+<div class="absolute -left-1.5 top-3.5 w-3 h-3 bg-white border-l border-b border-[#F6D5C2] transform rotate-45"></div>
+<p class="font-body-md text-body-md text-warm-espresso leading-snug">
+              "The <span class="text-sunset-orange font-black">R48,500</span> group pot is ready. Will you risk it to double it to <span class="text-success-green font-black">R97,000</span> for everyone... or pass safely?"
+            </p>
+</div>
+</div>
+<div class="flex flex-col gap-3 pt-1">
+<button class="w-full group relative flex flex-col p-4 rounded-2xl bg-gradient-to-b from-[#FF8842] via-sunset-orange to-[#F05E09] border-2 border-white/60 shadow-[0_6px_0_#C95209] active:translate-y-1 active:shadow-[0_2px_0_#C95209] transition-all text-left" id="double-btn" type="button">
+<div class="flex items-center justify-between w-full mb-1">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-white text-[24px] drop-shadow-sm">bolt</span>
+<span class="font-headline-sm text-headline-sm uppercase text-white drop-shadow-[0_2px_0_#A83800] tracking-wide">DOUBLE THE FUND! ⚡</span>
+</div>
+<span class="bg-white/30 text-white font-label-sm text-label-sm px-2.5 py-0.5 rounded-full border border-white/40 font-black">HIGH STAKES</span>
+</div>
+<p class="font-body-sm text-body-sm text-white/95 pl-7 leading-normal font-medium drop-shadow-[0_1px_1px_rgba(0,0,0,0.2)]">
+              Take 1-min Skill Quiz. Win = x2 (<span class="text-white font-black underline decoration-white/70">R97,000</span>). Lose = <span class="text-white font-black">R0</span> for all!
+            </p>
+</button>
+<button class="w-full group relative flex flex-col p-4 rounded-2xl bg-gradient-to-b from-[#B88EF5] via-sunset-purple to-[#945DE0] border-2 border-white/60 shadow-[0_6px_0_#7D4FC4] active:translate-y-1 active:shadow-[0_2px_0_#7D4FC4] transition-all text-left" id="pass-btn" type="button">
+<div class="flex items-center justify-between w-full mb-1">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-white text-[24px] drop-shadow-sm">shield</span>
+<span class="font-headline-sm text-headline-sm uppercase text-white drop-shadow-[0_2px_0_#6A3CB5] tracking-wide">PASS (R0 RISK)</span>
+</div>
+<span class="bg-white/30 text-white font-label-sm text-label-sm px-2.5 py-0.5 rounded-full border border-white/40 font-black">SAFE HARBOR</span>
+</div>
+<p class="font-body-sm text-body-sm text-white/95 pl-7 leading-normal font-medium drop-shadow-[0_1px_1px_rgba(0,0,0,0.2)]">
+              Keep current <span class="text-white font-black underline decoration-white/70">R48,500</span> intact. Your turn locks securely.
+            </p>
+</button>
+</div>
+</div>
+<div class="w-full bg-[#FFF5ED] rounded-2xl p-3.5 flex flex-col gap-2.5 border border-[#FAD8C3]">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sunset-coral text-[20px]">group</span>
+<span class="font-label-md text-label-md text-warm-espresso font-black">Cohort Status: 4 of 6 locked</span>
+</div>
+<span class="material-symbols-outlined text-sunset-purple text-[18px]">visibility_off</span>
+</div>
+<p class="font-body-sm text-body-sm text-warm-chestnut italic font-medium">
+          Choices strictly confidential until Release Day!
+        </p>
+<div class="grid grid-cols-2 gap-2 pt-1">
+<div class="flex items-center gap-2 bg-white p-2 rounded-xl border border-sunset-orange/20 shadow-sm">
+<div class="w-7 h-7 rounded-full bg-success-green flex items-center justify-center text-white shadow-[0_2px_0_#15803D]">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-warm-espresso font-bold truncate">Lerato</span>
+<span class="font-label-sm text-label-sm text-success-green font-bold leading-none">Ready</span>
+</div>
+</div>
+<div class="flex items-center gap-2 bg-white p-2 rounded-xl border border-sunset-orange/20 shadow-sm">
+<div class="w-7 h-7 rounded-full bg-success-green flex items-center justify-center text-white shadow-[0_2px_0_#15803D]">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-warm-espresso font-bold truncate">Sipho</span>
+<span class="font-label-sm text-label-sm text-success-green font-bold leading-none">Ready</span>
+</div>
+</div>
+<div class="flex items-center gap-2 bg-white p-2 rounded-xl border border-sunset-orange/20 shadow-sm">
+<div class="w-7 h-7 rounded-full bg-success-green flex items-center justify-center text-white shadow-[0_2px_0_#15803D]">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-warm-espresso font-bold truncate">Mark</span>
+<span class="font-label-sm text-label-sm text-success-green font-bold leading-none">Ready</span>
+</div>
+</div>
+<div class="flex items-center gap-2 bg-white p-2 rounded-xl border border-sunset-orange/20 shadow-sm">
+<div class="w-7 h-7 rounded-full bg-success-green flex items-center justify-center text-white shadow-[0_2px_0_#15803D]">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-warm-espresso font-bold truncate">Amara</span>
+<span class="font-label-sm text-label-sm text-success-green font-bold leading-none">Ready</span>
+</div>
+</div>
+<div class="flex items-center gap-2 bg-white/70 p-2 rounded-xl border border-sunset-purple/25">
+<div class="w-7 h-7 rounded-full bg-gradient-to-b from-sunset-purple to-sunset-purple-shadow flex items-center justify-center text-white shadow-[0_2px_0_#7D4FC4] animate-spin">
+<span class="material-symbols-outlined text-[16px]">hourglass_top</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-warm-espresso font-bold truncate">Kevin</span>
+<span class="font-label-sm text-label-sm text-sunset-purple font-bold leading-none">Deciding...</span>
+</div>
+</div>
+<div class="flex items-center gap-2 bg-white/70 p-2 rounded-xl border border-sunset-purple/25">
+<div class="w-7 h-7 rounded-full bg-gradient-to-b from-sunset-purple to-sunset-purple-shadow flex items-center justify-center text-white shadow-[0_2px_0_#7D4FC4] animate-spin">
+<span class="material-symbols-outlined text-[16px]">hourglass_top</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-warm-espresso font-bold truncate">Zoe</span>
+<span class="font-label-sm text-label-sm text-sunset-purple font-bold leading-none">Deciding...</span>
+</div>
+</div>
+</div>
+<div class="w-full bg-white p-2.5 rounded-xl border border-sunset-orange/20 flex items-center justify-between mt-1 shadow-sm">
+<span class="font-label-sm text-label-sm text-warm-chestnut uppercase tracking-wider font-extrabold">GAMEPLAY REF</span>
+<img alt="UI Theme Visual Reference" class="w-16 h-8 object-cover rounded-lg shadow-sm border border-sunset-orange/30" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcQ8pEbGEdDkq0ZsfDuJKhgiVnxCHOb1xLA4NjYLQwpt2OgrelPxE2bKn_Ui0zSa0Ua3aEHZtH0n2h9cE1DC8ArODUykDLSRuIbsF50YvZE-2NljxAKntzoBOhs-zaUtI4RA5y_wqPrkyliuO5U-g1KrJAz2859VxkWsH_JVwzS-MDbO5vNuZKcAAInhUq2bZcdKG3QKlJTTUBXms74OdUX2RR_XhOD8AF5c4DNmcQN30CKWpqcDE4Uw"/>
+</div>
+</div>
+</div>
+</div>
+<div class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-warm-espresso/40 backdrop-blur-sm" id="confirm-modal">
+<div class="relative w-full max-w-xs bg-[#FFEEDF] rounded-3xl p-3 shadow-[0_8px_0_#E59A6E] border-2 border-white">
+<div class="w-full bg-[#FFF9F5] rounded-2xl p-4 shadow-[inset_0_2px_6px_rgba(229,154,110,0.3)] border border-[#FAD8C3] flex flex-col items-center text-center gap-3">
+<div class="w-12 h-12 rounded-full flex items-center justify-center text-white" id="modal-icon-wrap">
+<span class="material-symbols-outlined text-[28px]" id="modal-icon">lock</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-warm-espresso uppercase font-black" id="modal-title">CONFIRM DECISION</span>
+<p class="font-body-md text-body-md text-warm-chestnut" id="modal-desc">Are you completely certain? Your vote is sealed in an escrow envelope.</p>
+<div class="flex gap-2 w-full pt-1">
+<button class="flex-1 py-2.5 rounded-xl bg-white border border-[#E59A6E] text-warm-chestnut font-label-md text-label-md shadow-[0_3px_0_#E59A6E] active:translate-y-0.5" id="modal-cancel-btn" type="button">Cancel</button>
+<button class="flex-1 py-2.5 rounded-xl bg-gradient-to-b from-sunset-orange to-sunset-coral text-white font-label-md text-label-md shadow-[0_3px_0_#C95209] active:translate-y-0.5 font-bold" id="modal-confirm-btn" type="button">Seal Vote</button>
+</div>
+</div>
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+    (function() {
+      // 3D Scene with Sunset Vibrant palette: Orange (#FF7626), Purple (#A879E8), and Coral Pink (#FF7185)
+      const container = document.getElementById('three-canvas-container');
+      if (container && typeof THREE !== 'undefined') {
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        container.appendChild(renderer.domElement);
+
+        camera.position.z = 25;
+
+        // Sunset Vibrant Candy Palette: Orange (#FF7626), Purple (#A879E8), Coral Pink (#FF7185)
+        const sunsetPalette = [0xFF7626, 0xA879E8, 0xFF7185, 0xFFA05C, 0xC094F7];
+        const shapes = [];
+
+        for (let i = 0; i < 20; i++) {
+          const color = sunsetPalette[Math.floor(Math.random() * sunsetPalette.length)];
+          const mat = new THREE.MeshStandardMaterial({
+            color: color,
+            metalness: 0.15,
+            roughness: 0.25,
+            transparent: true,
+            opacity: 0.55
+          });
+
+          let geom;
+          const r = Math.random();
+          if (r < 0.35) {
+            geom = new THREE.DodecahedronGeometry(0.75 + Math.random() * 0.6);
+          } else if (r < 0.70) {
+            geom = new THREE.CylinderGeometry(0.9, 0.9, 0.3, 16); // coin-like
+          } else {
+            geom = new THREE.OctahedronGeometry(0.85);
+          }
+
+          const mesh = new THREE.Mesh(geom, mat);
+          mesh.position.x = (Math.random() - 0.5) * 24;
+          mesh.position.y = (Math.random() - 0.5) * 36;
+          mesh.position.z = (Math.random() - 0.5) * 12;
+          mesh.rotation.x = Math.random() * Math.PI;
+          mesh.rotation.y = Math.random() * Math.PI;
+
+          const speed = {
+            rx: (Math.random() - 0.5) * 0.015,
+            ry: (Math.random() - 0.5) * 0.015,
+            vy: 0.007 + Math.random() * 0.012
+          };
+
+          shapes.push({ mesh, speed });
+          scene.add(mesh);
+        }
+
+        const ambLight = new THREE.AmbientLight(0xfff5ee, 0.95);
+        scene.add(ambLight);
+
+        const dirLight = new THREE.DirectionalLight(0xffeedd, 0.9);
+        dirLight.position.set(6, 14, 10);
+        scene.add(dirLight);
+
+        function animate() {
+          requestAnimationFrame(animate);
+          shapes.forEach(item => {
+            item.mesh.rotation.x += item.speed.rx;
+            item.mesh.rotation.y += item.speed.ry;
+            item.mesh.position.y += item.speed.vy;
+            if (item.mesh.position.y > 18) {
+              item.mesh.position.y = -18;
+              item.mesh.position.x = (Math.random() - 0.5) * 24;
+            }
+          });
+          renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+      }
+
+      const doubleBtn = document.getElementById('double-btn');
+      const passBtn = document.getElementById('pass-btn');
+      const modal = document.getElementById('confirm-modal');
+      const modalCancel = document.getElementById('modal-cancel-btn');
+      const modalConfirm = document.getElementById('modal-confirm-btn');
+      const modalIconWrap = document.getElementById('modal-icon-wrap');
+      const modalIcon = document.getElementById('modal-icon');
+      const modalTitle = document.getElementById('modal-title');
+      const modalDesc = document.getElementById('modal-desc');
+
+      let currentChoice = null;
+
+      function openModal(type) {
+        currentChoice = type;
+        if (type === 'double') {
+          modalIconWrap.className = "w-12 h-12 rounded-full flex items-center justify-center text-white bg-gradient-to-b from-sunset-orange to-sunset-coral shadow-[0_3px_0_#C95209]";
+          modalIcon.textContent = "bolt";
+          modalTitle.textContent = "DOUBLE OR BUST?";
+          modalDesc.textContent = "You are entering the high-risk Quiz Arena. A win doubles the R48,500 group fund to R97,000. A loss wipes out everything!";
+        } else {
+          modalIconWrap.className = "w-12 h-12 rounded-full flex items-center justify-center text-white bg-gradient-to-b from-sunset-purple to-sunset-purple-shadow shadow-[0_3px_0_#7D4FC4]";
+          modalIcon.textContent = "shield";
+          modalTitle.textContent = "PASS SAFELY?";
+          modalDesc.textContent = "You choose peace of mind. R48,500 stays safe and protected in the vault for the squad.";
+        }
+        modal.classList.remove('hidden');
+      }
+
+      doubleBtn.addEventListener('click', () => openModal('double'));
+      passBtn.addEventListener('click', () => openModal('pass'));
+      modalCancel.addEventListener('click', () => modal.classList.add('hidden'));
+
+      modalConfirm.addEventListener('click', () => {
+        modal.classList.add('hidden');
+        if (currentChoice === 'double') {
+          const arenaLink = document.querySelector('nav a[data-path="quiz-arena"]');
+          if (arenaLink) arenaLink.click();
+        } else {
+          const groupLink = document.querySelector('nav a[data-path="wishlist-group"]');
+          if (groupLink) groupLink.click();
+        }
+      });
+
+      let seconds = 4 * 3600 + 18 * 60 + 22;
+      const timerEl = document.getElementById('countdown-timer');
+      setInterval(() => {
+        if (seconds > 0) {
+          seconds--;
+          const h = String(Math.floor(seconds / 3600)).padStart(2, '0');
+          const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
+          const s = String(seconds % 60).padStart(2, '0');
+          timerEl.textContent = `${h}:${m}:${s}`;
+        }
+      }, 1000);
+    })();
+  </script>
+</div></main><nav class="fixed bottom-0 w-full z-50 pb-safe" data-active-classes="bg-gradient-to-b from-sunset-orange to-sunset-coral text-white shadow-[0_4px_0_#C95209] -translate-y-1"><div class="max-w-md mx-auto px-gutter-mobile py-2 bg-white/90 backdrop-blur-xl border-t border-sunset-orange/20 shadow-lg"><div class="flex justify-between items-center bg-[#FFF2EB] p-1.5 rounded-2xl border border-sunset-coral/20"><a class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] flex-1 py-1 rounded-xl text-warm-chestnut hover:text-sunset-orange transition-transform duration-100 font-bold" data-path="wishlist-group" href="#"><span class="material-symbols-outlined text-[22px]">featured_seasonal_and_gifts</span><span class="font-label-sm text-label-sm mt-0.5">Group</span></a><a aria-current="page" class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] flex-1 py-1 rounded-xl transition-transform duration-100 bg-gradient-to-b from-sunset-orange to-sunset-coral text-white shadow-[0_4px_0_#C95209] -translate-y-1" data-path="double-or-pass" href="#"><span class="material-symbols-outlined text-[22px]">local_fire_department</span><span class="font-label-sm text-label-sm mt-0.5 font-bold">Play</span></a><a class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] flex-1 py-1 rounded-xl text-warm-chestnut hover:text-sunset-orange transition-transform duration-100 font-bold" data-path="quiz-arena" href="#"><span class="material-symbols-outlined text-[22px]">psychology</span><span class="font-label-sm text-label-sm mt-0.5">Arena</span></a><a class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] flex-1 py-1 rounded-xl text-warm-chestnut hover:text-sunset-orange transition-transform duration-100 font-bold" data-path="results-reveal" href="#"><span class="material-symbols-outlined text-[22px]">emoji_events</span><span class="font-label-sm text-label-sm mt-0.5">Reveal</span></a><a class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] flex-1 py-1 rounded-xl text-warm-chestnut hover:text-sunset-orange transition-transform duration-100 font-bold" data-path="history-rules" href="#"><span class="material-symbols-outlined text-[22px]">menu_book</span><span class="font-label-sm text-label-sm mt-0.5">Rules</span></a></div></div></nav>
+</body></html>

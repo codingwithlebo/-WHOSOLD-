@@ -49,7 +49,11 @@ describe('GroupsDashboard', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Create group' }))
 
     expect(onCreateGroup).not.toHaveBeenCalled()
-    expect(screen.getByRole('alert')).toHaveTextContent('Enter a group name.')
+    const groupName = screen.getByLabelText('Group name')
+    const error = screen.getByRole('alert')
+    expect(error).toHaveTextContent('Enter a group name.')
+    expect(groupName).toHaveAttribute('aria-invalid', 'true')
+    expect(groupName).toHaveAttribute('aria-describedby', error.id)
   })
 
   it('normalizes join codes and rejects invalid codes before calling the service', async () => {
@@ -60,9 +64,11 @@ describe('GroupsDashboard', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Join group' }))
 
     expect(onJoinGroup).not.toHaveBeenCalled()
-    expect(screen.getByRole('alert')).toHaveTextContent(
-      'Enter a valid 6-character group code.',
-    )
+    const joinCode = screen.getByLabelText('Join code')
+    const error = screen.getByRole('alert')
+    expect(error).toHaveTextContent('Enter a valid 6-character group code.')
+    expect(joinCode).toHaveAttribute('aria-invalid', 'true')
+    expect(joinCode).toHaveAttribute('aria-describedby', error.id)
 
     await userEvent.clear(screen.getByLabelText('Join code'))
     await userEvent.type(screen.getByLabelText('Join code'), 'ab12cd')
@@ -102,6 +108,20 @@ describe('GroupsDashboard', () => {
     ).not.toBeInTheDocument()
   })
 
+  it('keeps form controls in keyboard order', async () => {
+    const user = userEvent.setup()
+    renderGroups()
+
+    await user.tab()
+    expect(screen.getByLabelText('Group name')).toHaveFocus()
+    await user.tab()
+    expect(screen.getByRole('button', { name: 'Create group' })).toHaveFocus()
+    await user.tab()
+    expect(screen.getByLabelText('Join code')).toHaveFocus()
+    await user.tab()
+    expect(screen.getByRole('button', { name: 'Join group' })).toHaveFocus()
+  })
+
   it('links each group to its round history', () => {
     renderGroups({ groups: [sampleGroup] })
 
@@ -126,5 +146,9 @@ describe('GroupsDashboard', () => {
     expect(
       await screen.findByRole('button', { name: 'Copied' }),
     ).toBeInTheDocument()
+    expect(await screen.findByText('Join code copied.')).toHaveAttribute(
+      'role',
+      'status',
+    )
   })
 })

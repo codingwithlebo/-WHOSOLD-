@@ -35,6 +35,8 @@ export default function GroupsDashboard({
   const [groupName, setGroupName] = useState('')
   const [joinCode, setJoinCode] = useState('')
   const [error, setError] = useState<string | null>(null)
+  const [groupNameError, setGroupNameError] = useState<string | null>(null)
+  const [joinCodeError, setJoinCodeError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
   const [copiedGroupId, setCopiedGroupId] = useState<string | null>(null)
 
@@ -42,10 +44,14 @@ export default function GroupsDashboard({
     event.preventDefault()
     const name = groupName.trim()
     if (!name) {
-      setError('Enter a group name.')
+      setError(null)
+      setGroupNameError('Enter a group name.')
+      setJoinCodeError(null)
       return
     }
 
+    setGroupNameError(null)
+    setJoinCodeError(null)
     setBusy(true)
     setError(null)
     try {
@@ -63,10 +69,14 @@ export default function GroupsDashboard({
     event.preventDefault()
     const code = joinCode.trim().toUpperCase()
     if (!/^[A-Z0-9]{6}$/.test(code)) {
-      setError('Enter a valid 6-character group code.')
+      setError(null)
+      setGroupNameError(null)
+      setJoinCodeError('Enter a valid 6-character group code.')
       return
     }
 
+    setGroupNameError(null)
+    setJoinCodeError(null)
     setBusy(true)
     setError(null)
     try {
@@ -133,14 +143,20 @@ export default function GroupsDashboard({
           </p>
           <form
             className="mt-5 space-y-4"
+            noValidate
             onSubmit={(event) => void handleCreate(event)}
           >
             <TextField
               autoComplete="off"
+              error={groupNameError ?? undefined}
               label="Group name"
               maxLength={50}
-              onChange={(event) => setGroupName(event.target.value)}
+              onChange={(event) => {
+                setGroupName(event.target.value)
+                setGroupNameError(null)
+              }}
               placeholder="The Wednesday crew"
+              required
               value={groupName}
             />
             <Button disabled={busy} type="submit" variant="primary">
@@ -156,15 +172,21 @@ export default function GroupsDashboard({
           </p>
           <form
             className="mt-5 space-y-4"
+            noValidate
             onSubmit={(event) => void handleJoin(event)}
           >
             <TextField
               autoCapitalize="characters"
               autoComplete="off"
+              error={joinCodeError ?? undefined}
               label="Join code"
               maxLength={6}
-              onChange={(event) => setJoinCode(event.target.value)}
+              onChange={(event) => {
+                setJoinCode(event.target.value)
+                setJoinCodeError(null)
+              }}
               placeholder="ABC123"
+              required
               value={joinCode}
             />
             <Button disabled={busy} type="submit" variant="secondary">
@@ -193,17 +215,21 @@ export default function GroupsDashboard({
             {groups.map((group) => (
               <li key={group.id}>
                 <Card className="h-full p-5">
-                  <h3 className="text-lg font-bold">{group.name}</h3>
+                  <h3 className="text-lg font-bold [overflow-wrap:anywhere]">
+                    {group.name}
+                  </h3>
                   <p className="mt-2 text-sm text-slate-300">
                     {group.members.length} of 10 members
                   </p>
                   <ul aria-label={`${group.name} members`} className="mt-2">
                     {group.members.map((member) => (
-                      <li key={member}>{member}</li>
+                      <li className="[overflow-wrap:anywhere]" key={member}>
+                        {member}
+                      </li>
                     ))}
                   </ul>
                   <div className="mt-4 flex flex-wrap items-center gap-2">
-                    <span className="font-mono tracking-widest">
+                    <span className="select-all font-mono tracking-widest">
                       {group.joinCode}
                     </span>
                     <Button
@@ -213,6 +239,9 @@ export default function GroupsDashboard({
                     >
                       {copiedGroupId === group.id ? 'Copied' : 'Copy code'}
                     </Button>
+                    <span className="sr-only" role="status">
+                      {copiedGroupId === group.id ? 'Join code copied.' : ''}
+                    </span>
                   </div>
                   <p className="mt-3 text-sm text-slate-300">
                     {group.isLocked ? 'Group locked' : 'Open to new members'}
