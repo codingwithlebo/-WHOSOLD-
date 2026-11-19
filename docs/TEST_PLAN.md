@@ -70,6 +70,20 @@ against a local Supabase with every migration applied.
   visitors cannot call `create_group`.
 - Deleting a group deletes its member rows.
 
+`wishlist_items.test.sql` covers:
+
+- The table exists, RLS is enabled, and logged-out visitors cannot read it.
+- A member can add, edit and delete their own items; names are trimmed and
+  the item is recorded as theirs (it cannot be added in someone else's name).
+- The leader can edit any item; other members cannot edit or delete items
+  they did not add.
+- Members see every item in their group, and the fund is the sum of prices.
+- Outsiders cannot see, add or delete the group's items.
+- Blank names, a zero price, prices over R10 million and a 51st item are
+  rejected with player-friendly messages.
+- Nobody can change who added an item or move it to another group.
+- Deleting a group deletes its wishlist.
+
 Every new table or RPC needs at least one "allowed" and one "denied" test.
 
 ## Manual check on the live link (Phase 1)
@@ -88,6 +102,9 @@ Every new table or RPC needs at least one "allowed" and one "denied" test.
 3. Log in as Alice and lock Demo Crew. A new account then gets
    "This group is locked, so no new members can join."
 4. Create a group as any user: a 6-character code appears and can be copied.
+5. As Bob in Demo Crew, the wishlist shows two items and a fund of
+   R27 499.00. Add, edit and delete your own item; Alice's item cannot be
+   changed. As Alice, edit Bob's item.
 
 ## Planned coverage
 

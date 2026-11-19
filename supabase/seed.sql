@@ -93,3 +93,12 @@ values
   ('d0d0d0d0-0000-4000-8000-000000000001', 'a1a1a1a1-0000-4000-8000-000000000001'),
   ('d0d0d0d0-0000-4000-8000-000000000001', 'b2b2b2b2-0000-4000-8000-000000000002')
 on conflict do nothing;
+
+-- Demo wishlist for Demo Crew (fund: R27 499.00).
+insert into public.wishlist_items (id, group_id, added_by, name, price_cents)
+values
+  ('e0e0e0e0-0000-4000-8000-000000000001', 'd0d0d0d0-0000-4000-8000-000000000001',
+   'a1a1a1a1-0000-4000-8000-000000000001', 'Weekend in Cape Town', 1850000),
+  ('e0e0e0e0-0000-4000-8000-000000000002', 'd0d0d0d0-0000-4000-8000-000000000001',
+   'b2b2b2b2-0000-4000-8000-000000000002', 'Noise-cancelling headphones', 899900)
+on conflict (id) do nothing;

@@ -1,5 +1,5 @@
 // Database types in the format produced by `supabase gen types typescript`.
-// Written by hand for the profiles and groups migrations (no Docker was
+// Written by hand for the profiles, groups and wishlist migrations (no Docker was
 // available); regenerate after every migration with `npm run db:types`
 // (needs the local Supabase stack running) when Docker is available.
 
@@ -99,6 +99,48 @@ export type Database = {
           id?: string
         }
         Relationships: []
+      }
+      wishlist_items: {
+        Row: {
+          added_by: string
+          created_at: string
+          group_id: string
+          id: string
+          name: string
+          price_cents: number
+        }
+        Insert: {
+          added_by?: string
+          created_at?: string
+          group_id: string
+          id?: string
+          name: string
+          price_cents: number
+        }
+        Update: {
+          added_by?: string
+          created_at?: string
+          group_id?: string
+          id?: string
+          name?: string
+          price_cents?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'wishlist_items_added_by_fkey'
+            columns: ['added_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'wishlist_items_group_id_fkey'
+            columns: ['group_id']
+            isOneToOne: false
+            referencedRelation: 'groups'
+            referencedColumns: ['id']
+          },
+        ]
       }
     }
     Views: {
