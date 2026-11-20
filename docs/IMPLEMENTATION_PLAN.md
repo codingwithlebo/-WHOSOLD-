@@ -54,7 +54,7 @@ The PRD left these open. They are the Tech Lead's proposals; the Product Owner c
 | Frontend | **React 18 + TypeScript + Vite**, **Tailwind CSS**, **React Router** | As proposed in the PRD; quick to build, easy to deploy as a static site |
 | Data fetching | **TanStack Query** over the Supabase JS client | Caching, loading and error states without hand-written code |
 | Backend | **Supabase only**: Postgres, Auth, Row Level Security (RLS) and Postgres functions (RPC). **No separate Express server.** | Changed from the PRD. One less service to build, host and secure. Server-side rules (quiz scoring, hidden results) live in `security definer` functions that the browser can call but not bypass |
-| Scheduling | **`pg_cron`** job every minute that resolves rounds whose window has closed, plus a "resolve if due" check when a reveal is requested | No extra worker to host |
+| Scheduling | Resolve a due round on the first `get_group_round` or `get_reveal` request after its release time | No extra worker or hosted `pg_cron` extension required |
 | Auth | **Supabase email + password** (email confirmation off for the demo) | Simple, satisfies the "log-in" requirement |
 | Tests | **Vitest + React Testing Library** (frontend unit and component), **pgTAP via `supabase test db`** (schema, RLS, functions), **Playwright** (one end-to-end happy path) | Each layer is tested where its logic lives |
 | Lint and format | ESLint (typescript-eslint, react-hooks) + Prettier | |
@@ -89,9 +89,9 @@ The PRD left these open. They are the Tech Lead's proposals; the Product Owner c
    ├── Auth            sign up, log in, sessions
    ├── PostgREST       table reads/writes, filtered by RLS
    ├── RPC functions   create_group, join_group, start_round, submit_choice,
-   │                   start_quiz, answer_question, get_round_status, get_reveal
+   │                   start_quiz, answer_question, get_group_round, get_reveal
    ├── Postgres        tables + RLS policies
-   └── pg_cron         resolve_due_rounds() every minute
+   └── Round resolution runs on the first authorized read after release
 ```
 
 **Golden rule:** anything that decides the game (choices, quiz answers, scores, outcome) is written and read **only through RPC functions**. The browser never gets a direct `select` on the correct answers, on other members' choices or on quiz results before release time. This is enforced by RLS and covered by tests.
@@ -180,8 +180,7 @@ Money is stored as **integer cents** to avoid rounding errors. The UI formats it
 | `submit_choice(round_id, choice)` | Records Pass or Double | Member; window open; one choice only |
 | `start_quiz(round_id)` | Creates the attempt with 5 random questions; returns question 1 (no answer) | Caller chose Double; no attempt yet; window open |
 | `answer_question(attempt_id, chosen_index)` | Scores the current answer on the server and returns the next question (or "finished") | Attempt is the caller's; answered within 20 s of `served_at` (late = wrong); does **not** say whether the answer was correct |
-| `resolve_round(round_id)` | Applies the PRD section 5 rules; unanswered = Pass; unfinished quiz = lost | Internal; idempotent |
-| `resolve_due_rounds()` | Resolves every round past `closes_at` | Called by `pg_cron` |
+| `private.resolve_round(round_id)` | Applies the PRD section 5 rules; unanswered = Pass; unfinished quiz = lost | Internal; idempotent; called after `release_at` |
 | `get_reveal(round_id)` | Returns outcome, final fund and the per-member breakdown | Member; `now() ≥ release_at` (resolves first if needed); otherwise error |
 | `get_history(group_id)` | Past resolved rounds with outcomes | Member (Should) |
 
@@ -333,7 +332,7 @@ Live link with **log-in (M1)**, the **database** and **groups + wishlist (M2, M3
 
 | Task |
 |------|
-| 6.1 Database (Mandla): migration for `resolve_round`, `resolve_due_rounds`, `get_reveal`; Ntokozo owns the operational schedule/release configuration |
+| 6.1 Database (Mandla): `private.resolve_round` and `get_reveal`; `get_group_round`/`get_reveal` resolve after release on an authorized request, without a cron job |
 | 6.2 Reveal screen: before `release_at` show a countdown; after it, show the outcome (Intact / Grown / Lost), the fund before and after, and the named breakdown |
 | 6.3 Unlock the wishlist for the next round after resolution |
 
@@ -343,7 +342,8 @@ Live link with **log-in (M1)**, the **database** and **groups + wishlist (M2, M3
 - Component: the reveal screen renders each outcome correctly.
 
 **Acceptance criteria**
-- After `closes_at` the round is resolved automatically within one minute.
+- After `release_at`, the first authorized round or reveal request resolves
+  the round on the server.
 - Before `release_at`, nothing about the outcome can be fetched; after it, every member sees the same result.
 
 ### Phase 7 — Should features, polish & release (Wed 18 – Thu 19 Nov)
@@ -505,7 +505,7 @@ Migrations are applied to the hosted project by the Tech Lead with `supabase db 
 | Risk | Mitigation |
 |------|------------|
 | RLS mistakes leak choices or answers | Answers are in a table with no policies; results come only from RPCs; deny tests in pgTAP; QA checks the network tab |
-| `pg_cron` not available or failing | `get_reveal` and `get_round_status` call `resolve_round` themselves when it is due, so the game still works |
+| No background scheduler runs | `get_group_round` and `get_reveal` resolve a due round on the first authorized request after release |
 | Migration conflicts between branches | Pull `main` before creating a migration; one migration per PR; Tech Lead reviews every migration |
 | Timezone bugs | Store all times as `timestamptz` (UTC); display in SAST (`Africa/Johannesburg`); test boundary times |
 | Waiting 24 hours to demo a round | Leader can pick a 5-minute window and release time |
@@ -526,7 +526,7 @@ Every requirement in the [PRD](PRD.md) maps to a phase and to the tests that pro
 | FR-2 | Join a group by code with a display name | Must | 1, 2 | pgTAP: `join_group` rules; component: join form |
 | FR-3 | Shared wishlist (add, edit, remove) | Must | 3 | pgTAP: wishlist RLS; component: item CRUD |
 | FR-4 | Calculate and display the fund total | Must | 3 | Unit: `formatRand`; component: total updates |
-| FR-5 | Scheduled play window | Must | 4, 6 | pgTAP: `start_round` time checks, choice after close fails; `pg_cron` resolution |
+| FR-5 | Scheduled play window | Must | 4, 6 | pgTAP: `start_round` time checks, choice after close fails; server resolution after release |
 | FR-6 | Private Double/Pass, stored server-side, hidden | Must | 4 | pgTAP: own-row-only select; `get_round_status` hides others |
 | FR-7 | Quiz for Double (bank, one attempt, timed) | Must | 5 | pgTAP: one attempt, 20 s limit |
 | FR-8 | Server-side scoring, answers never sent early | Must | 5 | pgTAP: `question_answers` unreadable; RPC never returns answers; manual network check |
@@ -546,7 +546,7 @@ Every requirement in the [PRD](PRD.md) maps to a phase and to the tests that pro
 |-----|-----------------------|-------|
 | Fairness & integrity | All decisions in `security definer` RPCs; RLS deny tests; network-tab check in the test plan | 4–6 |
 | Anti-cheating (quiz) | One attempt, server-timed (`served_at`), one question at a time, random selection, answers in a table with no policies | 5 |
-| Scheduling (single timezone, server decides) | `timestamptz` + `pg_cron`; displayed in SAST; boundary tests | 4, 6 |
+| Scheduling (single timezone, server decides) | `timestamptz`; displayed in SAST; server-side boundary checks and lazy release resolution | 4, 6 |
 | Performance (< 2 s) | TanStack Query caching; single RPC per screen action; checked in manual QA | All |
 | Responsiveness (≥ 360 px) | Tailwind mobile-first; 360 px check against designs | 7 |
 | Accessibility (WCAG 2.1 AA) | Labelled inputs, focus states, contrast and keyboard pass | 7 |
