@@ -234,3 +234,30 @@ profile creation or deployment environment variables are correct.
 9. Record the deployment URL, test account identifier (never its password),
    browser, date, and pass/fail result in the Phase 1 issue. Never commit test
    credentials or secrets.
+
+## Phase 10 — Group history acceptance (#46)
+
+**Ownership note:** Owethu is covering Malebo's unblocked QA-planning work to
+push project readiness while the team is unavailable. This is not a QA sign-off
+for the live integration.
+
+The `get_history` contract and UI preparation are merged, but the live RPC and
+round-resolution data are not. Use the contract fixture only in tests; the
+production route must continue to show its unavailable state until the backend
+is ready.
+
+| Scenario | Expected result | Evidence |
+|---|---|---|
+| Signed-in member requests their group's history | Only that group's resolved rounds whose release time has passed are returned. | Mandla's pgTAP coverage in #44; authorized-member smoke test after #44. |
+| Outsider or anonymous caller requests history | An outsider receives the non-member/not-found error; an anonymous caller is denied. No group existence is disclosed. | Mandla's pgTAP coverage in #44; do not mock away authorization in the live test. |
+| Active, unresolved, or unreleased round exists | It is absent from the response, and choices, quiz answers, scores, and unreleased outcomes are never exposed. | Mandla's pgTAP coverage in #44; inspect the live RPC response after #44. |
+| More than one eligible round exists | Rows are ordered by `resolved_at` descending, then `id` descending. | RPC ordering assertion in #44; adapter preserves response order. |
+| Member has no eligible rounds | RPC returns `[]`; the page shows “No resolved rounds for this group yet.” | [History service tests](../src/features/history/historyService.test.ts) and [page tests](../src/features/history/RoundHistoryPage.test.tsx). |
+| Eligible rows contain each outcome | Dates, `Intact` / `Grown` / `Lost` labels, and starting/final Rand totals match the contract values. | History service and page tests; the contract fixture is test-only. |
+| History request is loading or fails | Loading is announced; errors are announced and a retry action is available. | Page tests for `role="status"`, `role="alert"`, and retry behavior. |
+| Keyboard, screen reader, and narrow viewport | Back navigation and retry are keyboard reachable with visible focus; status/error messages are announced; content remains usable at 360px. | Manual accessibility and responsive check after live data is available. |
+
+**Readiness boundary:** The contract-mapping and page-state tests can run now.
+Database authorization/filtering and the Supabase-enabled preview smoke test
+remain blocked on #44 and the preview setup in #26. Do not mark the history
+flow live or complete based only on fixture-backed tests.
