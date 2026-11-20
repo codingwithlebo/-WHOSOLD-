@@ -9,6 +9,7 @@ import {
   loadWishlist,
   updateWishlistItem,
 } from '../wishlist/wishlistService'
+import GroupRoundLauncher from '../round/GroupRoundLauncher'
 import { loadGroup, type GroupSummary } from './groupService'
 
 const UUID_PATTERN = /^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/i
@@ -155,6 +156,13 @@ export default function GroupPage() {
         <span aria-hidden="true">·</span>
         <strong>{group.members.length} members</strong>
       </div>
+      <GroupRoundLauncher
+        group={group}
+        startingFundCents={items.reduce(
+          (total, item) => total + item.priceCents,
+          0,
+        )}
+      />
       <WishlistPanel
         items={items}
         onAddItem={(name, priceCents) =>

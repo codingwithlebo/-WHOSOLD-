@@ -57,15 +57,15 @@ The full player-facing copy, privacy rules and timing live in [`docs/round-ux-co
 
 ## What works today
 
-| Feature                                                                                     | Status                                                                                                                                    |
-| ------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| Sign up, log in, log out (Supabase Auth)                                                    | Working on the live link                                                                                                                  |
-| Create a group, join with a code, lock a group                                              | Working                                                                                                                                   |
-| Group wishlist: add, edit, delete, running fund total                                       | Working                                                                                                                                   |
-| Row-level security: members only see their own groups and wishlists                         | Working, tested in CI                                                                                                                     |
-| Double or Pass screens (choice, confirmation, submitted, schedule in SAST, disabled states) | UI shell merged; preview route is pending review in [PR #58](https://github.com/codingwithlebo/-WHOSOLD-/pull/58). Choices are not saved. |
-| Saving choices, quiz scoring, release-day reveal                                            | Not built yet                                                                                                                             |
-| Round history                                                                               | Waits for saved round data                                                                                                                |
+| Feature                                                               | Status                                                                                                           |
+| --------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Sign up, log in, log out (Supabase Auth)                              | Working on the live link                                                                                         |
+| Create a group, join with a code, lock a group                        | Working                                                                                                          |
+| Group wishlist: add, edit, delete, running fund total                 | Working                                                                                                          |
+| Row-level security: members only see their own groups and wishlists   | Working, tested in CI                                                                                            |
+| Live Double or Pass rounds, private choices and server-scored quizzes | Implemented in the gameplay PR; the Supabase migration must be applied before this is available on the live app. |
+| Release-time resolution and named results                             | Implemented in the gameplay PR; results resolve on request after the scheduled release time.                     |
+| Round history                                                         | Waits for saved round data                                                                                       |
 
 ## Tech stack
 
@@ -117,6 +117,7 @@ The database is built from the repo, not by hand. Every change is a file in `sup
 | `20261115120000_profiles.sql`       | Player profiles, with a trigger that creates one on sign-up                      |
 | `20261119120000_groups.sql`         | Groups, members, and the `create_group`, `join_group` and `lock_group` functions |
 | `20261119130000_wishlist_items.sql` | The wishlist and its rules                                                       |
+| `20261120100000_round_gameplay.sql` | Private rounds and choices, server-scored quizzes, and release-time results      |
 
 - `supabase/seed.sql` adds the demo data: Alice, Bob and Cara, and the Demo Crew group (code `DEMO42`).
 - `supabase/tests/` has pgTAP tests for every rule (what is allowed and what is denied).
@@ -164,5 +165,5 @@ The database is built from the repo, not by hand. Every change is a file in `sup
 
 ## Known limitations
 
-- The Double or Pass UI shell is merged, but its preview route is still under review in PR #58. Choices are not saved and the quiz is not built yet.
+- The live gameplay implementation is in review and is not deployed yet. Its database migration must be applied to the hosted Supabase project before the live app can start rounds.
 - Round history and the release-day reveal depend on the saved round data.

@@ -15,7 +15,7 @@ npm run build
 
 The current unit tests cover:
 
-- App routes: landing page, the Double or Pass preview, and unknown routes.
+- App routes: landing page, protected group/round/quiz routes, and unknown routes.
 - Money helpers: `formatRand` and `parseRandToCents`.
 - Auth: form validation, log-in and sign-up pages, and `ProtectedRoute`.
 - The landing-page demo reducer (win doubles, loss wipes, pass keeps).
@@ -26,6 +26,8 @@ The current unit tests cover:
   the fund total.
 - Round history: the page renders, but its route stays hidden until rounds
   exist (Phase 10).
+- Live rounds: scheduling eligibility, private choice submission, timed quiz
+  progress, idempotent answer retries, and release results.
 
 3D scenes are decorative and are not unit-tested: jsdom has no WebGL, so tests
 render the static fallback instead. Check them manually (see below).
@@ -145,11 +147,11 @@ absence as a passing test.
 
 ## Phase 4 — Round UI acceptance (frontend slice)
 
-**Ownership note:** Owethu is covering Malebo's currently unblocked Phase 4 UI
-slice to push project readiness while the team is unavailable. This is not a
-live-round QA sign-off. The round UI components are not connected to a backend
-or exposed as a production route until Mandla's round contract and functions
-are available.
+**Ownership note:** Owethu is covering Malebo's Phase 4 UI integration and
+Mandla's missing gameplay backend dependency to push project readiness while
+the team is unavailable. This is not a live-round QA sign-off. The gameplay
+branch adds server-authoritative rounds, choices, quizzes and release results;
+CI and hosted-Supabase migration still need to pass before live validation.
 
 | Area | Scenario | Expected result | Evidence |
 |---|---|---|---|
@@ -160,6 +162,26 @@ are available.
 | Privacy | View a round before release | Only the aggregate answered count and the current member's own choice are shown; no member-by-member choice state is rendered | `RoundPage` component test |
 | Timing | Visit before open, while open, and after close | Choices are unavailable outside the open window; the open window shows a countdown and answered count | `RoundPage` component tests |
 | Failure | The round service rejects schedule creation or choice submission | A readable error is displayed and retry remains possible | Component failure-state tests |
+| Quiz | Retry an answer after an ambiguous network failure | The same question response is returned; the next question is not answered twice | `round_gameplay.test.sql` |
+| Resolution | A Double choice has no passing quiz at release | The server resolves the fund as lost; results remain private until release | `round_gameplay.test.sql` |
+
+### Hosted gameplay smoke (after applying the migration)
+
+Use a new disposable group and test accounts; do not lock or change Demo Crew.
+The gameplay PR is not live-validated until its migration is applied to hosted
+Supabase.
+
+1. Create a group with two members, add wishlist items, lock it, and schedule a
+   short test round.
+2. Confirm both members see the round, but each sees only their own choice and
+   the aggregate response count.
+3. Choose Double for one member and verify a refresh resumes the same quiz
+   question with its remaining server-side time.
+4. Before release, confirm the quiz score and other members' choices remain
+   hidden.
+5. After release, open the round as both members and confirm they see the same
+   outcome, fund totals, and named member breakdown.
+6. Confirm the group can edit its wishlist after the released round is loaded.
 
 
 ## Phase 1 — Accounts and authentication acceptance

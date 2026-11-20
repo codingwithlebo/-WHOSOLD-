@@ -9,6 +9,7 @@ import GroupPage from './GroupPage'
 import { loadGroup, type GroupSummary } from './groupService'
 
 vi.mock('./groupService', () => ({ loadGroup: vi.fn() }))
+vi.mock('../round/GroupRoundLauncher', () => ({ default: () => null }))
 vi.mock('../wishlist/wishlistService', () => ({
   addWishlistItem: vi.fn(),
   deleteWishlistItem: vi.fn(),

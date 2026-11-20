@@ -15,6 +15,7 @@ interface RoundPageProps {
   memberCount: number
   myChoice: RoundChoice | null
   onSubmitChoice: (choice: RoundChoice) => Promise<void>
+  onTakeQuiz?: () => void
 }
 
 function choiceCopy(choice: RoundChoice) {
@@ -41,6 +42,7 @@ export default function RoundPage({
   memberCount,
   myChoice,
   onSubmitChoice,
+  onTakeQuiz,
 }: RoundPageProps) {
   const [now, setNow] = useState(0)
   const [confirmation, setConfirmation] = useState<RoundChoice | null>(null)
@@ -192,6 +194,16 @@ export default function RoundPage({
               {formatSastDateTime(releaseAt)} SAST.
             </p>
           </div>
+        ) : null}
+
+        {currentChoice === 'double' && onTakeQuiz ? (
+          <Button
+            className="w-full sm:w-auto"
+            onClick={onTakeQuiz}
+            variant="primary"
+          >
+            Open your quiz
+          </Button>
         ) : null}
 
         {!currentChoice && isOpen ? (
