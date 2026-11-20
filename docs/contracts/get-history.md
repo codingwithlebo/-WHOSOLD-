@@ -10,10 +10,11 @@ implemented yet; it is tracked in
 
 This document fixes the shape of the round-history call so the UI and QA can
 build against it now. The database function itself
-([#44](https://github.com/codingwithlebo/-WHOSOLD-/issues/44)) is **blocked**
-until rounds (Phase 4) and round resolution and release (Phase 6) exist. Until
-then the history route stays hidden and nothing in production returns sample
-data.
+([#44](https://github.com/codingwithlebo/-WHOSOLD-/issues/44)) is not
+implemented yet. The rounds and resolution schema merged in #61, but the
+database owner must resolve the durable `resolved_at` source field described
+below before implementing the accepted contract. Until the RPC is available,
+the history route stays hidden and nothing in production returns sample data.
 
 ## Call
 
