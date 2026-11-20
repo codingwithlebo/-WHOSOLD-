@@ -19,6 +19,8 @@ A group of friends gets their wishlist funded by a billionaire, but before the m
 - [Implementation Plan](docs/IMPLEMENTATION_PLAN.md)
 - [Phase 10 discovery proposal — group round history](docs/PHASE_10_DISCOVERY.md)
 - [Test Plan](docs/TEST_PLAN.md)
+- [Operations and release runbook](docs/OPERATIONS.md) (deploy, env, rollback, scheduled resolution, incidents)
+- [`get_reveal` API contract (proposed)](docs/contracts/get-reveal.md)
 - [Team delivery map](docs/TEAM.md)
 - [Mandla Sikhosana — delivery checklist](docs/team/mandla-sikhosana.md)
 - [Owethu Jezile — delivery checklist](docs/team/owethu-jezile.md)
@@ -103,6 +105,7 @@ Individual scripts:
 | `npm run typecheck`    | `tsc -b` across app and tooling projects                     |
 | `npm run test:ci`      | Vitest, single run (`npm test` for watch mode)               |
 | `npm run build`        | Typecheck + production Vite build                            |
+| `npm run check:dist`   | Fails if `dist/` contains secret keys or quiz-answer fields  |
 
 ### CI pipeline
 
@@ -111,7 +114,8 @@ Individual scripts:
 parallel:
 
 - **Lint workflows**: actionlint + shellcheck on the workflow files
-- **Format**, **Lint**, **Typecheck**, **Unit tests**, **Build** (uploads `dist/`)
+- **Format**, **Lint**, **Typecheck**, **Unit tests**, **Build** (runs
+  `check:dist`, then uploads `dist/`)
 - **Dependency audit**: registry signature check and `npm audit` (high+) on
   production dependencies
 - **Dependency review** (PRs only, needs the repo's Dependency graph enabled;
@@ -125,11 +129,20 @@ parallel:
 Actions are pinned to commit SHAs, the workflow token is read-only, and stale
 runs on the same PR are cancelled. Dependabot opens weekly grouped PRs for npm
 packages and actions.
-GitHub Actions runs these checks on pull requests to `main` and pushes to
-`main`. A second `db` job starts Supabase, applies every migration and
-`seed.sql`, and runs the pgTAP tests (`npm run db:test`).
 
-**Live deployment:** not configured yet.
+## Deployment and release
+
+The frontend is hosted on Vercel (preview per PR, production on merge to
+`main`); the database is the hosted Supabase project. Set
+`VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in Vercel for Production and
+Preview. Nothing else belongs in the frontend.
+
+**Live deployment:** _add the production URL here once the Vercel project is
+confirmed connected._
+
+Release checklist, live smoke test, rollback steps, scheduled-resolution
+monitoring, incident handling and current known issues are in the
+[operations runbook](docs/OPERATIONS.md).
 
 ## Contributing
 
