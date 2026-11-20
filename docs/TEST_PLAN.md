@@ -143,6 +143,24 @@ End-to-end browser tests (Playwright) are not set up yet; the live-link checks
 above are done by hand. Add Playwright coverage after the MVP; do not treat its
 absence as a passing test.
 
+## Phase 4 — Round UI acceptance (frontend slice)
+
+**Ownership note:** Owethu is covering Malebo's currently unblocked Phase 4 UI
+slice to push project readiness while the team is unavailable. This is not a
+live-round QA sign-off. The round UI components are not connected to a backend
+or exposed as a production route until Mandla's round contract and functions
+are available.
+
+| Area | Scenario | Expected result | Evidence |
+|---|---|---|---|
+| Schedule | Select the 5-minute, 1-hour or 24-hour preset | Opening, closing and release values are represented in SAST; the selected choice window has the preset duration | `StartRoundForm` component test |
+| Schedule | Submit a choice window shorter than 5 minutes or a release before close | A clear validation message is shown and no round is created | `StartRoundForm` component test |
+| Choice | Select Double or Pass, then go back from confirmation | No choice is submitted | `RoundPage` component test |
+| Choice | Confirm Double or Pass | The selected private choice is submitted once | `RoundPage` component test |
+| Privacy | View a round before release | Only the aggregate answered count and the current member's own choice are shown; no member-by-member choice state is rendered | `RoundPage` component test |
+| Timing | Visit before open, while open, and after close | Choices are unavailable outside the open window; the open window shows a countdown and answered count | `RoundPage` component tests |
+| Failure | The round service rejects schedule creation or choice submission | A readable error is displayed and retry remains possible | Component failure-state tests |
+
 
 ## Phase 1 — Accounts and authentication acceptance
 
