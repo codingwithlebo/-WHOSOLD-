@@ -6,6 +6,20 @@
 owns database tests and all database files; convert DB expectations into
 scenarios and coordinate their implementation with him.
 
+## Coverage status — 20 Nov 2026
+
+Owethu is covering Malebo's currently unblocked QA follow-through to push
+project readiness while the team is unavailable. Malebo remains the QA owner;
+Mandla retains database ownership.
+
+Issue #25 has been reopened because PR #34 documented Phase 1 acceptance cases
+but did not complete the live QA. The local auth/group test results and
+responsive smoke observations are recorded in the [test plan](../TEST_PLAN.md)
+and on [issue #25](https://github.com/codingwithlebo/-WHOSOLD-/issues/25).
+They do not complete the phase checklist. Hosted auth and groups/wishlist
+checks remain blocked until an authorized deployment URL or Vercel access is
+available. Keyboard-only traversal is also still outstanding.
+
 | Phase | Your deliverables |
 |---|---|
 | 1 — Accounts | [ ] Define auth acceptance and failure cases in the test plan. [ ] Verify sign-up, validation, session restore, protected routes and sign-out. [ ] Report reproducible defects with expected/actual results. |
