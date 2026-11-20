@@ -31,6 +31,15 @@ The current unit tests cover:
 - Live rounds: scheduling eligibility, private choice submission, timed quiz
   progress, idempotent answer retries, and release results.
 
+The Playwright browser tests cover 360px overflow on public routes, keyboard
+login validation, and—when configured with local Supabase—a seeded two-member
+flow that creates and joins a group, shares a wishlist item, locks the group,
+and starts a round. CI starts Supabase locally and uses only the test accounts
+from `supabase/seed.sql`; no hosted data is used. To run the authenticated
+browser flow locally, start Supabase with `npm run db:start`, then set
+`VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` from `supabase status -o env`
+in `.env.local` before running `npm run test:e2e`.
+
 3D scenes are decorative and are not unit-tested: jsdom has no WebGL, so tests
 render the static fallback instead. Check them manually (see below).
 
