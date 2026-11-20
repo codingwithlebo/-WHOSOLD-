@@ -207,3 +207,15 @@ profile creation or deployment environment variables are correct.
 9. Record the deployment URL, test account identifier (never its password),
    browser, date, and pass/fail result in the Phase 1 issue. Never commit test
    credentials or secrets.
+
+## Local UI smoke snapshot (20 Nov 2026)
+
+Owethu is covering Malebo's currently unblocked QA follow-through to push
+project readiness while the team is unavailable. These are local results, not
+live deployment or release sign-off.
+
+- `npm test -- --run` — passed (18 files, 76 tests).
+- `npm test -- --run src/features/auth/LoginPage.test.tsx src/features/groups/GroupsDashboard.test.tsx src/features/groups/GroupPage.test.tsx` — passed (3 files, 17 tests).
+- Local browser check at 360px, 768px and 1440px: `/`, `/login` and `/signup` had no horizontal overflow.
+- The login email and password inputs expose their matching accessible labels.
+- Keyboard-only traversal and hosted auth/groups/wishlist checks remain outstanding. The known hosted preview requires Vercel access; do not treat these local checks as evidence for hosted behavior.
