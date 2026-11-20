@@ -57,15 +57,15 @@ The full player-facing copy, privacy rules and timing live in [`docs/round-ux-co
 
 ## What works today
 
-| Feature                                                               | Status                                                                                                           |
-| --------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| Sign up, log in, log out (Supabase Auth)                              | Working on the live link                                                                                         |
-| Create a group, join with a code, lock a group                        | Working                                                                                                          |
-| Group wishlist: add, edit, delete, running fund total                 | Working                                                                                                          |
-| Row-level security: members only see their own groups and wishlists   | Working, tested in CI                                                                                            |
-| Live Double or Pass rounds, private choices and server-scored quizzes | Implemented in the gameplay PR; the Supabase migration must be applied before this is available on the live app. |
-| Release-time resolution and named results                             | Implemented in the gameplay PR; results resolve on request after the scheduled release time.                     |
-| Round history                                                         | Waits for saved round data                                                                                       |
+| Feature                                                               | Status                                                                                          |
+| --------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Sign up, log in, log out (Supabase Auth)                              | Working on the live link                                                                        |
+| Create a group, join with a code, lock a group                        | Working                                                                                         |
+| Group wishlist: add, edit, delete, running fund total                 | Working                                                                                         |
+| Row-level security: members only see their own groups and wishlists   | Working, tested in CI                                                                           |
+| Live Double or Pass rounds, private choices and server-scored quizzes | Merged in #61; the Supabase migration must be applied before this is available on the live app. |
+| Release-time resolution and named results                             | Merged in #61; results resolve on request after the scheduled release time.                     |
+| Round history                                                         | Waiting for the `get_history` RPC (#44) and live UI integration (#45)                           |
 
 ## Tech stack
 
@@ -165,5 +165,7 @@ The database is built from the repo, not by hand. Every change is a file in `sup
 
 ## Known limitations
 
-- The live gameplay implementation is in review and is not deployed yet. Its database migration must be applied to the hosted Supabase project before the live app can start rounds.
-- Round history and the release-day reveal depend on the saved round data.
+- Live gameplay code is merged in #61. The database owner must apply its migration to hosted Supabase before the live app can start rounds; production migration status has not been confirmed.
+- Round history awaits the live `get_history` RPC (#44) and UI integration
+  (#45). Live gameplay still requires the hosted Supabase migration to be
+  applied.
