@@ -71,6 +71,17 @@ describe('GroupPage', () => {
     expect(screen.getByText(group.name)).toBeInTheDocument()
     expect(screen.getByText('Open to new members')).toBeInTheDocument()
     expect(screen.getByText('2 members')).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { name: 'Try the game preview' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText(
+        'Live rounds are not connected to groups yet. This preview uses demo data, and choices are not saved.',
+      ),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: 'Open demo preview' }),
+    ).toHaveAttribute('href', `/groups/${group.id}/round`)
     expect(screen.getAllByText('R1 250.50')).toHaveLength(3)
 
     await userEvent.type(screen.getByLabelText('Item name'), 'A book')

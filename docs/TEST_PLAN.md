@@ -147,9 +147,9 @@ absence as a passing test.
 
 **Ownership note:** Owethu is covering Malebo's currently unblocked Phase 4 UI
 slice to push project readiness while the team is unavailable. This is not a
-live-round QA sign-off. The round UI components are not connected to a backend
-or exposed as a production route until Mandla's round contract and functions
-are available.
+live-round QA sign-off. Group details link to a protected demo preview, but it
+uses static data and is not connected to a backend. Live rounds remain
+unavailable until the round schema and RPC functions are implemented.
 
 | Area | Scenario | Expected result | Evidence |
 |---|---|---|---|

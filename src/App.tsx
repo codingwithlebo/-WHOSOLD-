@@ -8,6 +8,7 @@ import SignupPage from './features/auth/SignupPage'
 import DashboardPage from './features/dashboard/DashboardPage'
 import GroupPage from './features/groups/GroupPage'
 import HomePage from './features/landing/HomePage'
+import RoundPreviewPage from './features/round/RoundPreviewPage'
 import NotFoundPage from './pages/NotFoundPage'
 
 /** Signed-in users skip the log-in and sign-up pages. */
@@ -42,6 +43,10 @@ export default function App() {
           <Route element={<ProtectedRoute />}>
             <Route element={<DashboardPage />} path="dashboard" />
             <Route element={<GroupPage />} path="groups/:groupId" />
+            <Route
+              element={<RoundPreviewPage />}
+              path="groups/:groupId/round"
+            />
           </Route>
           <Route element={<NotFoundPage />} path="*" />
         </Route>
