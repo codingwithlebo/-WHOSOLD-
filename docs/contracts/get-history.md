@@ -1,8 +1,8 @@
 # `get_history` API contract
 
-**Status:** Proposed for agreement on
-[#43](https://github.com/codingwithlebo/-WHOSOLD-/issues/43). Not implemented
-yet.
+**Status:** Contract agreed and #43 completed. The `get_history` RPC is not
+implemented yet; it is tracked in
+[#44](https://github.com/codingwithlebo/-WHOSOLD-/issues/44).
 **Owner:** Mandla Sikhosana (database). **Consumers:** Owethu (UI,
 [#45](https://github.com/codingwithlebo/-WHOSOLD-/issues/45)), Malebo (QA,
 [#46](https://github.com/codingwithlebo/-WHOSOLD-/issues/46)).
@@ -127,9 +127,14 @@ then was lost. The empty case is `[]`.
 
 ## What the implementation will need (#44)
 
-The function will read from the Phase 4/6 rounds table. These source columns
-are the expected minimum, and their final names are decided in the Phase 4
-migration, not here:
+The function will read from the Phase 4/6 rounds table. The #61 migration
+provides `group_id`, `outcome`, `release_at`, `starting_fund_cents` and
+`final_fund_cents`, but does not store `resolved_at`. Before implementing #44,
+the database owner must add a durable resolution timestamp or revise the
+accepted contract; do not substitute `created_at` without product/contract
+approval.
+
+The expected source fields are:
 
 - `group_id`, `outcome`, `resolved_at`, `release_at`, `starting_fund_cents`,
   `final_fund_cents`
