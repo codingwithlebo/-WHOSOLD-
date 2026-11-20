@@ -43,7 +43,10 @@ export default function App() {
           <Route element={<ProtectedRoute />}>
             <Route element={<DashboardPage />} path="dashboard" />
             <Route element={<GroupPage />} path="groups/:groupId" />
-            <Route element={<RoundPreviewPage />} path="groups/:groupId/round" />
+            <Route
+              element={<RoundPreviewPage />}
+              path="groups/:groupId/round"
+            />
           </Route>
           <Route element={<NotFoundPage />} path="*" />
         </Route>
