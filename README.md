@@ -57,15 +57,15 @@ The full player-facing copy, privacy rules and timing live in [`docs/round-ux-co
 
 ## What works today
 
-| Feature                                                                                     | Status                                                                                     |
-| ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| Sign up, log in, log out (Supabase Auth)                                                    | Working on the live link                                                                   |
-| Create a group, join with a code, lock a group                                              | Working                                                                                    |
-| Group wishlist: add, edit, delete, running fund total                                       | Working                                                                                    |
-| Row-level security: members only see their own groups and wishlists                         | Working, tested in CI                                                                      |
-| Double or Pass screens (choice, confirmation, submitted, schedule in SAST, disabled states) | UI shell with a protected preview route; it uses demo data only and choices are not saved. |
-| Saving choices, quiz scoring, release-day reveal                                            | Not built yet                                                                              |
-| Round history                                                                               | Waits for saved round data                                                                 |
+| Feature                                                                                     | Status                                                                                             |
+| ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| Sign up, log in, log out (Supabase Auth)                                                    | Working on the live link                                                                           |
+| Create a group, join with a code, lock a group                                              | Working                                                                                            |
+| Group wishlist: add, edit, delete, running fund total                                       | Working                                                                                            |
+| Row-level security: members only see their own groups and wishlists                         | Working, tested in CI                                                                              |
+| Double or Pass screens (choice, confirmation, submitted, schedule in SAST, disabled states) | Protected demo preview linked from group details; uses static demo data and does not save choices. |
+| Saving choices, quiz scoring, release-day reveal                                            | Not built yet                                                                                      |
+| Round history                                                                               | Waits for saved round data                                                                         |
 
 ## Tech stack
 
@@ -164,5 +164,5 @@ The database is built from the repo, not by hand. Every change is a file in `sup
 
 ## Known limitations
 
-- The protected Double or Pass preview route uses demo data; choices are not saved and the quiz/backend are not built yet.
+- The protected Double or Pass preview is linked from group details, but it is not a live round; choices are not saved and the quiz/backend are not built yet.
 - Round history and the release-day reveal depend on the saved round data.

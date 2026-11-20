@@ -22,7 +22,8 @@ export default function RoundPreviewPage() {
         className="mx-auto mt-4 w-full max-w-2xl rounded-xl border border-dashed px-4 py-2 text-center text-sm font-semibold"
         role="note"
       >
-        PREVIEW: demo data only. Choices are not saved yet.
+        DEMO PREVIEW: This is not a live round for this group. It uses demo
+        data, and choices are not saved.
       </p>
       <RoundPage
         answeredCount={2}

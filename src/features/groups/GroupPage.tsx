@@ -155,6 +155,26 @@ export default function GroupPage() {
         <span aria-hidden="true">·</span>
         <strong>{group.members.length} members</strong>
       </div>
+      <section
+        aria-labelledby="round-preview-heading"
+        className="mt-8 rounded-2xl border border-dashed border-[#a879e8]/50 bg-white/70 p-5"
+      >
+        <p className="eyebrow">DOUBLE OR PASS</p>
+        <h2 className="mt-1 text-xl font-extrabold" id="round-preview-heading">
+          Try the game preview
+        </h2>
+        <p className="mt-2 text-sm text-on-surface-muted">
+          Live rounds are not connected to groups yet. This preview uses demo
+          data, and choices are not saved.
+        </p>
+        <ButtonLink
+          className="mt-4"
+          to={`/groups/${encodeURIComponent(group.id)}/round`}
+          variant="secondary"
+        >
+          Open demo preview
+        </ButtonLink>
+      </section>
       <WishlistPanel
         items={items}
         onAddItem={(name, priceCents) =>

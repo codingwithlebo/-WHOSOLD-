@@ -67,7 +67,7 @@ describe('App', () => {
       await screen.findByRole('heading', { name: 'Double or Pass?' }),
     ).toBeInTheDocument()
     expect(screen.getByRole('note')).toHaveTextContent(
-      'PREVIEW: demo data only. Choices are not saved yet.',
+      'DEMO PREVIEW: This is not a live round for this group. It uses demo data, and choices are not saved.',
     )
   })
 })
