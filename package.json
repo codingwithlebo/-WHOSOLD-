@@ -14,6 +14,7 @@
     "format:check": "prettier --check .",
     "test": "vitest",
     "test:ci": "vitest run",
+    "test:e2e": "playwright test",
     "verify": "npm run format:check && npm run lint && npm run typecheck && npm run test:ci && npm run build",
     "db:start": "npx --yes supabase@3.1.0 start",
     "db:stop": "npx --yes supabase@3.1.0 stop",
@@ -34,6 +35,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.0",
+    "@playwright/test": "^1.65.1",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^14.6.10",
