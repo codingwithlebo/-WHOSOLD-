@@ -12,11 +12,11 @@ Open it in a private/incognito window and log in with one of the test accounts b
 
 ## Test logins (test accounts only)
 
-| Email | Password |
-|-------|----------|
+| Email          | Password     |
+| -------------- | ------------ |
 | alice@test.dev | Password123! |
-| bob@test.dev | Password123! |
-| cara@test.dev | Password123! |
+| bob@test.dev   | Password123! |
+| cara@test.dev  | Password123! |
 
 - Demo group: **Demo Crew**, join code **DEMO42** (seeded with a two-item wishlist).
 - New sign-ups need a real email domain (for example a Gmail address). Made-up domains are rejected.
@@ -44,7 +44,7 @@ Open it in a private/incognito window and log in with one of the test accounts b
 
 1. A friend group registers and builds **one shared wishlist**. The total is the group's **fund**, "funded" by the mystery billionaire.
 2. The leader schedules a **choice window** and a **release time**.
-3. Each member is asked **privately**: *Double or Pass?*
+3. Each member is asked **privately**: _Double or Pass?_
    - **Pass:** skip the quiz, no risk.
    - **Double:** take one quiz of 5 questions, 20 seconds each. Score at least 4 and the fund doubles once. Score 3 or fewer, or leave it unfinished, and the group loses its fund.
 4. Nobody sees anyone else's choice. The group only sees a count like "3 of 5 have answered".
@@ -57,15 +57,15 @@ The full player-facing copy, privacy rules and timing live in [`docs/round-ux-co
 
 ## What works today
 
-| Feature | Status |
-|---------|--------|
-| Sign up, log in, log out (Supabase Auth) | Working on the live link |
-| Create a group, join with a code, lock a group | Working |
-| Group wishlist: add, edit, delete, running fund total | Working |
-| Row-level security: members only see their own groups and wishlists | Working, tested in CI |
+| Feature                                                                                     | Status                                                                                                                                    |
+| ------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| Sign up, log in, log out (Supabase Auth)                                                    | Working on the live link                                                                                                                  |
+| Create a group, join with a code, lock a group                                              | Working                                                                                                                                   |
+| Group wishlist: add, edit, delete, running fund total                                       | Working                                                                                                                                   |
+| Row-level security: members only see their own groups and wishlists                         | Working, tested in CI                                                                                                                     |
 | Double or Pass screens (choice, confirmation, submitted, schedule in SAST, disabled states) | UI shell merged; preview route is pending review in [PR #58](https://github.com/codingwithlebo/-WHOSOLD-/pull/58). Choices are not saved. |
-| Saving choices, quiz scoring, release-day reveal | Not built yet |
-| Round history | Waits for saved round data |
+| Saving choices, quiz scoring, release-day reveal                                            | Not built yet                                                                                                                             |
+| Round history                                                                               | Waits for saved round data                                                                                                                |
 
 ## Tech stack
 
@@ -99,24 +99,24 @@ Use the publishable key only. **Never put the `service_role` key or the database
 
 Useful scripts:
 
-| Command | What it does |
-|---------|--------------|
-| `npm run dev` | Start the app locally |
-| `npm test` | Run the unit and component tests |
-| `npm run lint` | Run ESLint |
-| `npm run build` | Production build |
+| Command            | What it does                          |
+| ------------------ | ------------------------------------- |
+| `npm run dev`      | Start the app locally                 |
+| `npm test`         | Run the unit and component tests      |
+| `npm run lint`     | Run ESLint                            |
+| `npm run build`    | Production build                      |
 | `npm run db:start` | Start a local Supabase (needs Docker) |
-| `npm run db:test` | Run the database tests |
+| `npm run db:test`  | Run the database tests                |
 
 ## Database (Supabase)
 
 The database is built from the repo, not by hand. Every change is a file in `supabase/migrations/`, reviewed in a pull request.
 
-| Migration | What it adds |
-|-----------|--------------|
-| `20261115120000_profiles.sql` | Player profiles, with a trigger that creates one on sign-up |
-| `20261119120000_groups.sql` | Groups, members, and the `create_group`, `join_group` and `lock_group` functions |
-| `20261119130000_wishlist_items.sql` | The wishlist and its rules |
+| Migration                           | What it adds                                                                     |
+| ----------------------------------- | -------------------------------------------------------------------------------- |
+| `20261115120000_profiles.sql`       | Player profiles, with a trigger that creates one on sign-up                      |
+| `20261119120000_groups.sql`         | Groups, members, and the `create_group`, `join_group` and `lock_group` functions |
+| `20261119130000_wishlist_items.sql` | The wishlist and its rules                                                       |
 
 - `supabase/seed.sql` adds the demo data: Alice, Bob and Cara, and the Demo Crew group (code `DEMO42`).
 - `supabase/tests/` has pgTAP tests for every rule (what is allowed and what is denied).
@@ -135,32 +135,32 @@ The database is built from the repo, not by hand. Every change is a file in `sup
 
 ## Project documents
 
-| Document | What it covers |
-|----------|----------------|
-| [PRD](docs/PRD.md) | Product requirements |
-| [Implementation plan](docs/IMPLEMENTATION_PLAN.md) | Phases and MVP defaults |
-| [Round UX contract](docs/round-ux-contract.md) | Double or Pass copy, privacy and timing |
-| [Test plan](docs/TEST_PLAN.md) | What we test and how |
-| [Team](docs/TEAM.md) | Roles and responsibilities |
-| [Designs](docs/designs/README.md) | Stitch screens |
+| Document                                           | What it covers                          |
+| -------------------------------------------------- | --------------------------------------- |
+| [PRD](docs/PRD.md)                                 | Product requirements                    |
+| [Implementation plan](docs/IMPLEMENTATION_PLAN.md) | Phases and MVP defaults                 |
+| [Round UX contract](docs/round-ux-contract.md)     | Double or Pass copy, privacy and timing |
+| [Test plan](docs/TEST_PLAN.md)                     | What we test and how                    |
+| [Team](docs/TEAM.md)                               | Roles and responsibilities              |
+| [Designs](docs/designs/README.md)                  | Stitch screens                          |
 
 ## Team & roles
 
-| Name | Role | GitHub |
-|------|------|--------|
-| Owethu Jezile | Product Owner, frontend and backend | [@Owethudev](https://github.com/Owethudev) |
-| Mandla Sikhosana | Tech Lead, frontend and backend | [@mandlenkosii](https://github.com/mandlenkosii) |
-| Malebo Nkuna | Designer and QA, frontend and backend | [@codingwithlebo](https://github.com/codingwithlebo) |
-| Ntokozo Maselela | DevOps/Release, frontend and backend | [@shaunmaselela25](https://github.com/shaunmaselela25) |
+| Name             | Role                                  | GitHub                                                 |
+| ---------------- | ------------------------------------- | ------------------------------------------------------ |
+| Owethu Jezile    | Product Owner, frontend and backend   | [@Owethudev](https://github.com/Owethudev)             |
+| Mandla Sikhosana | Tech Lead, frontend and backend       | [@mandlenkosii](https://github.com/mandlenkosii)       |
+| Malebo Nkuna     | Designer and QA, frontend and backend | [@codingwithlebo](https://github.com/codingwithlebo)   |
+| Ntokozo Maselela | DevOps/Release, frontend and backend  | [@shaunmaselela25](https://github.com/shaunmaselela25) |
 
 ## Who built what
 
-| Member | Contributions (merged or in progress) |
-|--------|---------------------------------------|
+| Member           | Contributions (merged or in progress)                                                 |
+| ---------------- | ------------------------------------------------------------------------------------- |
 | Mandla Sikhosana | Hosted Supabase project, migrations, seed data, database tests and CI database checks |
-| Owethu Jezile | Round UX contract, Double or Pass UI shell (#55), group and wishlist integration |
-| Malebo Nkuna | Stitch designs, QA/test leadership, and round preview route work in progress (#58) |
-| Ntokozo Maselela | CI pipeline and auth regression fixes (#16) |
+| Owethu Jezile    | Round UX contract, Double or Pass UI shell (#55), group and wishlist integration      |
+| Malebo Nkuna     | Stitch designs, QA/test leadership, and round preview route work in progress (#58)    |
+| Ntokozo Maselela | CI pipeline and auth regression fixes (#16)                                           |
 
 ## Known limitations
 
