@@ -282,7 +282,7 @@ select throws_ok(
   $$ select public.answer_question(
        (select attempt_id from test_helpers.quiz_fixture),
        (select first_question_id from test_helpers.quiz_fixture),
-       4
+       4::smallint
      ) $$,
   'P0001',
   'Quiz attempt not found.',
