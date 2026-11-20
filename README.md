@@ -24,7 +24,8 @@ Open it in a private/incognito window and log in with one of the test accounts b
 
 ## Demo and project board
 
-- Team Loom (max 10 min): not yet linked.
+- Loom walkthroughs (each member records their own):
+  - Mandla Sikhosana (Tech Lead, database and auth): https://www.loom.com/share/4014218c093d44d58aa719eb56866629
 - Project board: [WHOSOLD project board](https://github.com/users/codingwithlebo/projects/1/views/1).
 
 ## Screenshots
