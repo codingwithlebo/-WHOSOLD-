@@ -6,7 +6,7 @@
 
 ## Live app
 
-**https://whosold-ce97vosix-malebos-projects-c06638fe.vercel.app/**
+**https://whosold-seven.vercel.app/**
 
 Open it in a private/incognito window and log in with one of the test accounts below.
 
@@ -23,18 +23,22 @@ Open it in a private/incognito window and log in with one of the test accounts b
 
 ## Demo and project board
 
-- Team Loom (max 10 min): <PASTE LOOM LINK>
-- Project board: <PASTE BOARD LINK>
+- Team Loom (max 10 min): not yet linked.
+- Project board: not yet linked.
 
 ## Screenshots
 
-| Log in | Groups dashboard |
-|--------|------------------|
-| ![Log in](docs/screenshots/login.png) | ![Groups dashboard](docs/screenshots/dashboard.png) |
+### Landing page
 
-| Group wishlist | Double or Pass (preview data) |
-|----------------|-------------------------------|
-| ![Group wishlist](docs/screenshots/wishlist.png) | ![Double or Pass preview](docs/screenshots/round-preview.png) |
+![WHOSOLD landing page](docs/screenshots/homepage.png)
+
+### How it works
+
+![How it works section](docs/screenshots/how-it-works.png)
+
+### Groups dashboard
+
+![Groups dashboard](docs/screenshots/groups-dashboard.png)
 
 ## How the game works
 
@@ -59,7 +63,7 @@ The full player-facing copy, privacy rules and timing live in [`docs/round-ux-co
 | Create a group, join with a code, lock a group | Working |
 | Group wishlist: add, edit, delete, running fund total | Working |
 | Row-level security: members only see their own groups and wishlists | Working, tested in CI |
-| Double or Pass screens (choice, confirmation, submitted, schedule in SAST, disabled states) | UI built to the contract and running on **preview data** at `/groups/<id>/round` |
+| Double or Pass screens (choice, confirmation, submitted, schedule in SAST, disabled states) | UI shell merged; preview route is pending review in [PR #58](https://github.com/codingwithlebo/-WHOSOLD-/pull/58). Choices are not saved. |
 | Saving choices, quiz scoring, release-day reveal | Not built yet |
 | Round history | Waits for saved round data |
 
@@ -125,7 +129,7 @@ The database is built from the repo, not by hand. Every change is a file in `sup
 
 ## How we work
 
-- `main` is protected: pull requests only, 1 approval, CI passing.
+- Branch protection for `main` is pending admin confirmation in [issue #7](https://github.com/codingwithlebo/-WHOSOLD-/issues/7).
 - No direct pushes and no self-merges. Reviews say what the reviewer checked.
 - Each PR uses the repo's pull request template.
 
@@ -151,14 +155,14 @@ The database is built from the repo, not by hand. Every change is a file in `sup
 
 ## Who built what
 
-| Member | Built |
-|--------|-------|
+| Member | Contributions (merged or in progress) |
+|--------|---------------------------------------|
 | Mandla Sikhosana | Hosted Supabase project, migrations, seed data, database tests and CI database checks |
-| Owethu Jezile | Round UX contract, Double or Pass UI (#54), group and wishlist integration |
-| Malebo Nkuna | Stitch designs, preview route for the round screens, QA reviews, live deployment setup |
-| Ntokozo Maselela | <FILL IN, with PR numbers> |
+| Owethu Jezile | Round UX contract, Double or Pass UI shell (#55), group and wishlist integration |
+| Malebo Nkuna | Stitch designs, QA/test leadership, and round preview route work in progress (#58) |
+| Ntokozo Maselela | CI pipeline and auth regression fixes (#16) |
 
 ## Known limitations
 
-- The Double or Pass screens use preview data. Choices are not saved and the quiz is not built yet.
+- The Double or Pass UI shell is merged, but its preview route is still under review in PR #58. Choices are not saved and the quiz is not built yet.
 - Round history and the release-day reveal depend on the saved round data.

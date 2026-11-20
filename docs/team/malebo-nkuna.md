@@ -16,9 +16,11 @@ Issue #25 has been reopened because PR #34 documented Phase 1 acceptance cases
 but did not complete the live QA. The local auth/group test results and
 responsive smoke observations are recorded in the [test plan](../TEST_PLAN.md)
 and on [issue #25](https://github.com/codingwithlebo/-WHOSOLD-/issues/25).
-They do not complete the phase checklist. Hosted auth and groups/wishlist
-checks remain blocked until an authorized deployment URL or Vercel access is
-available. Keyboard-only traversal is also still outstanding.
+Malebo reports that hosted smoke testing has started: she has Supabase access
+and has loaded the deployed dashboard and group pages. This confirms initial
+access only; the remaining live acceptance checks are still outstanding.
+Screenshots are recorded in the [project README](../../README.md). Keyboard-only
+traversal is also still outstanding.
 
 | Phase | Your deliverables |
 |---|---|
