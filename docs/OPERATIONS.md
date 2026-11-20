@@ -15,7 +15,10 @@ Supabase and each developer's `.env.local` only.
 | Preview     | Vercel preview URL per PR | Hosted Supabase        | A PR is opened or updated   | Ntokozo        |
 | Production  | Vercel production URL     | Hosted Supabase        | A PR merges to `main`       | Ntokozo        |
 
-- **Vercel project** (frontend hosting, env vars, rollbacks): Ntokozo.
+- **Vercel project** `whosold` (frontend hosting, env vars, rollbacks):
+  hosted under Malebo's Vercel account (`malebos-projects`); operated by
+  Ntokozo. Anyone doing a rollback needs to be a member of that Vercel team.
+  Production: <https://whosold-seven.vercel.app>.
 - **Hosted Supabase project** (schema, migrations, pg_cron, auth settings):
   Mandla. Ntokozo is backup only when Mandla asks (#35).
 - **GitHub settings** (branch protection, Dependency graph): repo admin.
@@ -229,7 +232,10 @@ Keep this table current; it is what the team checks before a demo.
 | -------------------------------------- | ----------------------------------------------------------------------------------------- |
 | CI on PRs and `main`                   | In place; `CI passed` aggregates all jobs                                                 |
 | Build secret/quiz-answer guard         | In place (`npm run check:dist`, CI build job)                                             |
-| Vercel production + previews           | Confirm the Vercel project is connected and add the production URL to the README          |
+| Vercel production                      | Live at https://whosold-seven.vercel.app, auto-deploys `main`. Verified 20 Nov: `/`, `/login`, `/signup`, `/dashboard`, `/groups/<id>` and unknown paths all return 200 on hard refresh (SPA rewrite works); Supabase URL and anon key are in the bundle; `check:dist` on the live bundle finds nothing sensitive |
+| Vercel previews                        | Built for every PR (Vercel check green on #59). **Known issue:** Deployment Protection is on, so preview URLs redirect (302) to a Vercel login. Testers must be members of the Vercel team, or the owner must create a protection-bypass link |
+| Security headers                       | Added in `vercel.json` (#59); live on production after merge                               |
+| Live login / full-round smoke test     | Pending: Malebo with test accounts, runbook §6                                             |
 | Branch protection requiring `CI passed` | Needs a repo admin                                                                        |
 | Dependency graph (for Dependency review) | Disabled; the job skips with a warning until an admin enables it                        |
 | Rounds / quiz / resolution database    | Not merged yet (Mandla). Round, reveal and history UIs stay unconnected until it lands     |

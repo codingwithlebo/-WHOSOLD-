@@ -137,8 +137,8 @@ The frontend is hosted on Vercel (preview per PR, production on merge to
 `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in Vercel for Production and
 Preview. Nothing else belongs in the frontend.
 
-**Live deployment:** _add the production URL here once the Vercel project is
-confirmed connected._
+**Live deployment:** <https://whosold-seven.vercel.app> (production, auto-deploys
+from `main`). PR previews are protected and need a Vercel team login.
 
 Release checklist, live smoke test, rollback steps, scheduled-resolution
 monitoring, incident handling and current known issues are in the
