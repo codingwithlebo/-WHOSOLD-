@@ -57,15 +57,15 @@ The full player-facing copy, privacy rules and timing live in [`docs/round-ux-co
 
 ## What works today
 
-| Feature                                                                                     | Status                                                                                                                                    |
-| ------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| Sign up, log in, log out (Supabase Auth)                                                    | Working on the live link                                                                                                                  |
-| Create a group, join with a code, lock a group                                              | Working                                                                                                                                   |
-| Group wishlist: add, edit, delete, running fund total                                       | Working                                                                                                                                   |
-| Row-level security: members only see their own groups and wishlists                         | Working, tested in CI                                                                                                                     |
-| Double or Pass screens (choice, confirmation, submitted, schedule in SAST, disabled states) | UI shell merged; preview route is pending review in [PR #58](https://github.com/codingwithlebo/-WHOSOLD-/pull/58). Choices are not saved. |
-| Saving choices, quiz scoring, release-day reveal                                            | Not built yet                                                                                                                             |
-| Round history                                                                               | Waits for saved round data                                                                                                                |
+| Feature                                                                                     | Status                                                                                     |
+| ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| Sign up, log in, log out (Supabase Auth)                                                    | Working on the live link                                                                   |
+| Create a group, join with a code, lock a group                                              | Working                                                                                    |
+| Group wishlist: add, edit, delete, running fund total                                       | Working                                                                                    |
+| Row-level security: members only see their own groups and wishlists                         | Working, tested in CI                                                                      |
+| Double or Pass screens (choice, confirmation, submitted, schedule in SAST, disabled states) | UI shell with a protected preview route; it uses demo data only and choices are not saved. |
+| Saving choices, quiz scoring, release-day reveal                                            | Not built yet                                                                              |
+| Round history                                                                               | Waits for saved round data                                                                 |
 
 ## Tech stack
 
@@ -159,10 +159,10 @@ The database is built from the repo, not by hand. Every change is a file in `sup
 | ---------------- | ------------------------------------------------------------------------------------- |
 | Mandla Sikhosana | Hosted Supabase project, migrations, seed data, database tests and CI database checks |
 | Owethu Jezile    | Round UX contract, Double or Pass UI shell (#55), group and wishlist integration      |
-| Malebo Nkuna     | Stitch designs, QA/test leadership, and round preview route work in progress (#58)    |
+| Malebo Nkuna     | Stitch designs, QA/test leadership, and round preview route (#58)                     |
 | Ntokozo Maselela | CI pipeline and auth regression fixes (#16)                                           |
 
 ## Known limitations
 
-- The Double or Pass UI shell is merged, but its preview route is still under review in PR #58. Choices are not saved and the quiz is not built yet.
+- The protected Double or Pass preview route uses demo data; choices are not saved and the quiz/backend are not built yet.
 - Round history and the release-day reveal depend on the saved round data.
