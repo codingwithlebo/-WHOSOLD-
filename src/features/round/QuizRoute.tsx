@@ -17,6 +17,9 @@ interface QuizQuestionProps {
 
 function QuizQuestion({ state, onAnswer }: QuizQuestionProps) {
   const [secondsLeft, setSecondsLeft] = useState(state.secondsLeft)
+  const [timerAnnouncement, setTimerAnnouncement] = useState(
+    `${state.secondsLeft} seconds remaining`,
+  )
   const [submitting, setSubmitting] = useState(false)
   const [pendingChoice, setPendingChoice] = useState<number | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -49,9 +52,19 @@ function QuizQuestion({ state, onAnswer }: QuizQuestionProps) {
   useEffect(() => {
     const deadline = Date.now() + state.secondsLeft * 1000
     let timeoutSent = false
+    const announcedMilestones = new Set<number>()
     const intervalId = window.setInterval(() => {
       const remaining = Math.max(0, Math.ceil((deadline - Date.now()) / 1000))
       setSecondsLeft(remaining)
+      if (
+        (remaining === 10 || remaining === 5 || remaining === 0) &&
+        !announcedMilestones.has(remaining)
+      ) {
+        announcedMilestones.add(remaining)
+        setTimerAnnouncement(
+          remaining === 0 ? 'Time is up.' : `${remaining} seconds remaining`,
+        )
+      }
       if (remaining === 0 && !timeoutSent) {
         timeoutSent = true
         void submit(null)
@@ -81,6 +94,14 @@ function QuizQuestion({ state, onAnswer }: QuizQuestionProps) {
       </header>
       <p aria-live="off" className="font-semibold" role="timer">
         {secondsLeft} seconds remaining
+      </p>
+      <p
+        aria-atomic="true"
+        aria-live="polite"
+        className="sr-only"
+        role="status"
+      >
+        {timerAnnouncement}
       </p>
       <div className="grid gap-3">
         {state.options.map((option, index) => (
@@ -229,10 +250,9 @@ export default function QuizRoute() {
         </section>
       ) : quiz.status === 'finished' ? (
         <section className="grid gap-3">
-          <h1 className="dashboard-title">Quiz submitted</h1>
-          <p className="text-on-surface-muted">
-            Your score is hidden until the scheduled results release.
-          </p>
+          <h1 className="dashboard-title">
+            Quiz complete — results on release day
+          </h1>
         </section>
       ) : (
         <QuizQuestion
