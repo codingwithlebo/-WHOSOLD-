@@ -143,6 +143,24 @@ End-to-end browser tests (Playwright) are not set up yet; the live-link checks
 above are done by hand. Add Playwright coverage after the MVP; do not treat its
 absence as a passing test.
 
+## Phase 4 — Round UI acceptance (frontend slice)
+
+**Ownership note:** Owethu is covering Malebo's currently unblocked Phase 4 UI
+slice to push project readiness while the team is unavailable. This is not a
+live-round QA sign-off. The round UI components are not connected to a backend
+or exposed as a production route until Mandla's round contract and functions
+are available.
+
+| Area | Scenario | Expected result | Evidence |
+|---|---|---|---|
+| Schedule | Select the 5-minute, 1-hour or 24-hour preset | Opening, closing and release values are represented in SAST; the selected choice window has the preset duration | `StartRoundForm` component test |
+| Schedule | Submit a choice window shorter than 5 minutes or a release before close | A clear validation message is shown and no round is created | `StartRoundForm` component test |
+| Choice | Select Double or Pass, then go back from confirmation | No choice is submitted | `RoundPage` component test |
+| Choice | Confirm Double or Pass | The selected private choice is submitted once | `RoundPage` component test |
+| Privacy | View a round before release | Only the aggregate answered count and the current member's own choice are shown; no member-by-member choice state is rendered | `RoundPage` component test |
+| Timing | Visit before open, while open, and after close | Choices are unavailable outside the open window; the open window shows a countdown and answered count | `RoundPage` component tests |
+| Failure | The round service rejects schedule creation or choice submission | A readable error is displayed and retry remains possible | Component failure-state tests |
+
 
 ## Phase 1 — Accounts and authentication acceptance
 
@@ -183,6 +201,15 @@ log-in and log-out events (`onAuthStateChange`), signing out, passing on the
 Supabase error message, sending the display name with sign-up, unsubscribing
 on unmount, and the "not connected" message when the keys are missing.
 
+#### Hosted smoke status — 20 Nov 2026
+
+Malebo reports access to hosted Supabase and confirms that the deployed
+dashboard and group pages load. This is initial smoke evidence only; it does
+not verify the remaining authentication lifecycle, group and wishlist
+operations, or row-level-security acceptance checks. See the [groups
+dashboard screenshot](screenshots/groups-dashboard.png) and the [landing page
+screenshots](../README.md#screenshots).
+
 To finish Phase 1, run the live smoke test below against the hosted
 environment. A mocked test does not prove that hosted Supabase credentials,
 profile creation or deployment environment variables are correct.
@@ -219,3 +246,30 @@ live deployment or release sign-off.
 - Local browser check at 360px, 768px and 1440px: `/`, `/login` and `/signup` had no horizontal overflow.
 - The login email and password inputs expose their matching accessible labels.
 - Keyboard-only traversal and hosted auth/groups/wishlist checks remain outstanding. The known hosted preview requires Vercel access; do not treat these local checks as evidence for hosted behavior.
+
+## Phase 10 — Group history acceptance (#46)
+
+**Ownership note:** Owethu is covering Malebo's unblocked QA-planning work to
+push project readiness while the team is unavailable. This is not a QA sign-off
+for the live integration.
+
+The `get_history` contract and UI preparation are merged, but the live RPC and
+round-resolution data are not. Use the contract fixture only in tests; the
+production route must continue to show its unavailable state until the backend
+is ready.
+
+| Scenario | Expected result | Evidence |
+|---|---|---|
+| Signed-in member requests their group's history | Only that group's resolved rounds whose release time has passed are returned. | Mandla's pgTAP coverage in #44; authorized-member smoke test after #44. |
+| Outsider or anonymous caller requests history | An outsider receives the non-member/not-found error; an anonymous caller is denied. No group existence is disclosed. | Mandla's pgTAP coverage in #44; do not mock away authorization in the live test. |
+| Active, unresolved, or unreleased round exists | It is absent from the response, and choices, quiz answers, scores, and unreleased outcomes are never exposed. | Mandla's pgTAP coverage in #44; inspect the live RPC response after #44. |
+| More than one eligible round exists | Rows are ordered by `resolved_at` descending, then `id` descending. | RPC ordering assertion in #44; adapter preserves response order. |
+| Member has no eligible rounds | RPC returns `[]`; the page shows “No resolved rounds for this group yet.” | [History service tests](../src/features/history/historyService.test.ts) and [page tests](../src/features/history/RoundHistoryPage.test.tsx). |
+| Eligible rows contain each outcome | Dates, `Intact` / `Grown` / `Lost` labels, and starting/final Rand totals match the contract values. | History service and page tests; the contract fixture is test-only. |
+| History request is loading or fails | Loading is announced; errors are announced and a retry action is available. | Page tests for `role="status"`, `role="alert"`, and retry behavior. |
+| Keyboard, screen reader, and narrow viewport | Back navigation and retry are keyboard reachable with visible focus; status/error messages are announced; content remains usable at 360px. | Manual accessibility and responsive check after live data is available. |
+
+**Readiness boundary:** The contract-mapping and page-state tests can run now.
+Database authorization/filtering and the Supabase-enabled preview smoke test
+remain blocked on #44 and the preview setup in #26. Do not mark the history
+flow live or complete based only on fixture-backed tests.

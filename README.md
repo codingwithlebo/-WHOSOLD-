@@ -1,141 +1,168 @@
-# -WHOSOLD-
+# WHOSOLD?
 
-[![CI](https://github.com/codingwithlebo/-WHOSOLD-/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/codingwithlebo/-WHOSOLD-/actions/workflows/ci.yml)
+> A group of friends gets their wishlist funded by a mystery billionaire. Before the money drops, each friend secretly chooses to **Double** (take a quiz) or **Pass**. One lost quiz wipes the group's fund. Everyone finds out on release day.
 
-A group of friends gets their wishlist funded by a billionaire, but before the money drops, each friend secretly chooses to play for double or pass — one win doubles the group’s bag, one loss wipes it all out.
+**Team:** ChatGPT
 
-## Team & Roles
+## Live app
 
-| Name             | Role                              | GitHub                                                 |
-| ---------------- | --------------------------------- | ------------------------------------------------------ |
-| Owethu Jezile    | Product Owner + Frontend/Backend  | [@Owethudev](https://github.com/Owethudev)             |
-| Mandla Sikhosana | Tech Lead + Frontend/Backend      | [@mandlenkosii](https://github.com/mandlenkosii)       |
-| Malebo Nkuna     | QA/Test Lead+ Frontend/Backend    | [@codingwithlebo](https://github.com/codingwithlebo)   |
-| Ntokozo Maselela | DevOps/Release + Frontend/Backend | [@shaunmaselela25](https://github.com/shaunmaselela25) |
+**https://whosold-seven.vercel.app/**
 
-## Project documents
+Open it in a private/incognito window and log in with one of the test accounts below.
 
-- [Product Requirements Document](docs/PRD.md)
-- [Implementation Plan](docs/IMPLEMENTATION_PLAN.md)
-- [Phase 10 discovery proposal — group round history](docs/PHASE_10_DISCOVERY.md)
-- [Test Plan](docs/TEST_PLAN.md)
-- [Team delivery map](docs/TEAM.md)
-- [Mandla Sikhosana — delivery checklist](docs/team/mandla-sikhosana.md)
-- [Owethu Jezile — delivery checklist](docs/team/owethu-jezile.md)
-- [Malebo Nkuna — delivery checklist](docs/team/malebo-nkuna.md)
-- [Ntokozo Maselela — delivery checklist](docs/team/ntokozo-maselela.md)
-- [Design references](docs/designs/README.md)
+## Test logins (test accounts only)
 
-## Getting Started
+| Email          | Password     |
+| -------------- | ------------ |
+| alice@test.dev | Password123! |
+| bob@test.dev   | Password123! |
+| cara@test.dev  | Password123! |
 
-Requirements: Node.js 24 LTS (see `.nvmrc`; `nvm use` picks it up) and npm.
+- Demo group: **Demo Crew**, join code **DEMO42** (seeded with a two-item wishlist).
+- New sign-ups need a real email domain (for example a Gmail address). Made-up domains are rejected.
 
-```sh
-npm ci
+## Demo and project board
+
+- Team Loom (max 10 min): not yet linked.
+- Project board: [WHOSOLD project board](https://github.com/users/codingwithlebo/projects/1/views/1).
+
+## Screenshots
+
+### Landing page
+
+![WHOSOLD landing page](docs/screenshots/homepage.png)
+
+### How it works
+
+![How it works section](docs/screenshots/how-it-works.png)
+
+### Groups dashboard
+
+![Groups dashboard](docs/screenshots/groups-dashboard.png)
+
+## How the game works
+
+1. A friend group registers and builds **one shared wishlist**. The total is the group's **fund**, "funded" by the mystery billionaire.
+2. The leader schedules a **choice window** and a **release time**.
+3. Each member is asked **privately**: _Double or Pass?_
+   - **Pass:** skip the quiz, no risk.
+   - **Double:** take one quiz of 5 questions, 20 seconds each. Score at least 4 and the fund doubles once. Score 3 or fewer, or leave it unfinished, and the group loses its fund.
+4. Nobody sees anyone else's choice. The group only sees a count like "3 of 5 have answered".
+5. Members who don't respond by the close time are treated as **Pass**.
+6. On release day the group sees whether the fund is **intact, grown or lost**, with a named breakdown.
+
+All money in the app is **virtual**. No real payments are involved.
+
+The full player-facing copy, privacy rules and timing live in [`docs/round-ux-contract.md`](docs/round-ux-contract.md).
+
+## What works today
+
+| Feature                                                                                     | Status                                                                                                                                    |
+| ------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| Sign up, log in, log out (Supabase Auth)                                                    | Working on the live link                                                                                                                  |
+| Create a group, join with a code, lock a group                                              | Working                                                                                                                                   |
+| Group wishlist: add, edit, delete, running fund total                                       | Working                                                                                                                                   |
+| Row-level security: members only see their own groups and wishlists                         | Working, tested in CI                                                                                                                     |
+| Double or Pass screens (choice, confirmation, submitted, schedule in SAST, disabled states) | UI shell merged; preview route is pending review in [PR #58](https://github.com/codingwithlebo/-WHOSOLD-/pull/58). Choices are not saved. |
+| Saving choices, quiz scoring, release-day reveal                                            | Not built yet                                                                                                                             |
+| Round history                                                                               | Waits for saved round data                                                                                                                |
+
+## Tech stack
+
+- **Frontend:** React, TypeScript, Vite, Tailwind CSS, React Router, Motion
+- **Backend:** Supabase (Postgres, Auth, row-level security, SQL functions)
+- **Hosting:** Vercel (frontend) and a hosted Supabase project
+- **Quality:** ESLint, Prettier, unit and component tests, pgTAP database tests, GitHub Actions CI
+- **Design:** Stitch screens in [`docs/designs`](docs/designs)
+
+## Getting started (local)
+
+Requirements: Node (see `.nvmrc`) and npm.
+
+```bash
+npm install
+cp .env.example .env
+```
+
+Fill in `.env` with the **Project URL** and the **publishable (anon) key** from Supabase, under Project Settings, then API:
+
+```
+VITE_SUPABASE_URL=
+VITE_SUPABASE_ANON_KEY=
+```
+
+```bash
 npm run dev
 ```
 
-Copy `.env.example` to `.env.local` and fill in the Supabase URL and anon
-key (shared privately by the Tech Lead). Never commit local environment
-files.
+Use the publishable key only. **Never put the `service_role` key or the database password in the frontend or the repo.** The anon key is safe in the browser because row-level security protects the data.
+
+Useful scripts:
+
+| Command            | What it does                          |
+| ------------------ | ------------------------------------- |
+| `npm run dev`      | Start the app locally                 |
+| `npm test`         | Run the unit and component tests      |
+| `npm run lint`     | Run ESLint                            |
+| `npm run build`    | Production build                      |
+| `npm run db:start` | Start a local Supabase (needs Docker) |
+| `npm run db:test`  | Run the database tests                |
 
 ## Database (Supabase)
 
-All database changes are migration files in `supabase/migrations/`, merged
-through a PR. Never edit tables by hand in the Supabase dashboard.
+The database is built from the repo, not by hand. Every change is a file in `supabase/migrations/`, reviewed in a pull request.
 
-### Local database (optional, needs Docker Desktop)
+| Migration                           | What it adds                                                                     |
+| ----------------------------------- | -------------------------------------------------------------------------------- |
+| `20261115120000_profiles.sql`       | Player profiles, with a trigger that creates one on sign-up                      |
+| `20261119120000_groups.sql`         | Groups, members, and the `create_group`, `join_group` and `lock_group` functions |
+| `20261119130000_wishlist_items.sql` | The wishlist and its rules                                                       |
 
-```sh
-npm run db:start   # starts Supabase locally, applies migrations + seed.sql
-npm run db:test    # runs the pgTAP database tests in supabase/tests/
-npm run db:reset   # rebuilds the local database from migrations + seed
-npm run db:types   # regenerates src/lib/database.types.ts after a migration
-npm run db:stop
-```
+- `supabase/seed.sql` adds the demo data: Alice, Bob and Cara, and the Demo Crew group (code `DEMO42`).
+- `supabase/tests/` has pgTAP tests for every rule (what is allowed and what is denied).
+- On every pull request, CI starts a fresh Supabase database, applies all migrations and the seed, and runs those tests.
 
-`db:start` prints a local API URL and anon key. Put them in `.env.local` to
-run the app against your local database.
+## Environments and deployment
 
-### Hosted project (Tech Lead)
+- **Vercel** builds every push. Production variables are `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`, and Vite reads them at build time, so a redeploy is needed after changing them.
+- **Hosted Supabase:** database changes are pushed from the migrations with the Supabase CLI by the Tech Lead.
 
-After a migration PR is merged into `main`:
+## How we work
 
-```sh
-npx supabase@3.1.0 login
-npx supabase@3.1.0 link --project-ref <project-ref>
-npx supabase@3.1.0 db push --remote --dry-run   # check what will change
-npx supabase@3.1.0 db push --remote
-```
+- Branch protection for `main` is pending admin confirmation in [issue #7](https://github.com/codingwithlebo/-WHOSOLD-/issues/7).
+- No direct pushes and no self-merges. Reviews say what the reviewer checked.
+- Each PR uses the repo's pull request template.
 
-CLI 3.x pushes to the local stack unless you pass `--remote`. Add
-`--include-seed` only when the seed should be (re)applied; it is safe to run
-more than once.
+## Project documents
 
-### Test logins
+| Document                                           | What it covers                          |
+| -------------------------------------------------- | --------------------------------------- |
+| [PRD](docs/PRD.md)                                 | Product requirements                    |
+| [Implementation plan](docs/IMPLEMENTATION_PLAN.md) | Phases and MVP defaults                 |
+| [Round UX contract](docs/round-ux-contract.md)     | Double or Pass copy, privacy and timing |
+| [Test plan](docs/TEST_PLAN.md)                     | What we test and how                    |
+| [Team](docs/TEAM.md)                               | Roles and responsibilities              |
+| [Designs](docs/designs/README.md)                  | Stitch screens                          |
 
-Test accounts only. Never use real passwords.
+## Team & roles
 
-| Email            | Password       | Display name |
-| ---------------- | -------------- | ------------ |
-| `alice@test.dev` | `Password123!` | Alice        |
-| `bob@test.dev`   | `Password123!` | Bob          |
-| `cara@test.dev`  | `Password123!` | Cara         |
+| Name             | Role                                  | GitHub                                                 |
+| ---------------- | ------------------------------------- | ------------------------------------------------------ |
+| Owethu Jezile    | Product Owner, frontend and backend   | [@Owethudev](https://github.com/Owethudev)             |
+| Mandla Sikhosana | Tech Lead, frontend and backend       | [@mandlenkosii](https://github.com/mandlenkosii)       |
+| Malebo Nkuna     | Designer and QA, frontend and backend | [@codingwithlebo](https://github.com/codingwithlebo)   |
+| Ntokozo Maselela | DevOps/Release, frontend and backend  | [@shaunmaselela25](https://github.com/shaunmaselela25) |
 
-The seed also creates **Demo Crew** (join code `DEMO42`), led by Alice with
-Bob as a member, with a two-item wishlist (fund R27 499.00). Log in as Cara
-to try joining it.
+## Who built what
 
-## Checks
+| Member           | Contributions (merged or in progress)                                                 |
+| ---------------- | ------------------------------------------------------------------------------------- |
+| Mandla Sikhosana | Hosted Supabase project, migrations, seed data, database tests and CI database checks |
+| Owethu Jezile    | Round UX contract, Double or Pass UI shell (#55), group and wishlist integration      |
+| Malebo Nkuna     | Stitch designs, QA/test leadership, and round preview route work in progress (#58)    |
+| Ntokozo Maselela | CI pipeline and auth regression fixes (#16)                                           |
 
-Run the same gate CI runs before pushing:
+## Known limitations
 
-```sh
-npm run verify   # format:check → lint → typecheck → test:ci → build
-```
-
-Individual scripts:
-
-| Script                 | What it does                                                 |
-| ---------------------- | ------------------------------------------------------------ |
-| `npm run format:check` | Prettier check on the whole repo (`npm run format` to fix)   |
-| `npm run lint`         | Type-aware ESLint, zero warnings allowed (`lint:fix` to fix) |
-| `npm run typecheck`    | `tsc -b` across app and tooling projects                     |
-| `npm run test:ci`      | Vitest, single run (`npm test` for watch mode)               |
-| `npm run build`        | Typecheck + production Vite build                            |
-
-### CI pipeline
-
-[`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs on pull requests to
-`main`, pushes to `main`, the merge queue and manual dispatch. Jobs run in
-parallel:
-
-- **Lint workflows**: actionlint + shellcheck on the workflow files
-- **Format**, **Lint**, **Typecheck**, **Unit tests**, **Build** (uploads `dist/`)
-- **Dependency audit**: registry signature check and `npm audit` (high+) on
-  production dependencies
-- **Dependency review** (PRs only, needs the repo's Dependency graph enabled;
-  skipped with a warning otherwise): blocks newly added vulnerable or
-  copyleft-licensed packages
-- **Database tests**: `supabase start` (applies migrations + seed) then
-  `supabase test db` (pgTAP)
-- **CI passed**: aggregates all of the above. Make this the single required
-  status check in branch protection.
-
-Actions are pinned to commit SHAs, the workflow token is read-only, and stale
-runs on the same PR are cancelled. Dependabot opens weekly grouped PRs for npm
-packages and actions.
-GitHub Actions runs these checks on pull requests to `main` and pushes to
-`main`. A second `db` job starts Supabase, applies every migration and
-`seed.sql`, and runs the pgTAP tests (`npm run db:test`).
-
-**Live deployment:** not configured yet.
-
-## Contributing
-
-- Submit changes through a pull request; do not push directly to `main`. An
-  administrator still needs to enable branch protection and required status
-  checks in the repository settings.
-- Get at least one teammate's approval and a passing CI run before merging.
-- Do not approve or merge your own pull request.
-- Branch naming: `feature/<short-name>` or `fix/<short-name>`.
+- The Double or Pass UI shell is merged, but its preview route is still under review in PR #58. Choices are not saved and the quiz is not built yet.
+- Round history and the release-day reveal depend on the saved round data.
