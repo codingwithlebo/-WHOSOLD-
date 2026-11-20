@@ -14,8 +14,9 @@ Mandla retains database ownership.
 
 PR #61 merged the gameplay implementation, but it is not Malebo's QA sign-off.
 Hosted migration application is not yet confirmed, so network/privacy
-inspection and the two-user live regression are pending. The local
-E2E/Playwright setup is also not present yet.
+inspection and the two-user live regression are pending. PR #65 adds local
+Playwright coverage for public routes and a seeded two-member group-to-round
+flow; it does not replace hosted migration confirmation or live QA.
 
 Issue #25 was reopened because PR #34 documented Phase 1 acceptance cases but
 did not complete the live QA. It was later closed after PR #56 recorded local
