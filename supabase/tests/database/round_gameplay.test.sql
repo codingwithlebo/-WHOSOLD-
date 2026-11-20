@@ -4,7 +4,7 @@ begin;
 
 create extension if not exists pgtap with schema extensions;
 
-select plan(46);
+select plan(53);
 
 select has_table('public', 'rounds', 'rounds table exists');
 select has_table('public', 'choices', 'choices table exists');
@@ -212,7 +212,8 @@ select throws_ok(
 
 reset role;
 update public.rounds
-set closes_at = clock_timestamp() - interval '1 second'
+set opens_at = statement_timestamp() - interval '10 minutes',
+    closes_at = statement_timestamp() - interval '1 second'
 where id = (select id from test_helpers.game_rounds where label = 'choices');
 set local role authenticated;
 set local request.jwt.claims to
@@ -398,8 +399,9 @@ select throws_ok(
 reset role;
 update public.rounds
 set status = 'closed',
-    closes_at = clock_timestamp() - interval '1 second',
-    release_at = clock_timestamp() - interval '1 second'
+    opens_at = statement_timestamp() - interval '10 minutes',
+    closes_at = statement_timestamp() - interval '1 second',
+    release_at = statement_timestamp() - interval '1 second'
 where id = (select id from test_helpers.game_rounds where label = 'quiz');
 set local role authenticated;
 set local request.jwt.claims to
@@ -434,6 +436,93 @@ select throws_ok(
   'P0001',
   'Round not found or you are not a member.',
   'an outsider cannot view the released results'
+);
+
+reset role;
+update public.rounds
+set opens_at = statement_timestamp() - interval '10 minutes',
+    closes_at = statement_timestamp() - interval '1 second',
+    release_at = statement_timestamp() - interval '1 second'
+where id = (select id from test_helpers.game_rounds where label = 'choices');
+set local role authenticated;
+set local request.jwt.claims to
+  '{"sub": "44444444-4444-4444-4444-444444444444", "role": "authenticated"}';
+select is(
+  (select outcome from public.get_reveal(
+    (select id from test_helpers.game_rounds where label = 'choices')
+  )),
+  'intact',
+  'non-responders default to Pass and leave the fund intact'
+);
+select is(
+  (select final_fund_cents::integer from public.get_reveal(
+    (select id from test_helpers.game_rounds where label = 'choices')
+  )),
+  10000,
+  'a round without a failed Double preserves the starting fund'
+);
+
+insert into test_helpers.game_rounds
+select 'unfinished', public.start_round(
+  'aaaaaaaa-1111-4111-8111-111111111111',
+  clock_timestamp() + interval '1 minute',
+  clock_timestamp() + interval '7 minutes',
+  clock_timestamp() + interval '1 hour'
+);
+reset role;
+update public.rounds
+set opens_at = clock_timestamp() - interval '1 minute',
+    closes_at = clock_timestamp() + interval '6 minutes',
+    release_at = clock_timestamp() + interval '1 hour'
+where id = (select id from test_helpers.game_rounds where label = 'unfinished');
+set local role authenticated;
+set local request.jwt.claims to
+  '{"sub": "44444444-4444-4444-4444-444444444444", "role": "authenticated"}';
+select is(
+  public.submit_choice(
+    (select id from test_helpers.game_rounds where label = 'unfinished'),
+    'double'
+  ),
+  true,
+  'a member can choose Double in a later round'
+);
+select lives_ok(
+  $$ select * from public.start_quiz(
+       (select id from test_helpers.game_rounds where label = 'unfinished')
+     )
+     $$,
+  'a member can start an unfinished quiz'
+);
+reset role;
+update public.rounds
+set status = 'closed',
+    opens_at = statement_timestamp() - interval '10 minutes',
+    closes_at = statement_timestamp() - interval '1 second',
+    release_at = statement_timestamp() - interval '1 second'
+where id = (select id from test_helpers.game_rounds where label = 'unfinished');
+set local role authenticated;
+set local request.jwt.claims to
+  '{"sub": "44444444-4444-4444-4444-444444444444", "role": "authenticated"}';
+select is(
+  (select outcome from public.get_reveal(
+    (select id from test_helpers.game_rounds where label = 'unfinished')
+  )),
+  'lost',
+  'an unfinished Double quiz loses the fund at release'
+);
+select is(
+  (select final_fund_cents::integer from public.get_reveal(
+    (select id from test_helpers.game_rounds where label = 'unfinished')
+  )),
+  0,
+  'a failed Double reduces the fund to zero'
+);
+select ok(
+  (select members @> '[{"display_name":"Round Leader","result":"doubled_and_lost"},{"display_name":"Round Member","result":"passed"}]'::jsonb
+   from public.get_reveal(
+     (select id from test_helpers.game_rounds where label = 'unfinished')
+   )),
+  'release marks an unfinished quiz as lost and a non-responder as passed'
 );
 
 select * from finish();
