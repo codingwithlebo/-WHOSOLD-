@@ -201,6 +201,15 @@ log-in and log-out events (`onAuthStateChange`), signing out, passing on the
 Supabase error message, sending the display name with sign-up, unsubscribing
 on unmount, and the "not connected" message when the keys are missing.
 
+#### Hosted smoke status — 20 Nov 2026
+
+Malebo reports access to hosted Supabase and confirms that the deployed
+dashboard and group pages load. This is initial smoke evidence only; it does
+not verify the remaining authentication lifecycle, group and wishlist
+operations, or row-level-security acceptance checks. See the [groups
+dashboard screenshot](screenshots/groups-dashboard.png) and the [landing page
+screenshots](../README.md#screenshots).
+
 To finish Phase 1, run the live smoke test below against the hosted
 environment. A mocked test does not prove that hosted Supabase credentials,
 profile creation or deployment environment variables are correct.
