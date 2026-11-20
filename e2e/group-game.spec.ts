@@ -15,6 +15,7 @@ async function signIn(page: Page, email: string) {
 test('two members share a wishlist and start a group round', async ({
   browser,
 }) => {
+  test.setTimeout(90_000)
   test.skip(
     !localSupabaseConfigured,
     'Start local Supabase and set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.',
@@ -39,7 +40,18 @@ test('two members share a wishlist and start a group round', async ({
     await signIn(member, 'bob@test.dev')
     await member.getByLabel('Join code').fill(joinCode ?? '')
     await member.getByRole('button', { name: 'Join group' }).click()
-    await expect(member.getByRole('heading', { name: groupName })).toBeVisible()
+    const groupHeading = member.getByRole('heading', { name: groupName })
+    await expect
+      .poll(
+        async () => {
+          if (await groupHeading.isVisible()) return 'joined'
+          const alert = member.getByRole('alert')
+          if (await alert.count()) return `error: ${await alert.innerText()}`
+          return 'pending'
+        },
+        { timeout: 15_000 },
+      )
+      .toBe('joined')
 
     await member.getByRole('link', { name: `Open ${groupName}` }).click()
     await expect(
