@@ -65,7 +65,7 @@ test('two members share a wishlist and start a group round', async ({
     await leader.getByRole('link', { name: `Open ${groupName}` }).click()
     await expect(leader.getByText(itemName)).toBeVisible()
     await leader.getByRole('link', { name: 'Back to groups' }).click()
-    await leader.getByRole('button', { name: 'Lock group' }).click()
+    await groupCard.getByRole('button', { name: 'Lock group' }).click()
     await expect(leader.getByText('Group locked')).toBeVisible()
     await leader.getByRole('link', { name: `Open ${groupName}` }).click()
     await expect(
