@@ -159,11 +159,11 @@ authenticated gameplay.
 
 ## Phase 4 — Round UI acceptance (frontend slice)
 
-**Ownership note:** Owethu is covering Malebo's Phase 4 UI integration and
-Mandla's missing gameplay backend dependency to push project readiness while
-the team is unavailable. This is not a live-round QA sign-off. The gameplay
-branch adds server-authoritative rounds, choices, quizzes and release results;
-CI and hosted-Supabase migration still need to pass before live validation.
+**Ownership note:** Owethu covered Malebo's Phase 4 UI integration and
+Mandla's gameplay backend dependency to push project readiness while the team
+was unavailable. PR #61 is merged and its CI database tests passed. This is
+not a live-round QA sign-off: hosted-Supabase migration application and
+end-to-end validation have not yet been confirmed.
 
 | Area | Scenario | Expected result | Evidence |
 |---|---|---|---|
@@ -291,8 +291,10 @@ live deployment or release sign-off.
 push project readiness while the team is unavailable. This is not a QA sign-off
 for the live integration.
 
-The `get_history` contract and UI preparation are merged, but the live RPC and
-round-resolution data are not. Use the contract fixture only in tests; the
+The `get_history` contract (#43), history UI preparation, and round/resolution
+schema (#61) are merged, but the live RPC (#44) is not. The current schema does
+not store the contract's `resolved_at` field; resolve that with the database
+owner before implementing history. Use the contract fixture only in tests; the
 production route must continue to show its unavailable state until the backend
 is ready.
 
@@ -307,7 +309,7 @@ is ready.
 | History request is loading or fails | Loading is announced; errors are announced and a retry action is available. | Page tests for `role="status"`, `role="alert"`, and retry behavior. |
 | Keyboard, screen reader, and narrow viewport | Back navigation and retry are keyboard reachable with visible focus; status/error messages are announced; content remains usable at 360px. | Manual accessibility and responsive check after live data is available. |
 
-**Readiness boundary:** The contract-mapping and page-state tests can run now.
+**Readiness boundary:** Contract-mapping and page-state tests can run now.
 Database authorization/filtering and the Supabase-enabled preview smoke test
-remain blocked on #44 and the preview setup in #26. Do not mark the history
-flow live or complete based only on fixture-backed tests.
+depend on #44, #45 and the preview setup in #26. Do not mark the history flow
+live or complete based only on fixture-backed tests.

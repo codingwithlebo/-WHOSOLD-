@@ -1,6 +1,6 @@
 # Phase 10 Discovery — Group Round History
 
-**Status:** Product Owner accepted; implementation is blocked on the backend contract and round/resolution data
+**Status:** Product Owner accepted; contract #43 and round/resolution schema #61 are merged. The `get_history` RPC (#44) remains to be implemented before UI integration (#45).
 **Product Owner:** Owethu Jezile  
 **Date:** 19 November 2026  
 **Related:** PRD FR-14; Owethu checklist issue #24
@@ -9,8 +9,8 @@
 
 After a group's round has resolved and its results are released, members have
 no in-app way to revisit prior outcomes. The history screen already has a
-presentation model, but its route is intentionally unavailable until
-server-backed resolved-round data exists.
+presentation model, but its route is intentionally unavailable until the
+`get_history` RPC returns server-backed resolved-round data.
 
 ## Candidate increment
 
@@ -27,7 +27,7 @@ acceptance criteria. This proposal adds no new game rules.
   group's history.
 - Provide loading, empty and readable error states. Do not serve fixture or
   sample history from the live route.
-- Keep the history link and route unavailable until the data contract is
+- Keep the history link and route unavailable until `get_history` is
   implemented and connected.
 
 ## Acceptance criteria
@@ -45,11 +45,10 @@ acceptance criteria. This proposal adds no new game rules.
 
 ## Dependencies and ownership
 
-- **Mandla:** publish and implement the `get_history(group_id)` contract after
-  the round and resolution data model is available. It must return only
-  released, resolved records for an authorized member, with the fields the
-  existing UI needs: `id`, `resolved_at`, `outcome`, `starting_fund_cents`
-  and `final_fund_cents`.
+- **Mandla:** implement `get_history(group_id)` from the accepted #43 contract.
+  The rounds table merged in #61 does not store `resolved_at`; decide how to
+  persist that timestamp or revise the contract before exposing history. Return
+  only released, resolved records for an authorized member.
 - **Owethu:** accept or revise this product scope, then integrate the
   approved contract in `src/features/history/`.
 - **Malebo:** cover member/outsider access, unresolved-round exclusion,
@@ -59,11 +58,10 @@ acceptance criteria. This proposal adds no new game rules.
 ## Work items
 
 - [#43](https://github.com/codingwithlebo/-WHOSOLD-/issues/43): agree and
-  publish the `get_history` API contract. This can proceed now, before the
-  round/resolution tables exist.
+  publish the `get_history` API contract. Completed.
 - [#44](https://github.com/codingwithlebo/-WHOSOLD-/issues/44): implement the
-  RPC after the Phase 4 round schema and Phase 6 resolution/release data are
-  available. This item is explicitly blocked until then.
+  RPC using the merged Phase 4/6 schema; resolve the missing `resolved_at`
+  source field with the database owner.
 - [#45](https://github.com/codingwithlebo/-WHOSOLD-/issues/45): connect the
   existing history UI to live data; do not duplicate the UI already delivered
   by [#31](https://github.com/codingwithlebo/-WHOSOLD-/issues/31).
@@ -72,14 +70,14 @@ acceptance criteria. This proposal adds no new game rules.
   [#26](https://github.com/codingwithlebo/-WHOSOLD-/issues/26), so no duplicate
   DevOps issue was created.
 
-The scope is accepted, but live history implementation remains blocked on the
-round/resolution data and `get_history` contract. Contract definition and QA
-planning can proceed now. Draw mode, notifications, editing past rounds and
+The scope and contract are accepted. Live history remains blocked on the
+`get_history` RPC (#44), including a decision about the missing `resolved_at`
+source field, then UI integration (#45) and the connected QA run. Draw mode, notifications, editing past rounds and
 unreleased member choices/results are out of scope.
 
 ## Decision gate
 
-The Product Owner accepted this scope on 19 November 2026. Implementation starts
-only after the backend contract and round/resolution data are available; the
-work is now split into independently testable issues above. Team review may
+The Product Owner accepted this scope on 19 November 2026. The contract and
+round/resolution data are now available; implementation can proceed after the
+database owner resolves the `resolved_at` source-field gap. Team review may
 refine implementation details without reopening the accepted product scope.

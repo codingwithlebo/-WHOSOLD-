@@ -6,10 +6,18 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { makeAuth, renderWithProviders } from '../../test/renderWithProviders'
 import { addWishlistItem, loadWishlist } from '../wishlist/wishlistService'
 import GroupPage from './GroupPage'
-import { loadGroup, type GroupSummary } from './groupService'
+import { loadGroup, lockGroup, type GroupSummary } from './groupService'
 
-vi.mock('./groupService', () => ({ loadGroup: vi.fn() }))
-vi.mock('../round/GroupRoundLauncher', () => ({ default: () => null }))
+const roundService = vi.hoisted(() => ({
+  getGroupRound: vi.fn(),
+  startRound: vi.fn(),
+}))
+
+vi.mock('./groupService', () => ({
+  loadGroup: vi.fn(),
+  lockGroup: vi.fn(),
+}))
+vi.mock('../round/roundService', () => roundService)
 vi.mock('../wishlist/wishlistService', () => ({
   addWishlistItem: vi.fn(),
   deleteWishlistItem: vi.fn(),
@@ -54,7 +62,9 @@ describe('GroupPage', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     vi.mocked(loadGroup).mockResolvedValue(group)
+    vi.mocked(lockGroup).mockResolvedValue()
     vi.mocked(loadWishlist).mockResolvedValue(wishlist)
+    roundService.getGroupRound.mockResolvedValue(null)
     vi.mocked(addWishlistItem).mockResolvedValue({
       id: 'item-2',
       name: 'A book',
@@ -89,6 +99,22 @@ describe('GroupPage', () => {
     )
     expect(await screen.findByText('R20.00')).toBeInTheDocument()
     expect(screen.getAllByText('R1 270.50')).toHaveLength(2)
+  })
+
+  it('lets the group leader unlock round setup from the wishlist page', async () => {
+    renderGroupPage()
+
+    await userEvent.click(
+      await screen.findByRole('button', { name: 'Lock group to start game' }),
+    )
+
+    expect(lockGroup).toHaveBeenCalledWith(group.id)
+    expect(
+      await screen.findByRole('heading', { name: 'Schedule a round' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Start round' }),
+    ).toBeInTheDocument()
   })
 
   it('does not request wishlist data for a group the member cannot access', async () => {

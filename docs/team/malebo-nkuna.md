@@ -12,10 +12,16 @@ Owethu is covering Malebo's currently unblocked QA follow-through to push
 project readiness while the team is unavailable. Malebo remains the QA owner;
 Mandla retains database ownership.
 
-Issue #25 has been reopened because PR #34 documented Phase 1 acceptance cases
-but did not complete the live QA. The local auth/group test results and
-responsive smoke observations are recorded in the [test plan](../TEST_PLAN.md)
-and on [issue #25](https://github.com/codingwithlebo/-WHOSOLD-/issues/25).
+PR #61 merged the gameplay implementation, but it is not Malebo's QA sign-off.
+Hosted migration application is not yet confirmed, so network/privacy
+inspection and the two-user live regression are pending. PR #65 adds local
+Playwright coverage for public routes and a seeded two-member group-to-round
+flow; it does not replace hosted migration confirmation or live QA.
+
+Issue #25 was reopened because PR #34 documented Phase 1 acceptance cases but
+did not complete the live QA. It was later closed after PR #56 recorded local
+auth/group results and responsive smoke observations in the
+[test plan](../TEST_PLAN.md); the remaining hosted checks are still outstanding.
 Malebo reports that hosted smoke testing has started: she has Supabase access
 and has loaded the deployed dashboard and group pages. This confirms initial
 access only; the remaining live acceptance checks are still outstanding.
