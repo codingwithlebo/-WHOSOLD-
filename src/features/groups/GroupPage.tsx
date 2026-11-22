@@ -10,7 +10,7 @@ import {
   updateWishlistItem,
 } from '../wishlist/wishlistService'
 import GroupRoundLauncher from '../round/GroupRoundLauncher'
-import { loadGroup, type GroupSummary } from './groupService'
+import { loadGroup, lockGroup, type GroupSummary } from './groupService'
 
 const UUID_PATTERN = /^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/i
 
@@ -21,6 +21,8 @@ export default function GroupPage() {
   const [loading, setLoading] = useState(true)
   const [notFound, setNotFound] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [lockError, setLockError] = useState<string | null>(null)
+  const [lockingGroup, setLockingGroup] = useState(false)
   const [retryCount, setRetryCount] = useState(0)
   const { groupId } = useParams<{ groupId: string }>()
 
@@ -131,6 +133,26 @@ export default function GroupPage() {
   const leaderName =
     group.members.find((member) => member.isLeader)?.displayName ??
     'group leader'
+  const groupIdToLock = group.id
+
+  async function handleLockGroup() {
+    setLockingGroup(true)
+    setLockError(null)
+    try {
+      await lockGroup(groupIdToLock)
+      setGroup((current) =>
+        current ? { ...current, isLocked: true } : current,
+      )
+    } catch (reason) {
+      setLockError(
+        reason instanceof Error
+          ? reason.message
+          : 'Could not lock this group. Please try again.',
+      )
+    } finally {
+      setLockingGroup(false)
+    }
+  }
 
   return (
     <main className="dashboard group-detail">
@@ -156,6 +178,25 @@ export default function GroupPage() {
         <span aria-hidden="true">·</span>
         <strong>{group.members.length} members</strong>
       </div>
+      {group.isLeader && !group.isLocked ? (
+        <div className="mt-4">
+          <p className="mb-3 text-on-surface-muted">
+            Lock your group when everyone has joined to unlock round setup.
+          </p>
+          {lockError ? (
+            <p className="form-error mb-3" role="alert">
+              {lockError}
+            </p>
+          ) : null}
+          <Button
+            disabled={lockingGroup}
+            onClick={() => void handleLockGroup()}
+            variant="secondary"
+          >
+            {lockingGroup ? 'Locking group…' : 'Lock group to start game'}
+          </Button>
+        </div>
+      ) : null}
       <GroupRoundLauncher
         group={group}
         startingFundCents={items.reduce(
