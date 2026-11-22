@@ -117,6 +117,10 @@ jobs:
           cache: npm
       - run: npm ci --ignore-scripts
       - run: npm run build
+      # Blocks service_role/secret keys, server-only env names and quiz
+      # answer fields from ever shipping in the browser bundle.
+      - name: Check the build exposes no secrets or quiz answers
+        run: npm run check:dist
       - name: Fail if the build left the working tree dirty
         run: |
           if [[ -n "$(git status --porcelain)" ]]; then

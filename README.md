@@ -1,5 +1,7 @@
 # WHOSOLD?
 
+[![CI](https://github.com/codingwithlebo/-WHOSOLD-/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/codingwithlebo/-WHOSOLD-/actions/workflows/ci.yml)
+
 > A group of friends gets their wishlist funded by a mystery billionaire. Before the money drops, each friend secretly chooses to **Double** (take a quiz) or **Pass**. One lost quiz wipes the group's fund. Everyone finds out on release day.
 
 **Team:** ChatGPT
@@ -127,23 +129,59 @@ The database is built from the repo, not by hand. Every change is a file in `sup
 
 - **Vercel** builds every push. Production variables are `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`, and Vite reads them at build time, so a redeploy is needed after changing them.
 - **Hosted Supabase:** database changes are pushed from the migrations with the Supabase CLI by the Tech Lead.
+- **Production** auto-deploys from `main` to <https://whosold-seven.vercel.app>. PR previews are protected and need a Vercel team login.
+- Release checklist, live smoke test, rollback, scheduled-resolution monitoring and incident handling are in the [operations runbook](docs/OPERATIONS.md).
+
+## Checks and CI
+
+Run the same gate CI runs before pushing:
+
+```bash
+npm run verify   # format:check → lint → typecheck → test:ci → build
+```
+
+| Script                 | What it does                                                 |
+| ---------------------- | ------------------------------------------------------------ |
+| `npm run format:check` | Prettier check on the whole repo (`npm run format` to fix)   |
+| `npm run lint`         | Type-aware ESLint, zero warnings allowed (`lint:fix` to fix) |
+| `npm run typecheck`    | `tsc -b` across app and tooling projects                     |
+| `npm run test:ci`      | Vitest, single run (`npm test` for watch mode)               |
+| `npm run build`        | Typecheck + production Vite build                            |
+| `npm run check:dist`   | Fails if `dist/` contains secret keys or quiz-answer fields  |
+
+[`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs on pull requests to `main`, pushes to `main`, the merge queue and manual dispatch. Jobs run in parallel:
+
+- **Lint workflows**: actionlint + shellcheck on the workflow files
+- **Format**, **Lint**, **Typecheck**, **Unit tests**, **Build** (runs `check:dist`, then uploads `dist/`)
+- **Dependency audit**: registry signature check and `npm audit` (high+) on production dependencies
+- **Dependency review** (PRs only, needs the repo's Dependency graph enabled; skipped with a warning otherwise): blocks newly added vulnerable or copyleft-licensed packages
+- **Database tests**: `supabase start` (applies migrations + seed) then `supabase test db` (pgTAP)
+- **CI passed**: aggregates all of the above. Make this the single required status check in branch protection.
+
+Actions are pinned to commit SHAs, the workflow token is read-only, and stale runs on the same PR are cancelled. Dependabot opens weekly grouped PRs for npm packages and actions.
 
 ## How we work
 
 - Branch protection for `main` is pending admin confirmation in [issue #7](https://github.com/codingwithlebo/-WHOSOLD-/issues/7).
 - No direct pushes and no self-merges. Reviews say what the reviewer checked.
 - Each PR uses the repo's pull request template.
+- Get at least one teammate's approval and a passing CI run before merging.
+- Branch naming: `feature/<short-name>` or `fix/<short-name>`.
 
 ## Project documents
 
-| Document                                           | What it covers                          |
-| -------------------------------------------------- | --------------------------------------- |
-| [PRD](docs/PRD.md)                                 | Product requirements                    |
-| [Implementation plan](docs/IMPLEMENTATION_PLAN.md) | Phases and MVP defaults                 |
-| [Round UX contract](docs/round-ux-contract.md)     | Double or Pass copy, privacy and timing |
-| [Test plan](docs/TEST_PLAN.md)                     | What we test and how                    |
-| [Team](docs/TEAM.md)                               | Roles and responsibilities              |
-| [Designs](docs/designs/README.md)                  | Stitch screens                          |
+| Document                                                         | What it covers                                                                                                                                               |
+| ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [PRD](docs/PRD.md)                                               | Product requirements                                                                                                                                         |
+| [Implementation plan](docs/IMPLEMENTATION_PLAN.md)               | Phases and MVP defaults                                                                                                                                      |
+| [Round UX contract](docs/round-ux-contract.md)                   | Double or Pass copy, privacy and timing                                                                                                                      |
+| [Test plan](docs/TEST_PLAN.md)                                   | What we test and how                                                                                                                                         |
+| [Operations runbook](docs/OPERATIONS.md)                         | Deploy, env, rollback, scheduled resolution, incidents                                                                                                       |
+| [`get_reveal` contract (proposed)](docs/contracts/get-reveal.md) | Reveal API shape                                                                                                                                             |
+| [Phase 10 discovery](docs/PHASE_10_DISCOVERY.md)                 | Group round history proposal                                                                                                                                 |
+| [Team](docs/TEAM.md)                                             | Roles and responsibilities                                                                                                                                   |
+| Delivery checklists                                              | [Mandla](docs/team/mandla-sikhosana.md), [Owethu](docs/team/owethu-jezile.md), [Malebo](docs/team/malebo-nkuna.md), [Ntokozo](docs/team/ntokozo-maselela.md) |
+| [Designs](docs/designs/README.md)                                | Stitch screens                                                                                                                                               |
 
 ## Team & roles
 
