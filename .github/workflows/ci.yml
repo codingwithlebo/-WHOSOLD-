@@ -103,6 +103,33 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: npm run test:ci
 
+  e2e:
+    name: Browser tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npx playwright install --with-deps chromium
+      - uses: supabase/setup-cli@689adcfb80d947100a1eab127289b97d1fb07b13 # v3.2.0
+        with:
+          version: 3.1.0
+      - run: supabase start -x realtime,storage-api,imgproxy,studio,edge-runtime,logflare,vector
+      - name: Configure the browser app for local Supabase
+        run: |
+          eval "$(supabase status -o env | grep -E '^(API_URL|ANON_KEY)=')"
+          printf 'VITE_SUPABASE_URL=%s\n' "$API_URL" >> "$GITHUB_ENV"
+          printf 'VITE_SUPABASE_ANON_KEY=%s\n' "$ANON_KEY" >> "$GITHUB_ENV"
+      - run: npm run test:e2e
+      - if: always()
+        run: supabase stop --no-backup
+
   build:
     name: Build
     runs-on: ubuntu-24.04
@@ -228,6 +255,7 @@ jobs:
         lint,
         typecheck,
         test,
+        e2e,
         build,
         security,
         dependency-review,

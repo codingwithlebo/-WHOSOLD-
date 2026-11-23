@@ -10,6 +10,8 @@ npm run lint
 npm run format:check
 npm run typecheck
 npm test -- --run
+npx playwright install chromium
+npm run test:e2e
 npm run build
 ```
 
@@ -28,6 +30,15 @@ The current unit tests cover:
   exist (Phase 10).
 - Live rounds: scheduling eligibility, private choice submission, timed quiz
   progress, idempotent answer retries, and release results.
+
+The Playwright browser tests cover 360px overflow on public routes, keyboard
+login validation, and—when configured with local Supabase—a seeded two-member
+flow that creates and joins a group, shares a wishlist item, locks the group,
+and starts a round. CI starts Supabase locally and uses only the test accounts
+from `supabase/seed.sql`; no hosted data is used. To run the authenticated
+browser flow locally, start Supabase with `npm run db:start`, then set
+`VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` from `supabase status -o env`
+in `.env.local` before running `npm run test:e2e`.
 
 3D scenes are decorative and are not unit-tested: jsdom has no WebGL, so tests
 render the static fallback instead. Check them manually (see below).
@@ -139,11 +150,12 @@ to leave a group, so:
 Record the URL, browser, date and pass/fail on the PR or issue (never a
 password).
 
-## Planned coverage
+## Browser smoke coverage
 
-End-to-end browser tests (Playwright) are not set up yet; the live-link checks
-above are done by hand. Add Playwright coverage after the MVP; do not treat its
-absence as a passing test.
+Playwright checks the public landing, log-in and sign-up routes at 360px for
+horizontal overflow and verifies keyboard navigation through the log-in form.
+These local browser checks do not replace the live-link checks above or verify
+authenticated gameplay.
 
 ## Phase 4 — Round UI acceptance (frontend slice)
 
@@ -267,7 +279,11 @@ live deployment or release sign-off.
 - `npm test -- --run src/features/auth/LoginPage.test.tsx src/features/groups/GroupsDashboard.test.tsx src/features/groups/GroupPage.test.tsx` — passed (3 files, 17 tests).
 - Local browser check at 360px, 768px and 1440px: `/`, `/login` and `/signup` had no horizontal overflow.
 - The login email and password inputs expose their matching accessible labels.
-- Keyboard-only traversal and hosted auth/groups/wishlist checks remain outstanding. The known hosted preview requires Vercel access; do not treat these local checks as evidence for hosted behavior.
+- Automated keyboard traversal of the log-in form and mobile overflow checks
+  are covered by `npm run test:e2e`; broader manual keyboard review and hosted
+  auth/groups/wishlist checks remain outstanding. The known hosted preview
+  requires Vercel access; do not treat these local checks as evidence for
+  hosted behavior.
 
 ## Phase 10 — Group history acceptance (#46)
 
