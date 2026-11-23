@@ -20,12 +20,14 @@ Open it in a private/incognito window and log in with one of the test accounts b
 | bob@test.dev   | Password123! |
 | cara@test.dev  | Password123! |
 
-- Demo group: **Demo Crew**, join code **DEMO42** (seeded with a two-item wishlist).
-- New sign-ups need a real email domain (for example a Gmail address). Made-up domains are rejected.
+- Demo group: **Demo Crew**, join code **DEMO42**, led by Alice, with a two-item wishlist (fund **R27 499.00**). Log in as Cara, or sign up, to try joining it.
+- Please keep the demo usable for others: **don't lock Demo Crew** (locking can't be undone), and delete any wishlist items you add. To try locking, create your own group.
+- New sign-ups need a real email domain (for example a Gmail address). Made-up domains such as `test.dev` can be rejected. New accounts are confirmed automatically, so no confirmation email is needed.
 
 ## Demo and project board
 
-- Team Loom (max 10 min): not yet linked.
+- Loom walkthroughs (each member records their own):
+  - Mandla Sikhosana (Tech Lead, database and auth): https://www.loom.com/share/4014218c093d44d58aa719eb56866629
 - Project board: [WHOSOLD project board](https://github.com/users/codingwithlebo/projects/1/views/1).
 
 ## Screenshots
@@ -86,7 +88,7 @@ npm install
 cp .env.example .env
 ```
 
-Fill in `.env` with the **Project URL** and the **publishable (anon) key** from Supabase, under Project Settings, then API:
+Fill in `.env` with the **Project URL** and the **publishable key** (`sb_publishable_…`) from Supabase, under Project Settings → API Keys:
 
 ```
 VITE_SUPABASE_URL=
@@ -194,12 +196,12 @@ Actions are pinned to commit SHAs, the workflow token is read-only, and stale ru
 
 ## Who built what
 
-| Member           | Contributions (merged or in progress)                                                 |
-| ---------------- | ------------------------------------------------------------------------------------- |
-| Mandla Sikhosana | Hosted Supabase project, migrations, seed data, database tests and CI database checks |
-| Owethu Jezile    | Round UX contract, Double or Pass UI shell (#55), group and wishlist integration      |
-| Malebo Nkuna     | Stitch designs, QA/test leadership, and round preview route work in progress (#58)    |
-| Ntokozo Maselela | CI pipeline and auth regression fixes (#16)                                           |
+| Member           | Contributions (merged or in progress)                                                                                                                                                                                                                                                                                   |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Mandla Sikhosana | Hosted Supabase project; profiles, groups and wishlist migrations with row-level security and database functions (#11, #37, #39); seed data and pgTAP database tests; log-in/sign-up screens and the 3D landing page (#6); auth session tests (#48); `get_history` API contract (#49); PR reviews and live-link testing |
+| Owethu Jezile    | Round UX contract, Double or Pass UI shell (#55), group and wishlist integration                                                                                                                                                                                                                                        |
+| Malebo Nkuna     | Stitch designs, QA/test leadership, and round preview route work in progress (#58)                                                                                                                                                                                                                                      |
+| Ntokozo Maselela | CI pipeline and auth regression fixes (#16)                                                                                                                                                                                                                                                                             |
 
 ## Known limitations
 
